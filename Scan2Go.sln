@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go", "Scan2Go\Scan2Go.csproj", "{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0CFCE4D8-F49F-4496-8E11-D5A01C2101E8}
+	EndGlobalSection
+EndGlobal
