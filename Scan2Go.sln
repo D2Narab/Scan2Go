@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go", "Scan2Go\Scan2Go.csproj", "{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.Api", "Scan2Go\Scan2Go.Api.csproj", "{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.Entity", "Scan2Go.Entity\Scan2Go.Entity.csproj", "{68C98D74-F409-42A4-BBEB-A2B5DC95CE2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.BusinessLogic", "Scan2Go.BusinessLogic\Scan2Go.BusinessLogic.csproj", "{851F9B9C-D158-4AF8-9CBD-5B65F91EE9B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.DataLayer", "Scan2Go.DataLayer\Scan2Go.DataLayer.csproj", "{BD5A4523-3561-4AD9-96C9-06E72E6FBE47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.Enums", "Scan2Go.Enums\Scan2Go.Enums.csproj", "{FCAFC049-8AB0-4EB3-BD09-06F653A441BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.Facade", "Scan2Go.Facade\Scan2Go.Facade.csproj", "{ABFD56E3-D5D2-4552-BDB2-A88C3D3F1624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.Mapper", "Scan2Go.Mapper\Scan2Go.Mapper.csproj", "{E1B0412E-DC50-4EDE-A50E-264DAB6D754B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +27,30 @@ Global
 		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4E5BB35-BBF1-42B8-93DB-738EAC856C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C98D74-F409-42A4-BBEB-A2B5DC95CE2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C98D74-F409-42A4-BBEB-A2B5DC95CE2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C98D74-F409-42A4-BBEB-A2B5DC95CE2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C98D74-F409-42A4-BBEB-A2B5DC95CE2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{851F9B9C-D158-4AF8-9CBD-5B65F91EE9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851F9B9C-D158-4AF8-9CBD-5B65F91EE9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851F9B9C-D158-4AF8-9CBD-5B65F91EE9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851F9B9C-D158-4AF8-9CBD-5B65F91EE9B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD5A4523-3561-4AD9-96C9-06E72E6FBE47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD5A4523-3561-4AD9-96C9-06E72E6FBE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD5A4523-3561-4AD9-96C9-06E72E6FBE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD5A4523-3561-4AD9-96C9-06E72E6FBE47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCAFC049-8AB0-4EB3-BD09-06F653A441BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCAFC049-8AB0-4EB3-BD09-06F653A441BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCAFC049-8AB0-4EB3-BD09-06F653A441BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCAFC049-8AB0-4EB3-BD09-06F653A441BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFD56E3-D5D2-4552-BDB2-A88C3D3F1624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFD56E3-D5D2-4552-BDB2-A88C3D3F1624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFD56E3-D5D2-4552-BDB2-A88C3D3F1624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFD56E3-D5D2-4552-BDB2-A88C3D3F1624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1B0412E-DC50-4EDE-A50E-264DAB6D754B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1B0412E-DC50-4EDE-A50E-264DAB6D754B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1B0412E-DC50-4EDE-A50E-264DAB6D754B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1B0412E-DC50-4EDE-A50E-264DAB6D754B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
