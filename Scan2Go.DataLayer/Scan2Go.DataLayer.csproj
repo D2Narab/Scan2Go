@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="DataLayer.Base">
       <HintPath>..\packages\DataLayer.Base.dll</HintPath>
     </Reference>
