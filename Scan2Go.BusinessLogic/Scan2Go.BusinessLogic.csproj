@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Utility">
+      <HintPath>..\packages\Utility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

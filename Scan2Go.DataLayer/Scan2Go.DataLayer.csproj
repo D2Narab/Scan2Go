@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="DataLayer.Base">
+      <HintPath>..\packages\DataLayer.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Utility">
+      <HintPath>..\packages\Utility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

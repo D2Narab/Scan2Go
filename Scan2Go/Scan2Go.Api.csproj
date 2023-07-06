@@ -11,4 +11,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Utility">
+      <HintPath>..\packages\Utility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
