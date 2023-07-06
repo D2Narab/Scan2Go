@@ -2,5 +2,6 @@
 {
     public enum Operations
     {
+        SaveTranslations = 1,
     }
 }

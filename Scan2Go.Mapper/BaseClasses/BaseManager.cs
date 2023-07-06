@@ -1,4 +1,6 @@
-﻿using Utility.Bases;
+﻿using Scan2Go.Enums.Translations;
+using Scan2Go.Mapper.Models.TranslationModels;
+using Utility.Bases.EntityBases;
 
 namespace Scan2Go.Mapper.BaseClasses
 {
@@ -18,7 +20,12 @@ namespace Scan2Go.Mapper.BaseClasses
             {
                 var config = new AutoMapper.MapperConfiguration(cfg =>
                 {
-
+                    cfg.CreateMap<Translations, TranslationsModel>();
+                    cfg.CreateMap<TranslationSearchCriteriaModel, TranslationSearchCriteria>();
+                    cfg.CreateMap<TranslationsListItem, TranslationsModel>();
+                    cfg.CreateMap<TranslationsModel, Translations>();
+                    cfg.CreateMap<TranslationsModel, TranslationsListItem>();
+                    cfg.CreateMap<ListSourceBase, ListSourceModel<TranslationsModel>>();
                 });
 
                 return config.CreateMapper();

@@ -61,6 +61,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AlreadyHaveTheSame.
+        /// </summary>
+        public static string AlreadyHaveTheSame {
+            get {
+                return ResourceManager.GetString("AlreadyHaveTheSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AnErrorHasAccured.
         /// </summary>
         public static string AnErrorHasAccured {
@@ -75,6 +84,69 @@ namespace Scan2Go.Enums.Properties {
         public static string DefinitionIsUsedAnotherRecord {
             get {
                 return ResourceManager.GetString("DefinitionIsUsedAnotherRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ListTranslations.
+        /// </summary>
+        public static string ListTranslations {
+            get {
+                return ResourceManager.GetString("ListTranslations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OperationWasNotCompleted.
+        /// </summary>
+        public static string OperationWasNotCompleted {
+            get {
+                return ResourceManager.GetString("OperationWasNotCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to saveTranslations.
+        /// </summary>
+        public static string saveTranslations {
+            get {
+                return ResourceManager.GetString("saveTranslations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TranslationKeyCannotBeEmpty.
+        /// </summary>
+        public static string TranslationKeyCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("TranslationKeyCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TranslationKeyCannotContainSpecialCharacters.
+        /// </summary>
+        public static string TranslationKeyCannotContainSpecialCharacters {
+            get {
+                return ResourceManager.GetString("TranslationKeyCannotContainSpecialCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TranslationKeyMustBeInLatinLetters.
+        /// </summary>
+        public static string TranslationKeyMustBeInLatinLetters {
+            get {
+                return ResourceManager.GetString("TranslationKeyMustBeInLatinLetters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UsageAreaCannotBeEmpty.
+        /// </summary>
+        public static string UsageAreaCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("UsageAreaCannotBeEmpty", resourceCulture);
             }
         }
     }

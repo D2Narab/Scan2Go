@@ -9,6 +9,6 @@
 
     public enum Modules
     {
-
+        Translations = 1
     }
 }

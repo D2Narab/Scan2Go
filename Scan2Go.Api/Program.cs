@@ -1,3 +1,5 @@
+using Scan2Go.Mapper.Managers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,5 +23,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+new TranslationsManager().GetTranslations(0, 0);
 
 app.Run();
