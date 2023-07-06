@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scan2Go.DataLayer\Scan2Go.DataLayer.csproj" />
+    <ProjectReference Include="..\Scan2Go.Entity\Scan2Go.Entity.csproj" />
+    <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
+    <ProjectReference Include="..\Scan2Go.Facade\Scan2Go.Facade.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Utility">
       <HintPath>..\packages\Utility.dll</HintPath>
     </Reference>

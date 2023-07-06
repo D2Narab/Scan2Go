@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scan2Go.DataLayer\Scan2Go.DataLayer.csproj" />
+    <ProjectReference Include="..\Scan2Go.Entity\Scan2Go.Entity.csproj" />
+    <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="DataLayer.Base">
       <HintPath>..\packages\DataLayer.Base.dll</HintPath>
     </Reference>

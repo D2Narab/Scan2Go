@@ -11,6 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scan2Go.BusinessLogic\Scan2Go.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Scan2Go.Entity\Scan2Go.Entity.csproj" />
+    <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Utility">
       <HintPath>..\packages\Utility.dll</HintPath>
     </Reference>
