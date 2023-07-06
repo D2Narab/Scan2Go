@@ -1,7 +1,6 @@
-﻿namespace Scan2Go.Enums
+﻿namespace Scan2Go.Enums;
+
+public enum Operations
 {
-    public enum Operations
-    {
-        SaveTranslations = 1,
-    }
+    SaveTranslations = 1,
 }

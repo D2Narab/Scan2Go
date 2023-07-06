@@ -1,7 +1,6 @@
-﻿namespace Scan2Go.Enums
+﻿namespace Scan2Go.Enums;
+
+public class DbNames
 {
-    public class DbNames
-    {
-        public const string Default = "DEFAULT";
-    }
+    public const string Default = "DEFAULT";
 }
