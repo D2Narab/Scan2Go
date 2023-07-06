@@ -4,12 +4,12 @@ namespace Scan2Go.Mapper.BaseClasses
 {
     public class BaseManager
     {
-        protected readonly IUser user;
+        //protected readonly IUser user;
 
-        public BaseManager(IUser user)
+        public BaseManager(/*IUser user*/)
         {
-            this.user = user;
-            BaseMethods.user = user;
+            //this.user = user;
+            //BaseMethods.user = user;
         }
 
         protected AutoMapper.IMapper Mapper
