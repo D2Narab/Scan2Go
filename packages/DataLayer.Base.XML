@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DataLayer.Base</name>
+    </assembly>
+    <members>
+        <member name="M:DataLayer.Base.GeneralDataLayer.GeneralSelectOperations.GetDefinitionDataTable``1(Utility.Enum.LanguageEnum,System.Boolean)">
+            <summary>
+            Generally used for definitions without schema
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="languageEnum"></param>
+            <param name="hasLanguage"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DataLayer.Base.GeneralDataLayer.GeneralSelectOperations.GetDefinitionDataTable(Utility.Bases.EntityBases.DefinitionBases.DefinitionBase,Utility.Enum.LanguageEnum,System.Boolean)">
+            <summary>
+            Generally used for definitions with schema
+            </summary>
+            <param name="definitionBase"></param>
+            <param name="languageEnum"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.TableName">
+            <summary>
+            Table name which will be used in join statement
+            </summary>
+        </member>
+        <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.FieldNames">
+            <summary>
+            Field name which will be used in select part
+            </summary>
+        </member>
+        <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.JoinType">
+            <summary>
+            Join type that determines which type of join will occur
+            </summary>
+        </member>
+        <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.PrimaryKey">
+            <summary>
+            Primary key of the table
+            </summary>
+        </member>
+        <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.ForeignKey">
+            <summary>
+            Foreing Key that will be used in join statement
+            </summary>
+        </member>
+        <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.ForeignTable">
+            <summary>
+            Foreing Key that will be used in join statement
+            </summary>
+        </member>
+        <member name="M:DataLayer.Base.SqlGenerator.CustomSelectTableFields.AddField(System.String)">
+            <summary>
+            Adds new fieldName to collection FieldNames
+            </summary>
+            <param name="fieldName">Field name to be added</param>
+            <returns>Returns self for chain adding</returns>
+        </member>
+        <member name="M:DataLayer.Base.SqlGenerator.CustomSelectTableFields.AddFields(System.String[])">
+            <summary>
+            Adds new fieldName to collection FieldNames
+            </summary>
+            <param name="fieldNames">An array of field names to be added</param>
+            <returns>Returns self for chain adding</returns>
+        </member>
+        <member name="T:DataLayer.Base.SqlGenerator.SqlFactory">
+            <summary>
+            From Cumlecigine INNER JOIN yazarken fromun sonuna inner join yazıp on kısmı bir alt satırda olacak şekilde yapılmalı.(AppendLine ile kullanılacaktır.)
+            </summary>
+        </member>
+        <member name="T:DataLayer.Base.SqlGenerator.SqlSelectFactory">
+            <summary>
+            From Cumlecigine INNER JOIN yazarken fromun sonuna inner join yazıp on kısmı bir alt satırda olacak şekilde yapılmalı.(AppendLine ile kullanılacaktır.)
+            </summary>
+        </member>
+    </members>
+</doc>

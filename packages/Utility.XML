@@ -1,0 +1,743 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Utility</name>
+    </assembly>
+    <members>
+        <member name="T:Utility.App_GlobalResources.EnumResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.Error">
+            <summary>
+              Looks up a localized string similar to Hata.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.Information">
+            <summary>
+              Looks up a localized string similar to Bilgi.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.InvalidOperation">
+            <summary>
+              Looks up a localized string similar to Bu işlem yapılmaya uygun değildir..
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.OutOfDate">
+            <summary>
+              Looks up a localized string similar to VerilerGuncelDegil.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.RecordCount">
+            <summary>
+              Looks up a localized string similar to Kayıt sayısı.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.RecordInUseCannotBeDeleted">
+            <summary>
+              Looks up a localized string similar to Kayıt Kullanılıyor Silinemez.
+            </summary>
+        </member>
+        <member name="P:Utility.App_GlobalResources.EnumResources.Warning">
+            <summary>
+              Looks up a localized string similar to Uyarı.
+            </summary>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.#ctor">
+            <summary>
+            Creates an empyt new instance of EntityCollectionBase
+            </summary>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.#ctor(System.Collections.Generic.List{`0})">
+            <summary>
+            Creates a new instance of EntityCollectionBase based on given Generic List
+            </summary>
+            <param name="list">Generic list which EntityCollectionBase created from</param>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.#ctor(Utility.Bases.CollectionBases.IVBindingList)">
+            <summary>
+            Creates a new instance of EntityCollectionBase based on given IVBindingList list
+            </summary>
+            <param name="list">List which EntityCollectionBase created from</param>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.LoadCollection(System.Func{System.Int32,Utility.Bases.CollectionBases.EntityCollectionBase{`0}},System.Int32)">
+            <summary>
+            To lazy load the collection with an integer parametrized function
+            </summary>
+            <param name="function">The function to load the collection</param>
+            <param name="loadById">The id which the function needed to evaluate the collection </param>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.LoadCollection(System.Func{Utility.Bases.EntityBases.EntityBase,Utility.Bases.CollectionBases.EntityCollectionBase{`0}},Utility.Bases.EntityBases.EntityBase)">
+            <summary>
+            To lazy load the collection with an EntityBase parametrized function
+            </summary>
+            <param name="function">The function to load the collection</param>
+            <param name="loadByEntity">The Entity which the function needed to evaluate the collection</param>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.FillCollection">
+            <summary>
+            Fills the collection if collection not Initialized and set up for lazy load
+            </summary>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.IndexOf(`0)">
+            <summary>
+            Searches for the specified object and returns the zero-based index of the first
+             occurrence within the entire List.
+            </summary>
+            <param name="item">The object to locate in the List. The value can be null for reference types</param>
+            <returns>The zero-based index of the first occurrence of item within the entire List,if found; otherwise, –1.</returns>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.Insert(System.Int32,`0)">
+            <summary>
+            Inserts an element into the System.Collections.Generic.List`1 at the specified
+            index.
+            </summary>
+            <param name="index">The zero-based index at which item should be inserted.</param>
+            <param name="item">The object to insert. The value can be null for reference types.</param>
+        </member>
+        <member name="M:Utility.Bases.CollectionBases.EntityCollectionBase`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes the element at the specified index of the System.Collections.Generic.List`1.
+            </summary>
+            <param name="index">The zero-based index of the element to remove.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">index is less than 0.-or-index is equal to or greater than System.Collections.Generic.List`1.Count.</exception>
+        </member>
+        <member name="P:Utility.Bases.CollectionBases.EntityCollectionBase`1.Item(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Bases.EntityBases.CriteriaBase.GetCriteriaDbParameters">
+             <summary>
+            
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="T:Utility.Bases.EntityBases.ISchemaObject">
+            <summary>
+            Any Entity that uses Schema technique \ Practice must be inherited from this interface.
+            </summary>
+        </member>
+        <member name="M:Utility.Bases.EntityBases.ISchemaObject.GetDetailValueByFieldName(System.String)">
+            <summary>
+            Gets value of the detail field name in the schema list from the given field name 
+            </summary>
+            <param name="fieldName">Field name of the value to be retreived</param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Bases.EntityBases.ISchemaObject.GetUserIdFromSchemaByFieldName(System.String)">
+            <summary>
+            Gets the user id from user\schema object
+            </summary>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Utility.Bases.EntityBases.ITemplate">
+            <summary>
+            Any Main \ Major entity that a template will use as a main object must inherit from this class
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.EntityBases.ITemplate.FilePathParameter">
+            <summary>
+            Used to provide a unqiue path in the system folders if anything regarding the entity is ever written phyiscally to the disks .
+            </summary>
+        </member>
+        <member name="T:Utility.Bases.ListCaptionBase">
+            <summary>
+            List captions to be rendered in the front end
+            </summary>
+        </member>
+        <member name="T:Utility.Bases.ListCaptionBase.Field">
+            <summary>
+            Fields for retirieving data from Database
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.AlignmentIsMiddle">
+            <summary>
+            Field data corresponding to database field AlignmentIsMiddle
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.columnCaption">
+            <summary>
+            Field data corresponding to database field columnCaption
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.ColumnFieldTypeId">
+            <summary>
+            Field data corresponding to database field ColumnFieldTypeId
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.correspondingField">
+            <summary>
+            Field data corresponding to database field correspondingField
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.isPK">
+            <summary>
+            Field data corresponding to database field isPK
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.isVisible">
+            <summary>
+            Field data corresponding to database field isVisible
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.ListCaptionId">
+            <summary>
+            Field data corresponding to database field List Caption Id
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.ListItemTypeId">
+            <summary>
+            Field data corresponding to database field item type
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.ListRenderType">
+            <summary>
+            Field data corresponding to database field ListRenderType
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.order">
+            <summary>
+            Field data corresponding to database field order
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.Type">
+            <summary>
+            Field data corresponding to database field type
+            </summary>
+        </member>
+        <member name="F:Utility.Bases.ListCaptionBase.Field.width">
+            <summary>
+            Field data corresponding to database field width
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.AlignmentIsMiddle">
+            <summary>
+            Decides wheather the data text alignment of the column will be default (Left in English,Right in arabic), or in the middle.
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.Color">
+            <summary>
+            Sets the column caption color that will be presented to the Front End
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.ColumnCaption">
+            <summary>
+            Sets the column caption that will be presented to the Front End
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.ColumnFieldTypeId">
+            <summary>
+            Represent an ID from the enum "ListColumnFieldTypes".
+            Default = 1,
+            DetailField = 2,
+            ResultField = 3,
+            PhotoField = 4
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.CorrespondingField">
+            <summary>
+            Sets the Corresponding Field of the column from the entity
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.IsPk">
+            <summary>
+            Decides whether the Corresponding Field is a Primary Key field or not, default value is false
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.IsVisible">
+            <summary>
+            Decides whether and column will be visible or not, default value is true
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.ListCaptionId">
+            <summary>
+            The Primary Key for the elements
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.ListItemTypeId">
+            <summary>
+            A  correspondence to the list item type.
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.ListRenderType">
+            <summary>
+            Sets the render type that will be applied to the column, default value is Default label
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.Order">
+            <summary>
+            Defines the order of the column to be rendered
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.ProgressBarProperties">
+            <summary>
+            Progress Bar properties to be rendered in the front end
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListCaptionBase.Width">
+            <summary>
+            Defines the column width, default value is 150 pixels
+            </summary>
+        </member>
+        <member name="T:Utility.Bases.ListBases.ListProgressBar">
+            <summary>
+            Progress bar object properties
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListBases.ListProgressBar.endValue">
+            <summary>
+            Ending value of the progress bar
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListBases.ListProgressBar.isCompleted">
+            <summary>
+            When set to true, the progress bar will be marked as completed.
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListBases.ListProgressBar.label">
+            <summary>
+            The general label that will be put infront of the progress bar
+            </summary>
+        </member>
+        <member name="P:Utility.Bases.ListBases.ListProgressBar.startValue">
+            <summary>
+            Starting value of the progress bar
+            </summary>
+        </member>
+        <member name="P:Utility.Core.LogClasses.OperationLogListItem.DateAccordingToCulture">
+            <summary>
+            Used to represent date according to custom culture.
+            </summary>
+        </member>
+        <member name="T:Utility.Enum.DataLayerEnum.DataBaseParameterType">
+            <summary>
+            Type enum for DataBaseParameters of DateTime Time
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.General">
+            <summary>
+            Indicates a general time and it will be searched for using the = operator
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.DateTimeStart">
+            <summary>
+            Indicates a starting time and it will be searched for usging the "BETWEEN @StartDateTime AND @EndDateTime" command
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.DateTimeEnd">
+            <summary>
+            Indicates an ending time and it will be searched for usging the "BETWEEN @StartDateTime AND @EndDateTime" command
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.DateTimeLowerThan">
+            <summary>
+            Indicates a datetime low value and it be searched for values with datetime value lower than the value provided
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.DateTimeBiggerThan">
+            <summary>
+            Indicates a datetime high value and it be searched for values with datetime value higher than the value provided
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.FullTextSearch">
+            <summary>
+            Indicates a full text string search object, which will be searched with "CONTAINS" keyword
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.LikeSearch">
+            <summary>
+            Indicates a string that will be searched with a "LIKE" keyword
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.NotNull">
+            <summary>
+            Searchig will be done with the "IS NOT NULL" keyword
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.DataLayerEnum.DataBaseParameterType.Null">
+            <summary>
+            Searchig will be done with the "IS NULL" keyword
+            </summary>
+        </member>
+        <member name="T:Utility.Enum.LanguageEnum">
+            <summary>
+            Languages Supported in the system.
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.LanguageEnum.EN">
+            <summary>
+            English
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.LanguageEnum.AR">
+            <summary>
+            Arabic
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.LanguageEnum.TR">
+            <summary>
+            Turkish
+            </summary>
+        </member>
+        <member name="F:Utility.Enum.LanguageEnum.AZ">
+            <summary>
+            Azerbaijani
+            </summary>
+        </member>
+        <member name="M:Utility.Extensions.ObjectExtensions.ApplyLTRMark(System.String)">
+            <summary>
+            Applies the \u200E Unicode LTR Mark key in order to tell the renderer that the characters written are not in a Latin format.
+            Please refer for this link for further info : https://web.archive.org/web/20160913021127/microsoft.com/middleeast/msdn/control.aspx
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.ObjectExtensions.ApplyRTLMark(System.String)">
+            <summary>
+            Applies the \u200F Unicode RTL Mark key in order to tell the renderer that the characters written are not in a Latin format.
+            Please refer for this link for further info : https://web.archive.org/web/20160913021127/microsoft.com/middleeast/msdn/control.aspx
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.ObjectExtensions.GetPropValue(System.Object,System.String)">
+            <summary>
+            Gets the object value inside of an object from its string name
+            </summary>
+            <param name="src"></param>
+            <param name="propName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.ObjectExtensions.RemoveTrailingZeros(System.Decimal)">
+            <summary>
+            Removes Trailing zeros. Example : 128.00 will return as 128 . But 1.28 will still return as 1.28
+            </summary>
+            <param name="decimalNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.ObjectExtensions.ReverseParentheses(System.String)">
+            <summary>
+            Reverses the Parentheses in a string, ( will be ) and ) will be (
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.ObjectExtensions.SetPropValue(System.Object,System.String,System.Object)">
+            <summary>
+            Sets the value of the object inside another object from its string name
+            </summary>
+            <param name="src"></param>
+            <param name="propertyName"></param>
+            <param name="propertyValue"></param>
+        </member>
+        <member name="T:Utility.Extensions.PrimitiveExtensions">
+            <summary>
+            Supplies some extenstion methods for primitive types
+            </summary>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsBool(System.Object)">
+            <summary>
+            attempts to convert an object to a boolean variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted boolean variable if conversion was succeeded, default boolean value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsBool(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a boolean value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted boolean variable if conversion was succeeded, default boolean value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsByteArray(System.Object)">
+            <summary>
+            attempts to convert an object to a byte array
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted byte array if conversion was succeeded, null if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsByteArray(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a byte array
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted byte array if conversion was succeeded, null if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsChar(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a char value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted char variable if conversion was succeeded, empty char value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDateTime(System.Object)">
+            <summary>
+            attempts to convert and object to a DateTime variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted DateTime variable if conversion was succeeded, default DateTime value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDateTime(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a DateTime value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted DateTime variable if conversion was succeeded, default DateTime value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDateTimeNull(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a nullable DateTime value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted nullable DateTime variable if conversion was succeeded, default nullable DateTime value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDateTimeTryParseExact(System.String)">
+            <summary>
+            Attempts to parse a string value into a datetime, by analyzing the string first and deciding the format that will be used in parse operation
+            The method currently supports the following formats :
+            dd as day, mm and MMM as month,yy and yyyy as year, hh:mm:ss as time,tt as time period, - and / as date separators.
+            </summary>
+            <param name="stringDateValue"></param>
+            <returns> Parsed Datetime </returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDecimal(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a decimal value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted decimal variable if conversion was succeeded, default decimal value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDecimal(System.Object)">
+            <summary>
+            attempts to convert and object to a decimal variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted decimal variable if conversion was succeeded, default decimal value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDouble(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a double value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted double variable if conversion was succeeded, default double value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsDouble(System.String)">
+            <summary>
+            attempts to convert and object to a double variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <param name="defaultDouble">default double value</param>
+            <returns>Converted double variable if conversion was succeeded, default double value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsFittedForFullText(System.String)">
+            <summary>
+            Attempts to convert a string to be fitted to be searched in FullText search
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsFloat(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a float value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted float variable if conversion was succeeded, default float value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsFloat(System.String)">
+            <summary>
+            attempts to convert and object to a float variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <param name="defaultfloat">default float value</param>
+            <returns>Converted float variable if conversion was succeeded, default float value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsInt(System.Object)">
+            <summary>
+            attempts to convert and object to an integer variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted integer variable if conversion was succeeded, default integer value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsInt(System.Data.DataRow,System.String,System.Boolean)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a integer value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="ColumnName">name of the column that holds the value to be convereted</param>
+            <param name="IsEnum">If the attemped value to convert is an enum, -1 value will be returned instead of 0, to prevent wrong matching if there is an enum with 0 value</param>
+            <returns>Converted integer variable if conversion was succeeded, default integer value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsInt64(System.Object)">
+            <summary>
+            attempts to convert and object to an 64 bit integer variable
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted 64 bit integer variable if conversion was succeeded, default integer value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsInt64(System.Data.DataRow,System.String,System.Boolean)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a 64 bit integer value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="ColumnName">name of the column that holds the value to be convereted</param>
+            <param name="IsEnum">If the attemped value to convert is an enum, -1 value will be returned instead of 0, to prevent wrong matching if there is an enum with 0 value</param>
+            <returns>Converted 64 bit integer variable if conversion was succeeded, default integer value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsIntArray(System.String[])">
+            <summary>
+             attempts to convert a string array to an integer array,providing that all elements of array can be converted to integer values
+            </summary>
+            <param name="strArray">string array to be converted</param>
+            <returns>integer array</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsString(System.Data.DataRow,System.String)">
+            <summary>
+            attempts to convert a value within a column of a data raw to a string value
+            </summary>
+            <param name="dr">Source Data Row</param>
+            <param name="columnName">name of the column that holds the value to be converted</param>
+            <returns>Converted string variable if conversion was succeeded, default string value if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.AsUTF8ByteArray(System.String)">
+            <summary>
+            attempts to convert a string to an UTF8 byte array
+            </summary>
+            <param name="item">object to be converted</param>
+            <returns>Converted UTF8 byte array if conversion was succeeded, null if not .</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ConfigureForFullTextContains(System.String,System.Int32)">
+            <summary>
+            Configures an input string to make it ready of a full text search
+            </summary>
+            <param name="str">input string object</param>
+            <param name="searchingTypeId">searching type id</param>
+            <returns>configured string ready to be used with the "Contains" key word</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.FirstCharToUpper(System.String)">
+            <summary>
+            Capitalize only the first character of a string and returns a new string value
+            </summary>
+            <param name="input">string value to be processed</param>
+            <returns>new string value with first character capital letter</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.GetParamValue(System.Nullable{System.DateTime})">
+            <summary>
+            Gets the parameter value of the supplied nullable datetime object
+            </summary>
+            <param name="dt">Nullable datetime object</param>
+            <returns>DateTime value if it has value, DbNull.Value if it does not</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.GetParamValue(System.Int32)">
+            <summary>
+            Gets the parameter value of the supplied integer object
+            </summary>
+            <param name="value">Nullable integer object</param>
+            <returns>integer value if it has value, DbNull.Value if it does not</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.GetString(System.String[],System.Char)">
+            <summary>
+            Converts the supplied string objects in the array to a one string object, separated with the supplied separator
+            </summary>
+            <param name="values">string array object to be converted</param>
+            <param name="separator">separator to be added between each string</param>
+            <returns>one string object of concatenated strings, separated by the supplied separator</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.HasValidValue(System.DateTime)">
+            <summary>
+            Checks whether the supplied datetime value is equal to the default datetime value or not
+            </summary>
+            <param name="dt">DateTime object</param>
+            <returns>true if not , false if its equal to the default datetime value</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.IsEntered(System.DateTime)">
+             <summary>
+            
+             </summary>
+             <param name="dt"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.IsNumeric(System.String)">
+            <summary>
+            Checks whether the supplied string is a numeric value or not.
+            </summary>
+            <param name="str">string value that will be checked</param>
+            <returns>true if value is an integer false if not</returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.SetTimeValues(System.DateTime,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the Hour,Minute and second values of the given datetime to the given parameters
+            </summary>
+            <param name="dt">Source DateTime</param>
+            <param name="hour">wanted hour value</param>
+            <param name="minute">wanted minute value</param>
+            <param name="second">wanted second value</param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ToLowerByEnglishCulture(System.String)">
+            <summary>
+            Attempts to lower a string value by English Culture, thus the I letter in Turkish will be lowered to i in english instead of ı in Turkish .
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ToUpperAllDataTableColoumnsByEnglishCulture(System.Data.DataRow)">
+            <summary>
+            
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ToLowerFirstLetter(System.String)">
+            <summary>
+            Attempts to lower the first letter of the string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ToShortDateString(System.Nullable{System.DateTime})">
+            <summary>
+            Returns a string date value of nullable datetime same as the default datetime does
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ToShortTimeString(System.Nullable{System.DateTime})">
+            <summary>
+            Returns a string time value of nullable datetime same as the default datetime does
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Utility.Extensions.PrimitiveExtensions.ToUpperFirstLetter(System.String)">
+            <summary>
+            Attempts to Upper the first letter of the string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
