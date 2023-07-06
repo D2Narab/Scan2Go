@@ -93,10 +93,10 @@ namespace Scan2Go.Enums
             return returnValue;
         }
 
-        public static string GetResourceString(string v, object languageEnum)
-        {
-            throw new NotImplementedException();
-        }
+        //public static string GetResourceString(string v, object languageEnum)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public static string GetResourceString(string messageStrings, LanguageEnum interfaceLanguage, MessageParameters messageParameter)
         {

@@ -61,6 +61,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AnErrorHasAccured.
+        /// </summary>
+        public static string AnErrorHasAccured {
+            get {
+                return ResourceManager.GetString("AnErrorHasAccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DefinitionIsUsedAnotherRecord.
         /// </summary>
         public static string DefinitionIsUsedAnotherRecord {
