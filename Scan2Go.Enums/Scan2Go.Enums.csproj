@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Reference Include="Utility">
-      <HintPath>..\packages\VrsDLL\Utility.dll</HintPath>
+      <HintPath>..\packages\Utility.dll</HintPath>
     </Reference>
   </ItemGroup>
 
