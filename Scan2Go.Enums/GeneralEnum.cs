@@ -6,4 +6,9 @@
         Frontend = 2,
         Both = 3
     }
+
+    public enum Modules
+    {
+
+    }
 }
