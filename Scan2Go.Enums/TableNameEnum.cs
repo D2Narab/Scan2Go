@@ -4,6 +4,8 @@ namespace Scan2Go.Enums
 {
     public class TableName : DataLayerEnumBase
     {
+        public static readonly DataLayerEnumBase Def_Definitions = new TableName("Def_Definitions");
+        public static readonly DataLayerEnumBase Def_Definitions_Language = new TableName("Def_Definitions_Language");
         public static readonly DataLayerEnumBase Def_Detail_Schema = new TableName("Def_Detail_Schema");
         public static readonly DataLayerEnumBase Translations = new TableName("Translations");
 

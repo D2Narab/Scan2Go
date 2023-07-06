@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DeepCloner" Version="0.10.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Scan2Go.DataLayer\Scan2Go.DataLayer.csproj" />
     <ProjectReference Include="..\Scan2Go.Entity\Scan2Go.Entity.csproj" />
     <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />

@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\MessageStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
