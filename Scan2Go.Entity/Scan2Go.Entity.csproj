@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Utility">
       <HintPath>..\packages\Utility.dll</HintPath>
     </Reference>
