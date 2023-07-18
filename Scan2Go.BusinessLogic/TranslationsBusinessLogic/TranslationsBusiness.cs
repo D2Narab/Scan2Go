@@ -16,7 +16,7 @@ public class TranslationsBusiness : BaseBusiness
     private TranslationsFacade _translationsFacade;
     private TranslationsValidation _translationsValidation;
 
-    public TranslationsBusiness(OperationResult operationResult/*, IUser currentUser*/) : base(operationResult)
+    public TranslationsBusiness(OperationResult operationResult, IUser currentUser) : base(operationResult, currentUser)
     {
     }
 
@@ -24,8 +24,8 @@ public class TranslationsBusiness : BaseBusiness
     {
     }
 
-    private TranslationsFacade translationsFacade { get => _translationsFacade ?? (_translationsFacade = new TranslationsFacade(this.Language)); }
-    private TranslationsValidation translationsValidation { get => _translationsValidation ?? (_translationsValidation = new TranslationsValidation(this)); }
+    private TranslationsFacade translationsFacade => _translationsFacade ??= new TranslationsFacade(this.Language);
+    private TranslationsValidation translationsValidation => _translationsValidation ??= new TranslationsValidation(this);
 
     public Translations GetTranslation(int translationId)
     {

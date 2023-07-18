@@ -1,4 +1,5 @@
 using Scan2Go.Mapper.Managers;
+using Scan2Go.Mapper.Models.UserModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-new TranslationsManager().GetTranslations(0, 0);
+new TranslationsManager(new UsersModel()).GetTranslations(0, 0);
 
 app.Run();

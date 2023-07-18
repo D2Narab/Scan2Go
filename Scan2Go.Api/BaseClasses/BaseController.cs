@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Scan2Go.Enums;
 using Scan2Go.Enums.Properties;
 using System.Net;
+using System.Net.NetworkInformation;
+using Scan2Go.Mapper.Models.UserModels;
 using Utility.Core;
 using Utility.Core.Exceptions;
 using Utility.Core.LogClasses;
@@ -211,22 +213,22 @@ public class BaseController : ControllerBase
     //    }
     //}
 
-    //public UsersModel CurrentUser
-    //{
-    //    get
-    //    {
-    //        UsersModel usersModel = this.HttpContext.Items["User"] as UsersModel;
-    //        if (usersModel != null)
-    //        {
-    //            string key = "CUrrentLanguage";
-    //            usersModel.interfaceLanguage = this.Request.Headers.Any(t => string.Equals(t.Key, key, StringComparison.CurrentCultureIgnoreCase)) &&
-    //                                           this.Request.Headers.SingleOrDefault(t => string.Equals(t.Key, key, StringComparison.CurrentCultureIgnoreCase)).Value.Any() ?
-    //                ((string[])this.Request.Headers.SingleOrDefault(t => string.Equals(t.Key, key, StringComparison.CurrentCultureIgnoreCase)).Value)[0] : "EN";
+    public UsersModel CurrentUser
+    {
+        get
+        {
+            UsersModel usersModel = this.HttpContext.Items["User"] as UsersModel;
+            //if (usersModel != null)
+            //{
+            //    string key = "CUrrentLanguage";
+            //    usersModel.interfaceLanguage = this.Request.Headers.Any(t => string.Equals(t.Key, key, StringComparison.CurrentCultureIgnoreCase)) &&
+            //                                   this.Request.Headers.SingleOrDefault(t => string.Equals(t.Key, key, StringComparison.CurrentCultureIgnoreCase)).Value.Any() ?
+            //        ((string[])this.Request.Headers.SingleOrDefault(t => string.Equals(t.Key, key, StringComparison.CurrentCultureIgnoreCase)).Value)[0] : "EN";
 
-    //        }
-    //        return usersModel;
-    //    }
-    //}
+            //}
+            return usersModel;
+        }
+    }
 
     [System.Runtime.InteropServices.DllImport("iphlpapi.dll", ExactSpelling = true)]
     private static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref int PhyAddrLen);

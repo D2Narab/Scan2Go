@@ -1,4 +1,6 @@
-﻿using Scan2Go.Enums;
+﻿using Scan2Go.Entity.Users;
+using Scan2Go.Enums;
+using Utility.Bases;
 using Utility.Core;
 using Utility.Core.LogClasses;
 using Utility.Enum;
@@ -8,18 +10,18 @@ namespace Scan2Go.BusinessLogic.BaseClasses;
 public class BaseBusiness
 {
     private readonly OperationResult mainOperationResult;
-    //private readonly IUser user;
+    private readonly IUser user;
 
-    public BaseBusiness(OperationResult operationResult/*, IUser user*/)
+    public BaseBusiness(OperationResult operationResult, IUser user)
     {
         this.mainOperationResult = operationResult;
-        //this.user = user;
+        this.user = user;
     }
 
     public BaseBusiness(BaseBusiness baseBusiness)
     {
         this.mainOperationResult = baseBusiness.mainOperationResult;
-        //this.user = baseBusiness.user;
+        this.user = baseBusiness.user;
     }
 
     //public int CurrentUserDivisionId { get { return this.user.GetDivisionId(); } }
@@ -47,62 +49,42 @@ public class BaseBusiness
         }
     }
 
-    public bool OperationState
-    { get { return this.mainOperationResult.State; } }
+    public bool OperationState => this.mainOperationResult.State;
 
-    //public string UserCode { get { return this.user.GetUserCode(); } }
+    public string UserCode => this.user.GetUserCode();
 
-    //public string UserFullName { get { return this.user.GetFullName(); } }
+    public string UserFullName => this.user.GetFullName();
 
-    //public int UserId { get { return this.user.GetUserId(); } }
+    public int UserId => this.user.GetUserId();
 
-    //public string UserName { get { return this.user.GetName(); } }
+    public string UserName => this.user.GetName();
 
-    //public string UserSurname { get { return this.user.GetSurname(); } }
-    public void AddDetailResult(OperationResult operationResult, List<MessageParameters> MessageParameters = null)
+    public string UserSurname => this.user.GetSurname();
+
+    public void AddDetailResult(OperationResult operationResult, List<MessageParameters> messageParameters = null)
     {
         if (!string.IsNullOrEmpty(operationResult.MessageStringKey))
-            operationResult.Message = EnumMethods.GetResourceString(operationResult.MessageStringKey, Language, MessageParameters);
+            operationResult.Message = EnumMethods.GetResourceString(operationResult.MessageStringKey, Language, messageParameters);
 
         this.mainOperationResult.DetailResults.Add(operationResult);
     }
 
-    public void AddDetailResult(OperationResult operationResult, MessageParameters MessageParameter)
+    public void AddDetailResult(OperationResult operationResult, MessageParameters messageParameter)
     {
         if (!string.IsNullOrEmpty(operationResult.MessageStringKey))
-            operationResult.Message = EnumMethods.GetResourceString(operationResult.MessageStringKey, Language, MessageParameter);
+            operationResult.Message = EnumMethods.GetResourceString(operationResult.MessageStringKey, Language, messageParameter);
 
         this.mainOperationResult.DetailResults.Add(operationResult);
     }
 
-    //public Users GetCurrentUser()
-    //{
-    //    UserBrief userBrief = new UsersBusinessLogic.UsersBusiness(this).GetUserBrief(UserId);
+    public Users GetCurrentUser()
+    {
+        Users users = new UsersBusinessLogic.UsersBusiness(this).GetUser(UserId);
 
-    //    Users users = new Users
-    //    {
-    //        UserId = UserId,
-    //        SurName = UserSurname,
-    //        LaboratoryId = CurrentUserLaboratoryId,
-    //        DefDivisions = new DefDivisions { DivisionId = CurrentUserDivisionId },
-    //        DefLaboratoryDivisions = new DefLaboratoryDivisionsBusiness(this).GetDefLaboratoryDivisions(CurrentUserLaboratoryId, CurrentUserDivisionId),
-    //        UserName = UserName,
-    //        UserCode = UserCode,
-    //        IsADUser = userBrief.IsADUser,
-    //        IsActive = userBrief.IsActive,
-    //        IsSystemAdministrator = userBrief.IsSystemAdministrator
-    //    };
-
-    //    if (userBrief != null)
-    //    {
-    //        users.UserLabDivisionRoles.Clear();
-    //        users.UserLabDivisionRoles.AddRange(userBrief.UserLabDivisionRoles);
-    //    }
-    //    users.ChangeState(false);
-    //    users.SetSystemLanguageEnum(Language);
-
-    //    return users;
-    //}
+        users.ChangeState(false);
+        
+        return users;
+    }
 
     //public UserBrief GetCurrentUserBrief()
     //{

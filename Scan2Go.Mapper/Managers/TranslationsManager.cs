@@ -4,6 +4,7 @@ using Scan2Go.Enums.Translations;
 using Scan2Go.Mapper.BaseClasses;
 using Scan2Go.Mapper.Models.EnumModels;
 using Scan2Go.Mapper.Models.TranslationModels;
+using Utility.Bases;
 using Utility.Bases.EntityBases;
 using Utility.Core;
 
@@ -11,7 +12,7 @@ namespace Scan2Go.Mapper.Managers;
 
 public class TranslationsManager : BaseManager
 {
-    public TranslationsManager() : base()
+    public TranslationsManager(IUser user) : base(user)
     {
     }
 
@@ -19,7 +20,7 @@ public class TranslationsManager : BaseManager
     {
         OperationResult operationResult = new OperationResult();
 
-        TranslationsBusiness translationsBusiness = new TranslationsBusiness(operationResult);
+        TranslationsBusiness translationsBusiness = new TranslationsBusiness(operationResult, this.user);
 
         Translations translations = translationsBusiness.GetTranslation(translationId);
 
@@ -32,7 +33,7 @@ public class TranslationsManager : BaseManager
     {
         OperationResult operationResult = new OperationResult();
 
-        ListSourceBase translationListItems = new TranslationsBusiness(operationResult).GetTranslations(rangeStart, rangeEnd);
+        ListSourceBase translationListItems = new TranslationsBusiness(operationResult, this.user).GetTranslations(rangeStart, rangeEnd);
 
         operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<TranslationsModel>>(translationListItems);
 
@@ -79,7 +80,7 @@ public class TranslationsManager : BaseManager
 
         TranslationSearchCriteria translationSearchCriteria = Mapper.Map<TranslationSearchCriteriaModel, TranslationSearchCriteria>(translationSearchCriteriaModel);
 
-        ListSourceBase translationListItems = new TranslationsBusiness(operationResult).GetTranslationsForList(translationSearchCriteria);
+        ListSourceBase translationListItems = new TranslationsBusiness(operationResult, this.user).GetTranslationsForList(translationSearchCriteria);
 
         operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<TranslationsModel>>(translationListItems);
 
@@ -90,7 +91,7 @@ public class TranslationsManager : BaseManager
         Translations translations = Mapper.Map<TranslationsModel, Translations>(translationsModel);
 
         OperationResult operationResult = new OperationResult((int)Modules.Translations, (int)Operations.SaveTranslations);
-        Translations translationsUpdated = new TranslationsBusiness(operationResult).SaveTranslation(translations);
+        Translations translationsUpdated = new TranslationsBusiness(operationResult, this.user).SaveTranslation(translations);
         TranslationsModel translationsModelUpdatedModel = Mapper.Map<Translations, TranslationsModel>(translationsUpdated);
 
         operationResult.ResultObject = translationsModelUpdatedModel;

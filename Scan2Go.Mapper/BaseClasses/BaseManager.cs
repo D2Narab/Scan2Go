@@ -1,17 +1,20 @@
-﻿using Scan2Go.Enums.Translations;
+﻿using Scan2Go.Entity.Users;
+using Scan2Go.Enums.Translations;
 using Scan2Go.Mapper.Models.TranslationModels;
+using Scan2Go.Mapper.Models.UserModels;
+using Utility.Bases;
 using Utility.Bases.EntityBases;
 
 namespace Scan2Go.Mapper.BaseClasses;
 
 public class BaseManager
 {
-    //protected readonly IUser user;
+    protected readonly IUser user;
 
-    public BaseManager(/*IUser user*/)
+    public BaseManager(IUser user)
     {
-        //this.user = user;
-        //BaseMethods.user = user;
+        this.user = user;
+        BaseMethods.user = user;
     }
 
     protected AutoMapper.IMapper Mapper
@@ -20,12 +23,14 @@ public class BaseManager
         {
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<ListSourceBase, ListSourceModel<TranslationsModel>>();
                 cfg.CreateMap<Translations, TranslationsModel>();
                 cfg.CreateMap<TranslationSearchCriteriaModel, TranslationSearchCriteria>();
                 cfg.CreateMap<TranslationsListItem, TranslationsModel>();
                 cfg.CreateMap<TranslationsModel, Translations>();
                 cfg.CreateMap<TranslationsModel, TranslationsListItem>();
-                cfg.CreateMap<ListSourceBase, ListSourceModel<TranslationsModel>>();
+                cfg.CreateMap<Users, UsersModel>();
+                cfg.CreateMap<UsersModel, Users>();
             });
 
             return config.CreateMapper();

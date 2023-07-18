@@ -2,5 +2,5 @@
 
 public enum Operations
 {
-    SaveTranslations = 1,
+    SaveTranslations = 1
 }

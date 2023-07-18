@@ -53,20 +53,46 @@ public class Translations : EntityStateBase
     #region Properties of Translations
 
     public string Arabic
-    { get { return _arabic; } set { if (_arabic != value) { _arabic = value; _stateTranslations.Arabic = true; } } }
+    {
+        get => _arabic;
+        set { if (_arabic != value) { _arabic = value; _stateTranslations.Arabic = true; } }
+    }
+
     public string Azerbaijani
-    { get { return _azerbaijani; } set { if (_azerbaijani != value) { _azerbaijani = value; _stateTranslations.Azerbaijani = true; } } }
+    {
+        get => _azerbaijani;
+        set { if (_azerbaijani != value) { _azerbaijani = value; _stateTranslations.Azerbaijani = true; } }
+    }
+
     public string English
-    { get { return _english; } set { if (_english != value) { _english = value; _stateTranslations.English = true; } } }
+    {
+        get => _english;
+        set { if (_english != value) { _english = value; _stateTranslations.English = true; } }
+    }
+
     public TranslationUsageArea EnmTranslationUsageArea
-    { get { return _enmTranslationUsageArea; } set { if (_enmTranslationUsageArea.Equals(value) == false) { _enmTranslationUsageArea = value; _stateTranslations.UsageAreaId = true; } } }
+    {
+        get => _enmTranslationUsageArea;
+        set { if (_enmTranslationUsageArea.Equals(value) == false) { _enmTranslationUsageArea = value; _stateTranslations.UsageAreaId = true; } }
+    }
 
     public int TranslationId
-    { get { return _translationId; } set { _translationId = value; } }
+    {
+        get => _translationId;
+        set { _translationId = value; }
+    }
+
     public string TranslationKey
-    { get { return _translationKey; } set { if (_translationKey != value) { _translationKey = value; _stateTranslations.TranslationKey = true; } } }
+    {
+        get => _translationKey;
+        set { if (_translationKey != value) { _translationKey = value; _stateTranslations.TranslationKey = true; } }
+    }
+
     public string Turkish
-    { get { return _turkish; } set { if (_turkish != value) { _turkish = value; _stateTranslations.Turkish = true; } } }
+    {
+        get => _turkish;
+        set { if (_turkish != value) { _turkish = value; _stateTranslations.Turkish = true; } }
+    }
     #endregion Properties of Translations
 
     #region AUTO methods
