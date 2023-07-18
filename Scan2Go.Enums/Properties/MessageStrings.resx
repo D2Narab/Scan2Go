@@ -147,4 +147,8 @@
   <data name="UsageAreaCannotBeEmpty" xml:space="preserve">
     <value>UsageAreaCannotBeEmpty</value>
   </data>
+
+<data name="CarsList" xml:space="preserve">
+<value>CarsList</value>
+</data>
 </root>

@@ -149,5 +149,15 @@ namespace Scan2Go.Enums.Properties {
                 return ResourceManager.GetString("UsageAreaCannotBeEmpty", resourceCulture);
             }
         }
-    }
+
+
+/// <summary>
+///   Looks up a localized string similar to CarsList.
+/// </summary>
+public static string CarsList {
+get {
+return ResourceManager.GetString("CarsList", resourceCulture);
+}
+}
+}
 }

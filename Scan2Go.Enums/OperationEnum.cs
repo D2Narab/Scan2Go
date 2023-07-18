@@ -2,5 +2,7 @@
 
 public enum Operations
 {
-    SaveTranslations = 1
+    SaveTranslations = 1,
+	DeleteCars = 2,
+	SaveCars = 3
 }

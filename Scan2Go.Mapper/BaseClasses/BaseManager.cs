@@ -1,4 +1,6 @@
 ﻿using Scan2Go.Entity.Users;
+using Scan2Go.Entity.Cars;
+using Scan2Go.Mapper.Models.CarsModels;
 using Scan2Go.Enums.Translations;
 using Scan2Go.Mapper.Models.TranslationModels;
 using Scan2Go.Mapper.Models.UserModels;
@@ -31,7 +33,15 @@ public class BaseManager
                 cfg.CreateMap<TranslationsModel, TranslationsListItem>();
                 cfg.CreateMap<Users, UsersModel>();
                 cfg.CreateMap<UsersModel, Users>();
-            });
+          
+                cfg.CreateMap<ListItemBase, ListItemModelBase<CarsListItemModel>>();
+                cfg.CreateMap<ListSourceBase, ListSourceModel<CarsListItemModel>>();
+                cfg.CreateMap<Cars, CarsModel>();
+                cfg.CreateMap<CarsListItem, CarsListItemModel>();
+                cfg.CreateMap<CarsModel, Cars>();
+                cfg.CreateMap<CarsSearchCriteria, CarsSearchCriteriaModel>();
+                cfg.CreateMap<CarsSearchCriteriaModel, CarsSearchCriteria>();
+              });
 
             return config.CreateMapper();
         }
