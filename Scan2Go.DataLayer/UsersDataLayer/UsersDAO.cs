@@ -15,6 +15,7 @@ public class UsersDAO : Scan2GoDataLayerBase
         string userCode = userName;
 
         sqlparams.Add(new DatabaseParameter { FieldName = "@UserCode", DbType = DbType.String, ParameterDirection = ParameterDirection.Input, FieldValue = userCode });
+        sqlparams.Add(new DatabaseParameter { FieldName = "@Password", DbType = DbType.String, ParameterDirection = ParameterDirection.Input, FieldValue = password });
         sqlparams.Add(new DatabaseParameter { FieldName = "@IsActive", DbType = DbType.Boolean, ParameterDirection = ParameterDirection.Input, FieldValue = true });
 
         return new Scan2GoSelectOperations().GetEntityDataRow<Users>(sqlparams);
