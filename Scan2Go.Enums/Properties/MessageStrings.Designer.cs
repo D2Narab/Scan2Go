@@ -149,5 +149,23 @@ namespace Scan2Go.Enums.Properties {
                 return ResourceManager.GetString("UsageAreaCannotBeEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserNameCannotBeEmpty.
+        /// </summary>
+        public static string UserNameCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("UserNameCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserPasswordCannotBeEmpty.
+        /// </summary>
+        public static string UserPasswordCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("UserPasswordCannotBeEmpty", resourceCulture);
+            }
+        }
     }
 }

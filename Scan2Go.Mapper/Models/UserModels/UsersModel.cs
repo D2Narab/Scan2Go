@@ -5,6 +5,7 @@ namespace Scan2Go.Mapper.Models.UserModels;
 
 public class UsersModel : IUser
 {
+    public string Password { get; set; }
     public string UserCode { get; set; }
     public int UserId { get; set; }
     public string UserName { get; set; }

@@ -1,7 +1,8 @@
-﻿using Scan2Go.Entity.Users;
-using System.Data;
-using Scan2Go.DataLayer.BaseClasses.SelectOperationBases;
+﻿using Scan2Go.DataLayer.BaseClasses.SelectOperationBases;
+using Scan2Go.Entity.Users;
 using Scan2Go.Enums;
+using System.Data;
+using Scan2Go.DataLayer.UsersDataLayer;
 using Utility.Bases.CollectionBases;
 using Utility.Bases.EntityBases.Facade;
 using Utility.Extensions;
@@ -17,6 +18,23 @@ public class UsersFacade : FacadeBase
     public Users GetUser(int userId)
     {
         return GetUsersList().FirstOrDefault(p => p.UserId == userId);
+    }
+
+    public Users GetUsers(int userId)
+    {
+        DataRow drUsers = new Scan2GoSelectOperations().GetEntityDataRow<Users>(userId);
+        Users users = FillUsers(drUsers);
+
+        return users;
+    }
+
+    public Users Login(string userName, string password)
+    {
+        DataRow dataRow = new UsersDAO().Login(userName, password);
+
+        Users users = FillUsers(dataRow);
+
+        return users;
     }
 
     private Users FillUsers(DataRow row)

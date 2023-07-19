@@ -147,4 +147,10 @@
   <data name="UsageAreaCannotBeEmpty" xml:space="preserve">
     <value>UsageAreaCannotBeEmpty</value>
   </data>
+  <data name="UserNameCannotBeEmpty" xml:space="preserve">
+    <value>UserNameCannotBeEmpty</value>
+  </data>
+  <data name="UserPasswordCannotBeEmpty" xml:space="preserve">
+    <value>UserPasswordCannotBeEmpty</value>
+  </data>
 </root>

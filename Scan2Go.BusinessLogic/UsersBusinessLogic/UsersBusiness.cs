@@ -3,6 +3,7 @@ using Scan2Go.Entity.Users;
 using Scan2Go.Facade;
 using Utility.Bases;
 using Utility.Core;
+using Utility.Enum;
 
 namespace Scan2Go.BusinessLogic.UsersBusinessLogic;
 
@@ -28,5 +29,37 @@ public class UsersBusiness : BaseBusiness
     public Users GetUser(int userId)
     {
         return UsersFacade.GetUser(userId);
+    }
+
+    public Users GetUsers(int userId)
+    {
+        Users users = UsersFacade.GetUsers(userId);
+
+        return users;
+    }
+
+    public Users Login(string userName, string password, bool needsValidationFromContext = true)
+    {
+        UsersValidation.Login(userName, password);
+
+        Users users = null;
+
+        if (this.OperationState)
+        {
+            users = UsersFacade.Login(userName, password);
+        }
+
+        UsersValidation.Login(userName, password);
+
+        if (this.OperationState)
+        {
+            //UsersLogic.Login(users);
+        }
+        else
+        {
+            users = null;
+        }
+
+        return users;
     }
 }

@@ -1,3 +1,5 @@
+using Scan2Go.Api.Filters;
+using Scan2Go.Api.Services;
 using Scan2Go.Mapper.Managers;
 using Scan2Go.Mapper.Models.UserModels;
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ILoginService, LoginService>();
 
 var app = builder.Build();
 
@@ -24,6 +28,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<JwtMiddleware>();
 
 new TranslationsManager(new UsersModel()).GetTranslations(0, 0);
 
