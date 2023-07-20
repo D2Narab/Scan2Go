@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.Facade", "Scan2Go.F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.Mapper", "Scan2Go.Mapper\Scan2Go.Mapper.csproj", "{E1B0412E-DC50-4EDE-A50E-264DAB6D754B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.Api", "Scan2Go.Api\Scan2Go.Api.csproj", "{0DD013C8-DF23-458A-A628-7B731A8B968D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.Api", "Scan2Go.Api\Scan2Go.Api.csproj", "{0DD013C8-DF23-458A-A628-7B731A8B968D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scan2Go.UI", "Scan2Go.UI\Scan2Go.UI.csproj", "{46210531-6136-4CB5-A5B5-2C0F62CE66AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{0DD013C8-DF23-458A-A628-7B731A8B968D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DD013C8-DF23-458A-A628-7B731A8B968D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DD013C8-DF23-458A-A628-7B731A8B968D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46210531-6136-4CB5-A5B5-2C0F62CE66AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46210531-6136-4CB5-A5B5-2C0F62CE66AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46210531-6136-4CB5-A5B5-2C0F62CE66AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46210531-6136-4CB5-A5B5-2C0F62CE66AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

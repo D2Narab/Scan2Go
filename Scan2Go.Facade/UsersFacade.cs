@@ -6,6 +6,8 @@ using Scan2Go.DataLayer.UsersDataLayer;
 using Utility.Bases.CollectionBases;
 using Utility.Bases.EntityBases.Facade;
 using Utility.Extensions;
+using Scan2Go.Enums.Properties;
+using Utility.Bases.EntityBases;
 
 namespace Scan2Go.Facade;
 
@@ -50,7 +52,7 @@ public class UsersFacade : FacadeBase
         return users;
     }
 
-    private EntityCollectionBase<Users> GetUsersList()
+    public EntityCollectionBase<Users> GetUsersList()
     {
         EntityCollectionBase<Users> entityCollectionBase = _cacheManager.GetData(this.languageEnum.ToString() + "_" + CacheKey.Users.ToString()) as EntityCollectionBase<Users>;
 
@@ -71,5 +73,38 @@ public class UsersFacade : FacadeBase
         }
 
         return entityCollectionBase;
+    }
+
+    public ListSourceBase GetUsersListItems()
+    {
+        DataTable dataTable = new UsersDAO().GetUsersListItems();
+
+        ListSourceBase listSourceBase = new ListSourceBase();
+        listSourceBase.ListItemBases = new List<ListItemBase>();
+        listSourceBase.ListItemType = typeof(UserListItem);
+        listSourceBase.RecordInfo = EnumMethods.GetResourceString(nameof(MessageStrings.UserListRecordInfo), this.languageEnum);
+
+        foreach (DataRow dataRow in dataTable.Rows)
+        {
+            listSourceBase.ListItemBases.Add(FillUserListItem(dataRow));
+        }
+
+        listSourceBase.TotalRecordCount = dataTable.Rows.Count;
+
+        return listSourceBase;
+    }
+
+    private UserListItem FillUserListItem(DataRow row)
+    {
+        if (row == null) { return null; }
+
+        UserListItem users = new UserListItem();
+
+        users.UserCode = row.AsString(Users.Field.UserCode);
+        users.UserId = row.AsInt(Users.Field.UserId);
+        users.UserName = row.AsString(Users.Field.UserName);
+        users.UserSurname = row.AsString(Users.Field.UserSurname);
+
+        return users;
     }
 }

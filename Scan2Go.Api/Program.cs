@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Serialization;
 using Scan2Go.Api.Filters;
 using Scan2Go.Api.Services;
 using Scan2Go.Mapper.Managers;
@@ -23,6 +24,23 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
                 .AllowAnyHeader();
         });
+});
+
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    // Use the default property (Pascal) casing
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+    //Ignore will ignore type restricting if sent values are empty or null.For example if RoleId in model is integer and it was sent by frontend as null
+    //The service will handle it as 0, if this property is set to include, the service will fire an exception.
+    //However, if this property is sent to Ignore, null values will also not be returned to the frontend, if its set to include, it will be sent back
+    //to frontend even if its null. Naser 13.08.2021
+    //options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+
+    options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Ignore;
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    // options.SerializerSettings.re = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
 var app = builder.Build();

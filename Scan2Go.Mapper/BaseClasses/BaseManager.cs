@@ -31,6 +31,12 @@ public class BaseManager
                 cfg.CreateMap<TranslationsModel, TranslationsListItem>();
                 cfg.CreateMap<Users, UsersModel>();
                 cfg.CreateMap<UsersModel, Users>();
+                cfg.CreateMap<UsersModel, UserListItem>();
+                cfg.CreateMap<UserListItem, UserListItemModel>();
+                cfg.CreateMap<UserListItem, UsersModel>();
+                cfg.CreateMap<ListSourceBase, ListSourceModel<UsersModel>>();
+                cfg.CreateMap<ListSourceBase, ListSourceModel<UserListItemModel>>();
+                cfg.CreateMap<ListItemBase, ListItemModelBase<UserListItemModel>>();
             });
 
             return config.CreateMapper();

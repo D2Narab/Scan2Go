@@ -1,9 +1,15 @@
 ﻿using Scan2Go.BusinessLogic.BaseClasses;
+using Scan2Go.DataLayer.UsersDataLayer;
 using Scan2Go.Entity.Users;
+using Scan2Go.Enums.Properties;
+using Scan2Go.Enums;
 using Scan2Go.Facade;
+using System.Data;
 using Utility.Bases;
+using Utility.Bases.EntityBases;
 using Utility.Core;
 using Utility.Enum;
+using Utility.Extensions;
 
 namespace Scan2Go.BusinessLogic.UsersBusinessLogic;
 
@@ -38,6 +44,11 @@ public class UsersBusiness : BaseBusiness
         return users;
     }
 
+    public ListSourceBase GetUsersList()
+    {
+        return UsersFacade.GetUsersListItems();
+    }
+
     public Users Login(string userName, string password, bool needsValidationFromContext = true)
     {
         UsersValidation.Login(userName, password);
@@ -62,4 +73,6 @@ public class UsersBusiness : BaseBusiness
 
         return users;
     }
+
+    
 }

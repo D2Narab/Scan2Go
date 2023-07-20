@@ -1,0 +1,81 @@
+﻿@page "/Users"
+@using Scan2Go.Entity.Users
+@using System.Text.Json.Serialization
+@using Newtonsoft.Json
+
+@using Scan2Go.Mapper.Models.UserModels
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@inject HttpClient Http
+
+<PageTitle>Users List</PageTitle>
+
+<h1>Users List</h1>
+
+<p>This component demonstrates fetching users data from the server.</p>
+
+@if (usersList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (usersList.Any() == false)
+{
+    <p><em>No users has been found!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User Code</th>
+                <th>User Name</th>
+                <th>User Surname</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in usersList)
+            {
+                <tr>
+                    <td>@user.UserCode</td>
+                    <td>@user.UserName</td>
+                    <td>@user.UserSurname</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<UserListItemModel> usersList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUsersList();
+    }
+
+    private async Task LoadUsersList()
+    {
+        try
+        {
+            var response = await Http.GetStreamAsync("https://localhost:44387/Users/GetUsersList");
+
+            // Deserialize the JSON response content into a JSON object
+            var responseObject = JsonSerializer.Deserialize<dynamic>(response);
+
+            // Get the value of the "token" property from the JSON object
+            var resultObject = responseObject.GetProperty("resultObject");
+
+            var listItemBases = resultObject.GetProperty("listItemBases");
+
+            // Convert the listItemBases variable to a JSON content string
+            var jsonContent = JsonConvert.SerializeObject(listItemBases).ToString();
+
+            // Deserialize the JSON content string into a List of UserListItemModel objects
+            usersList = await JsonSerializer.DeserializeAsync<List<UserListItemModel>>(jsonContent);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}

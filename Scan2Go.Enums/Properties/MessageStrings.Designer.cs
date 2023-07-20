@@ -151,6 +151,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UserListRecordInfo.
+        /// </summary>
+        public static string UserListRecordInfo {
+            get {
+                return ResourceManager.GetString("UserListRecordInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UserNameCannotBeEmpty.
         /// </summary>
         public static string UserNameCannotBeEmpty {

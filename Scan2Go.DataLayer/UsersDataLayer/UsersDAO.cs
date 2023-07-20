@@ -1,6 +1,8 @@
-﻿using Scan2Go.DataLayer.BaseClasses.DataLayersBases;
+﻿using DataLayer.Base.SqlGenerator;
+using Scan2Go.DataLayer.BaseClasses.DataLayersBases;
 using Scan2Go.DataLayer.BaseClasses.SelectOperationBases;
 using Scan2Go.Entity.Users;
+using Scan2Go.Enums;
 using System.Data;
 using Utility.Core.DataLayer;
 
@@ -19,5 +21,12 @@ public class UsersDAO : Scan2GoDataLayerBase
         sqlparams.Add(new DatabaseParameter { FieldName = "@IsActive", DbType = DbType.Boolean, ParameterDirection = ParameterDirection.Input, FieldValue = true });
 
         return new Scan2GoSelectOperations().GetEntityDataRow<Users>(sqlparams);
+    }
+
+    public DataTable GetUsersListItems()
+    {
+        SqlSelectFactory sqlSelectFactory = UsersSql.GetUsersListItems();
+        
+        return this.ExecuteSQLDataTable(sqlSelectFactory);
     }
 }
