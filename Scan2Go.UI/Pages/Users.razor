@@ -5,7 +5,23 @@
 
 @using Scan2Go.Mapper.Models.UserModels
 @using JsonSerializer = System.Text.Json.JsonSerializer
+@using Utility.Core;
 @inject HttpClient Http
+
+<style>
+    .tick-icon {
+        color: green;
+    }
+
+    .x-icon {
+        color: red;
+    }
+
+    /* New style for even rows */
+    .even-row {
+        background-color: #f2f2f2; /* You can use any color here */
+    }
+</style>
 
 <PageTitle>Users List</PageTitle>
 
@@ -13,11 +29,11 @@
 
 <p>This component demonstrates fetching users data from the server.</p>
 
-@if (usersList == null)
+@if (_usersList == null)
 {
     <p><em>Loading...</em></p>
 }
-else if (usersList.Any() == false)
+else if (_usersList.Any() == false)
 {
     <p><em>No users has been found!</em></p>
 }
@@ -29,15 +45,26 @@ else
                 <th>User Code</th>
                 <th>User Name</th>
                 <th>User Surname</th>
+                <th>Is Active</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in usersList)
+            @foreach (var user in _usersList)
             {
-                <tr>
+                <tr data-userid="@user.UserId" @onclick="() => ShowUserId(user.UserId)" class="@GetRowCssClass(user)">
                     <td>@user.UserCode</td>
                     <td>@user.UserName</td>
                     <td>@user.UserSurname</td>
+                    <td>
+                        @if (user.IsActive)
+                        {
+                            <span class="tick-icon">&#10004;</span> <!-- Tick icon (✓) -->
+                        }
+                        else
+                        {
+                            <span class="x-icon">&#10008;</span> <!-- X icon (✘) -->
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -45,37 +72,48 @@ else
 }
 
 @code {
-    private List<UserListItemModel> usersList;
+    private List<UserListItemModel> _usersList;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadUsersList();
     }
 
+    public class ApiResponse
+    {
+        public ResultObject ResultObject { get; set; }
+    }
+
+    public class ResultObject
+    {
+        public List<UserListItemModel> ListItemBases { get; set; }
+    }
+
     private async Task LoadUsersList()
     {
         try
         {
-            var response = await Http.GetStreamAsync("https://localhost:44387/Users/GetUsersList");
+            var response = await Http.GetAsync("https://localhost:7169/Users/GetUsersList");
 
-            // Deserialize the JSON response content into a JSON object
-            var responseObject = JsonSerializer.Deserialize<dynamic>(response);
-
-            // Get the value of the "token" property from the JSON object
-            var resultObject = responseObject.GetProperty("resultObject");
-
-            var listItemBases = resultObject.GetProperty("listItemBases");
-
-            // Convert the listItemBases variable to a JSON content string
-            var jsonContent = JsonConvert.SerializeObject(listItemBases).ToString();
-
-            // Deserialize the JSON content string into a List of UserListItemModel objects
-            usersList = await JsonSerializer.DeserializeAsync<List<UserListItemModel>>(jsonContent);
+            var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
+            _usersList = apiResponse?.ResultObject?.ListItemBases;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    private void ShowUserId(int userId)
+    {
+        Console.WriteLine($"Clicked User ID: {userId}");
+        // Alternatively, you can show an alert with the UserId:
+        //JSRuntime.InvokeVoidAsync("alert", $"Clicked User ID: {userId}");
+    }
+
+    private string GetRowCssClass(UserListItemModel user)
+    {
+        return _usersList.IndexOf(user) % 2 == 0 ? "even-row" : "";
     }
 }

@@ -104,6 +104,7 @@ public class UsersFacade : FacadeBase
         users.UserId = row.AsInt(Users.Field.UserId);
         users.UserName = row.AsString(Users.Field.UserName);
         users.UserSurname = row.AsString(Users.Field.UserSurname);
+        users.IsActive = row.AsBool(Users.Field.IsActive);
 
         return users;
     }

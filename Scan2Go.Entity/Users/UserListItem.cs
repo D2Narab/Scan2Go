@@ -5,6 +5,7 @@ namespace Scan2Go.Entity.Users;
 [Serializable]
 public class UserListItem : ListItemBase
 {
+    public bool IsActive { get; set; }
     public override int RowId => UserId;
     public string UserCode { get; set; }
 

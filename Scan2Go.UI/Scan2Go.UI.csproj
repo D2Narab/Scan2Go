@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Scan2Go.Mapper\Scan2Go.Mapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Utility">
+      <HintPath>..\packages\Utility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
