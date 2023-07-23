@@ -8,6 +8,8 @@ using Utility.Bases.EntityBases.Facade;
 using Utility.Extensions;
 using Scan2Go.Enums.Properties;
 using Utility.Bases.EntityBases;
+using Utility.Core;
+using Utility.Enum;
 
 namespace Scan2Go.Facade;
 
@@ -48,6 +50,7 @@ public class UsersFacade : FacadeBase
         users.UserId = row.AsInt(Users.Field.UserId);
         users.UserName = row.AsString(Users.Field.UserName);
         users.UserSurname = row.AsString(Users.Field.UserSurname);
+        users.IsActive = row.AsBool(Users.Field.IsActive);
 
         return users;
     }
@@ -107,5 +110,12 @@ public class UsersFacade : FacadeBase
         users.IsActive = row.AsBool(Users.Field.IsActive);
 
         return users;
+    }
+
+    public OperationResult SaveUsers(Users users)
+    {
+        OperationResult operationResult = new UsersDAO().SaveUsers(users);
+
+        return operationResult;
     }
 }

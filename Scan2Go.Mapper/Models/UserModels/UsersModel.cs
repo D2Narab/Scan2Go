@@ -10,6 +10,7 @@ public class UsersModel : IUser
     public int UserId { get; set; }
     public string UserName { get; set; }
     public string UserSurname { get; set; }
+    public bool IsActive { get; set; }
 
     #region IUser Members
 

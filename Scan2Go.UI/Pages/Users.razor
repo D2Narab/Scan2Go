@@ -8,6 +8,9 @@
 @using Utility.Core;
 @inject HttpClient Http
 
+<!-- Import the EditUserPopup component -->
+<EditUserPopup @ref="editUserPopup" />
+
 <style>
     .tick-icon {
         color: green;
@@ -51,7 +54,8 @@ else
         <tbody>
             @foreach (var user in _usersList)
             {
-                <tr data-userid="@user.UserId" @onclick="() => ShowUserId(user.UserId)" class="@GetRowCssClass(user)">
+                <tr data-userid="@user.UserId" @onclick="() => ShowUserId(user.UserId)" class="@GetRowCssClass(user)"
+                @ondblclick="() => ShowEditUserPopup(user.UserId)">
                     <td>@user.UserCode</td>
                     <td>@user.UserName</td>
                     <td>@user.UserSurname</td>
@@ -71,8 +75,15 @@ else
     </table>
 }
 
+<!-- Add a condition to show the EditUserPopup -->
+@if (_showModal)
+{
+    <EditUserPopup @ref="editUserPopup" />
+}
+
 @code {
     private List<UserListItemModel> _usersList;
+    private bool _showModal = false; // Add a boolean variable to control the modal visibility
 
     protected override async Task OnInitializedAsync()
     {
@@ -82,6 +93,11 @@ else
     public class ApiResponse
     {
         public ResultObject ResultObject { get; set; }
+    }
+
+    public class ApiDynamicResponse
+    {
+        public dynamic ResultObject { get; set; }
     }
 
     public class ResultObject
@@ -116,4 +132,67 @@ else
     {
         return _usersList.IndexOf(user) % 2 == 0 ? "even-row" : "";
     }
+
+    /*****************************************************************************************************/
+
+    private EditUserPopup editUserPopup;
+
+    private async Task ShowEditUserPopup(int userId)
+    {
+        // Fetch the user details using another API call using the userId
+        var user = await FetchUserDetails(userId);
+        if (user != null)
+        {
+            // Set the _user field in the EditUserPopup component to display the user details
+            await editUserPopup.SetUser(user);
+
+            // Show the modal
+            _showModal = true;
+        }
+    }
+
+    //private async Task<UsersModel> FetchUserDetails(int userId)
+    //{
+    //    try
+    //    {
+    //        var response = await Http.GetAsync($"https://localhost:7169/Users/GetUser/{userId}");
+            
+    //        var apiResponse = await response.Content.ReadFromJsonAsync<UsersModel>();
+    //        return apiResponse;
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Console.WriteLine(e);
+    //        return null;
+    //    }
+    //}
+
+    private async Task<UsersModel> FetchUserDetails(int userId)
+    {
+        try
+        {
+            var response = await Http.GetAsync($"https://localhost:7169/Users/GetUser/{userId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            // Deserialize the JSON response into a dynamic object
+            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
+
+            // Extract the UsersModel from the resultObject property of the jsonResponse
+            UsersModel user = jsonResponse.resultObject.ToObject<UsersModel>();
+
+            return user;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    private void CloseModal()
+    {
+        _showModal = false; // Hide the modal
+    }
+
 }

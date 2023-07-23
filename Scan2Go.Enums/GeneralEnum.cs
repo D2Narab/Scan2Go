@@ -9,5 +9,6 @@ public enum TranslationUsageArea
 
 public enum Modules
 {
-    Translations = 1
+    Translations = 1,
+    User = 2
 }

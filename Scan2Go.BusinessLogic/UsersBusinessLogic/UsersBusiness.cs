@@ -10,6 +10,7 @@ using Utility.Bases.EntityBases;
 using Utility.Core;
 using Utility.Enum;
 using Utility.Extensions;
+using Utility.Core.LogClasses;
 
 namespace Scan2Go.BusinessLogic.UsersBusinessLogic;
 
@@ -39,9 +40,7 @@ public class UsersBusiness : BaseBusiness
 
     public Users GetUsers(int userId)
     {
-        Users users = UsersFacade.GetUsers(userId);
-
-        return users;
+        return UsersFacade.GetUsers(userId);
     }
 
     public ListSourceBase GetUsersList()
@@ -74,5 +73,8 @@ public class UsersBusiness : BaseBusiness
         return users;
     }
 
-    
+    public void SaveUsers(Users users)
+    {
+        this.AddDetailResult(UsersFacade.SaveUsers(users));
+    }
 }

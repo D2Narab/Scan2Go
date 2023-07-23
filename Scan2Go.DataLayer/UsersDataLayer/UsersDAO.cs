@@ -1,9 +1,11 @@
-﻿using DataLayer.Base.SqlGenerator;
+﻿using DataLayer.Base.GeneralDataLayer;
+using DataLayer.Base.SqlGenerator;
 using Scan2Go.DataLayer.BaseClasses.DataLayersBases;
 using Scan2Go.DataLayer.BaseClasses.SelectOperationBases;
 using Scan2Go.Entity.Users;
 using Scan2Go.Enums;
 using System.Data;
+using Utility.Core;
 using Utility.Core.DataLayer;
 
 namespace Scan2Go.DataLayer.UsersDataLayer;
@@ -28,5 +30,27 @@ public class UsersDAO : Scan2GoDataLayerBase
         SqlSelectFactory sqlSelectFactory = UsersSql.GetUsersListItems();
         
         return this.ExecuteSQLDataTable(sqlSelectFactory);
+    }
+
+    public OperationResult SaveUsers(Users users)
+    {
+        OperationResult operationResult = new OperationResult();
+
+        try
+        {
+            this.BeginTransaction();
+
+            new UsersDMLOperations(this).SaveUsers(users);
+
+            operationResult.State = this.CommitTransaction();
+        }
+        catch (Exception exception)
+        {
+            operationResult.State = false;
+            operationResult.Exception = exception;
+            this.RollbackTransaction();
+        }
+
+        return operationResult;
     }
 }

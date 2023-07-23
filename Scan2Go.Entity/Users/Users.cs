@@ -16,6 +16,7 @@ public class Users : EntityStateBase, IUser
     [Serializable]
     public class Field : DefinitionFieldEntityBase
     {
+        //public const string IsActive = "IsActive";
         public const string Password = "Password";
         public const string UserCode = "UserCode";
         public const string UserId = "UserId";
@@ -27,13 +28,13 @@ public class Users : EntityStateBase, IUser
 
     #region Privates of Users
 
+    private bool _isActive;
     private string _password;
     private UsersState _stateUsers;
     private string _userCode;
     private int _userId;
     private string _userName;
     private string _userSurname;
-
     protected override IState _state => _stateUsers;
 
     #endregion Privates of Users
@@ -49,11 +50,14 @@ public class Users : EntityStateBase, IUser
 
     #region Properties of Users
 
+    public bool IsActive { get { return _isActive; } set { _isActive = value; _stateUsers.IsActive = true; } }
+
     public string Password
     {
         get => _password;
         set { if (_password != value) { _password = value; _stateUsers.Password = true; } }
     }
+
     public string UserCode
     {
         get => _userCode;
@@ -79,7 +83,7 @@ public class Users : EntityStateBase, IUser
     }
 
     #endregion Properties of Users
-    
+
     #region AUTO methods
 
     public override int PrimaryKeyValue { get => this.UserId; set => this.UserId = value; }
@@ -177,6 +181,7 @@ public class Users : EntityStateBase, IUser
     {
         return this.UserId;
     }
+
     #endregion IUser Members
 }
 
@@ -185,11 +190,13 @@ public class Users : EntityStateBase, IUser
 [Serializable]
 public class UsersState : IState
 {
+    public bool IsActive { get; set; }
     public bool Password { get; set; }
     public bool UserCode { get; set; }
     public bool UserId { get; set; }
     public bool UserName { get; set; }
     public bool UserSurname { get; set; }
+
     public void ChangeState(bool state)
     {
         Password = state;
@@ -197,11 +204,12 @@ public class UsersState : IState
         UserCode = state;
         UserId = state;
         UserName = state;
+        IsActive = state;
     }
 
     public bool IsDirty()
     {
-        return UserId || Password || UserSurname || UserCode || UserName;
+        return UserId || Password || UserSurname || UserCode || UserName || IsActive;
     }
 
     #endregion State
