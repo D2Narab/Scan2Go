@@ -54,8 +54,7 @@ else
         <tbody>
             @foreach (var user in _usersList)
             {
-                <tr data-userid="@user.UserId" @onclick="() => ShowUserId(user.UserId)" class="@GetRowCssClass(user)"
-                @ondblclick="() => ShowEditUserPopup(user.UserId)">
+                <tr data-userid="@user.UserId" class="@GetRowCssClass(user)" @ondblclick="@(() => ShowEditUserPopup(user.UserId))">
                     <td>@user.UserCode</td>
                     <td>@user.UserName</td>
                     <td>@user.UserSurname</td>
@@ -75,15 +74,8 @@ else
     </table>
 }
 
-<!-- Add a condition to show the EditUserPopup -->
-@if (_showModal)
-{
-    <EditUserPopup @ref="editUserPopup" />
-}
-
 @code {
     private List<UserListItemModel> _usersList;
-    private bool _showModal = false; // Add a boolean variable to control the modal visibility
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,11 +87,6 @@ else
         public ResultObject ResultObject { get; set; }
     }
 
-    public class ApiDynamicResponse
-    {
-        public dynamic ResultObject { get; set; }
-    }
-
     public class ResultObject
     {
         public List<UserListItemModel> ListItemBases { get; set; }
@@ -109,7 +96,7 @@ else
     {
         try
         {
-            var response = await Http.GetAsync("https://localhost:7169/Users/GetUsersList");
+            var response = await Http.GetAsync("https://localhost:44387/Users/GetUsersList");
 
             var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
             _usersList = apiResponse?.ResultObject?.ListItemBases;
@@ -121,19 +108,12 @@ else
         }
     }
 
-    private void ShowUserId(int userId)
-    {
-        Console.WriteLine($"Clicked User ID: {userId}");
-        // Alternatively, you can show an alert with the UserId:
-        //JSRuntime.InvokeVoidAsync("alert", $"Clicked User ID: {userId}");
-    }
-
     private string GetRowCssClass(UserListItemModel user)
     {
         return _usersList.IndexOf(user) % 2 == 0 ? "even-row" : "";
     }
 
-    /*****************************************************************************************************/
+    /**************************************************************************************************/
 
     private EditUserPopup editUserPopup;
 
@@ -145,33 +125,14 @@ else
         {
             // Set the _user field in the EditUserPopup component to display the user details
             await editUserPopup.SetUser(user);
-
-            // Show the modal
-            _showModal = true;
         }
     }
-
-    //private async Task<UsersModel> FetchUserDetails(int userId)
-    //{
-    //    try
-    //    {
-    //        var response = await Http.GetAsync($"https://localhost:7169/Users/GetUser/{userId}");
-            
-    //        var apiResponse = await response.Content.ReadFromJsonAsync<UsersModel>();
-    //        return apiResponse;
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Console.WriteLine(e);
-    //        return null;
-    //    }
-    //}
 
     private async Task<UsersModel> FetchUserDetails(int userId)
     {
         try
         {
-            var response = await Http.GetAsync($"https://localhost:7169/Users/GetUser/{userId}");
+            var response = await Http.GetAsync($"https://localhost:44387/Users/GetUser/{userId}");
 
             var jsonString = await response.Content.ReadAsStringAsync();
 
@@ -189,10 +150,4 @@ else
             return null;
         }
     }
-
-    private void CloseModal()
-    {
-        _showModal = false; // Hide the modal
-    }
-
 }

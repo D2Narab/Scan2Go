@@ -32,61 +32,64 @@
 </style>
 
 
-<!-- Modal Backdrop -->
-<div class="modal-backdrop show"></div>
+@if (_showModal)
+{
+    <!-- Modal Dialog -->
+    <div class="modal-dialog" role="dialog" style="display: block;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="close" @onclick="CloseModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (_user == null)
+                {
+                    <!-- Modal Backdrop -->
+                    <div class="modal-backdrop show"></div>
 
-<!-- Modal Dialog -->
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Edit User</h5>
-            <button type="button" class="close" @onclick="CloseModal">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            @if (_user == null)
-            {
-                <!-- Modal Backdrop -->
-                <div class="modal-backdrop show"></div>
-
-                <!-- Modal Dialog -->
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <p><em>Loading...</em></p>
+                    <!-- Modal Dialog -->
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <p><em>Loading...</em></p>
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div>
+                        <!-- Display user details and input fields for editing -->
+                        <label for="userName">User Name:</label>
+                        <input type="text" id="userName" @bind="_user.UserName" />
 
+                        <label for="userSurname">User Surname:</label>
+                        <input type="text" id="userSurname" @bind="_user.UserSurname" />
 
-            }
-            else
-            {
-                <div>
-                    <!-- Display user details and input fields for editing -->
-                    <label for="userName">User Name:</label>
-                    <input type="text" id="userName" @bind="_user.UserName" />
+                        <label for="isActive">Is Active:</label>
+                        <input type="checkbox" id="isActive" @bind="_user.IsActive" />
 
-                    <label for="userSurname">User Surname:</label>
-                    <input type="text" id="userSurname" @bind="_user.UserSurname" />
-
-                    <label for="isActive">Is Active:</label>
-                    <input type="checkbox" id="isActive" @bind="_user.IsActive" />
-
-                    <button @onclick="SaveUser">Save</button>
-                </div>
-            }
+                        <button @onclick="SaveUser">Save</button>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+}
+
+
 
 @code {
     private UsersModel _user;
     private bool _showModal = false;
 
+
     // Method to set the user details from the parent component
     public Task SetUser(UsersModel usersModel)
     {
         _user = usersModel;
+        _showModal = true;
+
         StateHasChanged(); // Notify the component to re-render
         return Task.CompletedTask;
     }
@@ -99,12 +102,11 @@
 
         try
         {
-            var response = await Http.PutAsync($"https://localhost:7169/Users/SaveUser", content);
+            var response = await Http.PutAsync($"https://localhost:44387/Users/SaveUser", content);
 
             if (response.IsSuccessStatusCode)
             {
-                // Handle successful save, e.g., show a success message
-                // Optionally, close the pop-up or navigate back to the Users page
+                CloseModal();
             }
             else
             {
@@ -122,5 +124,7 @@
         //NavigationManager.NavigateTo("/Users");
         _user = null; // Clear the user data
         _showModal = false; // Hide the modal
+
+        StateHasChanged();
     }
 }
