@@ -25,9 +25,38 @@
     .even-row {
         background-color: #f2f2f2; /* You can use any color here */
     }
+
+    /* Custom style for the container of the Add User button */
+    .add-user-button-container {
+        position: relative;
+    }
+
+    /* Custom style for the Add User button */
+    .add-user-button {
+        background-color: #007bff; /* You can use any color you like */
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 
 <PageTitle>Users List</PageTitle>
+
+<button class="add-user-button" @onclick="HandleAddUserClick">
+    <i class="fas fa-plus"></i>
+</button>
+
 
 <h1>Users List</h1>
 
@@ -212,6 +241,14 @@ else
         {
             Console.WriteLine(e);
         }
+    }
+
+    private async Task HandleAddUserClick()
+    {
+        // Implement the logic to open the Add User popup here
+        // You can use the same approach used for EditUserPopup
+        // For example, set a flag or call a method to show the popup
+        await editUserPopup.SetUser(new UsersModel());
     }
 
 }
