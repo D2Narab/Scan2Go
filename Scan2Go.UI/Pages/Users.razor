@@ -9,7 +9,7 @@
 @inject HttpClient Http
 
 <!-- Import the EditUserPopup component -->
-<EditUserPopup @ref="editUserPopup" />
+<EditUserPopup @ref="editUserPopup" OnUserSaved="HandleUserSaved" />
 
 <style>
     .tick-icon {
@@ -76,6 +76,13 @@ else
 
 @code {
     private List<UserListItemModel> _usersList;
+
+    // Callback method to handle user saved event
+    private async Task HandleUserSaved()
+    {
+    // Reload the users list when the user is successfully saved
+        await LoadUsersList();
+    }
 
     protected override async Task OnInitializedAsync()
     {

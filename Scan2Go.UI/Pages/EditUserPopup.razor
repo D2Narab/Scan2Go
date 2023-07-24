@@ -80,6 +80,7 @@
 
 
 @code {
+    [Parameter] public EventCallback OnUserSaved { get; set; }
     private UsersModel _user;
     private bool _showModal = false;
 
@@ -106,6 +107,8 @@
 
             if (response.IsSuccessStatusCode)
             {
+                // Call the parent's callback method to notify that the user is saved
+                await OnUserSaved.InvokeAsync();
                 CloseModal();
             }
             else
