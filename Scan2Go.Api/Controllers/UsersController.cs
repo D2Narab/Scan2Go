@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Scan2Go.Api.BaseClasses;
 using Scan2Go.Api.Services;
 using Scan2Go.Mapper.Managers;
-using Scan2Go.Mapper.Models.DefinitionModels;
 using Scan2Go.Mapper.Models.UserModels;
 using Utility.Core;
 
@@ -22,6 +20,24 @@ namespace Scan2Go.Api.Controllers
         }
 
         [AllowAnonymous]
+        [HttpDelete]
+        [Route("DeleteUser/{userId:int}")]
+        public IActionResult DeleteUser(int userId)
+        {
+            OperationResult operationResult = new UsersManager(this.CurrentUser).DeleteUser(userId);
+            return this.ReturnOperationResult(operationResult);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetUser/{userId:int}")]
+        public IActionResult GetUser(int userId)
+        {
+            OperationResult operationResult = new UsersManager(this.CurrentUser).GetUsers(userId);
+            return this.ReturnOperationResult(operationResult);
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetUsersList")]
         public IActionResult GetUsersList()
@@ -36,15 +52,6 @@ namespace Scan2Go.Api.Controllers
         public IActionResult SaveUser(UsersModel usersModel)
         {
             OperationResult operationResult = new UsersManager(this.CurrentUser).SaveUser(usersModel);
-            return this.ReturnOperationResult(operationResult);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("GetUser/{userId:int}")]
-        public IActionResult GetUser(int userId)
-        {
-            OperationResult operationResult = new UsersManager(this.CurrentUser).GetUsers(userId);
             return this.ReturnOperationResult(operationResult);
         }
     }

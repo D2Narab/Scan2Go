@@ -1,15 +1,14 @@
 ﻿using Scan2Go.DataLayer.BaseClasses.SelectOperationBases;
+using Scan2Go.DataLayer.UsersDataLayer;
 using Scan2Go.Entity.Users;
 using Scan2Go.Enums;
-using System.Data;
-using Scan2Go.DataLayer.UsersDataLayer;
-using Utility.Bases.CollectionBases;
-using Utility.Bases.EntityBases.Facade;
-using Utility.Extensions;
 using Scan2Go.Enums.Properties;
+using System.Data;
+using Utility.Bases.CollectionBases;
 using Utility.Bases.EntityBases;
+using Utility.Bases.EntityBases.Facade;
 using Utility.Core;
-using Utility.Enum;
+using Utility.Extensions;
 
 namespace Scan2Go.Facade;
 
@@ -17,6 +16,13 @@ public class UsersFacade : FacadeBase
 {
     public UsersFacade(Utility.Enum.LanguageEnum languageEnum) : base(languageEnum)
     {
+    }
+
+    public OperationResult DeleteUser(int userId)
+    {
+        Users user = GetUser(userId);
+
+        return new UsersDAO().DeleteUser(user);
     }
 
     public Users GetUser(int userId)
@@ -28,29 +34,6 @@ public class UsersFacade : FacadeBase
     {
         DataRow drUsers = new Scan2GoSelectOperations().GetEntityDataRow<Users>(userId);
         Users users = FillUsers(drUsers);
-
-        return users;
-    }
-
-    public Users Login(string userName, string password)
-    {
-        DataRow dataRow = new UsersDAO().Login(userName, password);
-
-        Users users = FillUsers(dataRow);
-
-        return users;
-    }
-
-    private Users FillUsers(DataRow row)
-    {
-        var users = new Users();
-
-        users.Password = row.AsString(Users.Field.Password);
-        users.UserCode = row.AsString(Users.Field.UserCode);
-        users.UserId = row.AsInt(Users.Field.UserId);
-        users.UserName = row.AsString(Users.Field.UserName);
-        users.UserSurname = row.AsString(Users.Field.UserSurname);
-        users.IsActive = row.AsBool(Users.Field.IsActive);
 
         return users;
     }
@@ -97,6 +80,22 @@ public class UsersFacade : FacadeBase
         return listSourceBase;
     }
 
+    public Users Login(string userName, string password)
+    {
+        DataRow dataRow = new UsersDAO().Login(userName, password);
+
+        Users users = FillUsers(dataRow);
+
+        return users;
+    }
+
+    public OperationResult SaveUsers(Users users)
+    {
+        OperationResult operationResult = new UsersDAO().SaveUsers(users);
+
+        return operationResult;
+    }
+
     private UserListItem FillUserListItem(DataRow row)
     {
         if (row == null) { return null; }
@@ -112,10 +111,17 @@ public class UsersFacade : FacadeBase
         return users;
     }
 
-    public OperationResult SaveUsers(Users users)
+    private Users FillUsers(DataRow row)
     {
-        OperationResult operationResult = new UsersDAO().SaveUsers(users);
+        var users = new Users();
 
-        return operationResult;
+        users.Password = row.AsString(Users.Field.Password);
+        users.UserCode = row.AsString(Users.Field.UserCode);
+        users.UserId = row.AsInt(Users.Field.UserId);
+        users.UserName = row.AsString(Users.Field.UserName);
+        users.UserSurname = row.AsString(Users.Field.UserSurname);
+        users.IsActive = row.AsBool(Users.Field.IsActive);
+
+        return users;
     }
 }

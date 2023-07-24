@@ -11,6 +11,11 @@ namespace Scan2Go.DataLayer.UsersDataLayer
         {
         }
 
+        public void DeleteUser(Users user)
+        {
+            new GeneralDMLOperations(this).DeleteEntity(user);
+        }
+
         internal void SaveUsers(Users users)
         {
             new GeneralDMLOperations(this).SaveEntity(users);

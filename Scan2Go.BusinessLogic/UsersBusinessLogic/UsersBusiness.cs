@@ -1,16 +1,9 @@
 ﻿using Scan2Go.BusinessLogic.BaseClasses;
-using Scan2Go.DataLayer.UsersDataLayer;
 using Scan2Go.Entity.Users;
-using Scan2Go.Enums.Properties;
-using Scan2Go.Enums;
 using Scan2Go.Facade;
-using System.Data;
 using Utility.Bases;
 using Utility.Bases.EntityBases;
 using Utility.Core;
-using Utility.Enum;
-using Utility.Extensions;
-using Utility.Core.LogClasses;
 
 namespace Scan2Go.BusinessLogic.UsersBusinessLogic;
 
@@ -32,6 +25,11 @@ public class UsersBusiness : BaseBusiness
 
     private UsersLogic UsersLogic => _usersLogic ??= new UsersLogic(this);
     private UsersValidation UsersValidation => _usersValidation ??= new UsersValidation(this);
+
+    public void DeleteUser(int userId)
+    {
+        this.AddDetailResult(UsersFacade.DeleteUser(userId));
+    }
 
     public Users GetUser(int userId)
     {

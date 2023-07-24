@@ -16,6 +16,15 @@ public class UsersManager : BaseManager
     {
     }
 
+    public OperationResult DeleteUser(int userId)
+    {
+        OperationResult operationResult = new OperationResult((int)Modules.User, (int)Operations.DeleteUser);
+
+        new UsersBusiness(operationResult, this.user).DeleteUser(userId);
+
+        return operationResult;
+    }
+
     public OperationResult GetUsers(int userId)
     {
         OperationResult operationResult = new OperationResult();

@@ -2,6 +2,7 @@
 @using Scan2Go.Entity.Users
 @using System.Text.Json.Serialization
 @using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
 
 @using Scan2Go.Mapper.Models.UserModels
 @using JsonSerializer = System.Text.Json.JsonSerializer
@@ -49,6 +50,7 @@ else
                 <th>User Name</th>
                 <th>User Surname</th>
                 <th>Is Active</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
@@ -68,11 +70,21 @@ else
                             <span class="x-icon">&#10008;</span> <!-- X icon (✘) -->
                         }
                     </td>
+                    <td>
+                        <button @onclick="@(() => ConfirmDeleteUser(user.UserId))">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+
+<!-- Add the ConfirmDialog component -->
+<ConfirmDialog IsVisible="showDeleteConfirmation"
+               Title="Confirm Delete"
+               Message="Are you sure you want to delete this user?"
+               OnConfirmationChanged="DeleteUserConfirmed" />
 
 @code {
     private List<UserListItemModel> _usersList;
@@ -80,7 +92,7 @@ else
     // Callback method to handle user saved event
     private async Task HandleUserSaved()
     {
-    // Reload the users list when the user is successfully saved
+        // Reload the users list when the user is successfully saved
         await LoadUsersList();
     }
 
@@ -157,4 +169,49 @@ else
             return null;
         }
     }
+
+    /**************************************************************************************************/
+    private bool showDeleteConfirmation;
+    private int userIdToDelete;
+
+    private async Task ConfirmDeleteUser(int userId)
+    {
+        userIdToDelete = userId;
+        showDeleteConfirmation = true;
+    }
+
+    private async Task DeleteUserConfirmed(bool confirmed)
+    {
+        if (confirmed)
+        {
+            await DeleteUser(userIdToDelete);
+        }
+        showDeleteConfirmation = false;
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"https://localhost:44387/Users/DeleteUser/{userId}");
+
+            // Check if the delete operation was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Reload the users list after successful deletion
+                await LoadUsersList();
+            }
+            else
+            {
+                // Handle error scenario if necessary
+                // For example, display an error message to the user
+                Console.WriteLine("Failed to delete user.");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
 }
