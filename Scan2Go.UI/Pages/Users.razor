@@ -3,6 +3,7 @@
 @using System.Text.Json.Serialization
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
+@using Scan2Go.Enums
 
 @using Scan2Go.Mapper.Models.UserModels
 @using JsonSerializer = System.Text.Json.JsonSerializer
@@ -144,8 +145,18 @@ else
     {
         try
         {
-            var response = await Http.GetAsync("https://localhost:44387/Users/GetUsersList");
+            //var response = await Http.GetAsync("https://localhost:44387/Users/GetUsersList");
 
+            var response = await Http.GetAsync(Endpoints.GetUsersList);
+            if (response.IsSuccessStatusCode)
+            {
+            }
+            else
+            {
+                // Handle error scenario if necessary
+                // For example, display an error message to the user
+                Console.WriteLine("Failed to load users list: ");
+            }
             var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
             _usersList = apiResponse?.ResultObject?.ListItemBases;
         }

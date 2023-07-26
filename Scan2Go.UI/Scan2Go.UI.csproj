@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
     <ProjectReference Include="..\Scan2Go.Mapper\Scan2Go.Mapper.csproj" />
   </ItemGroup>
 
