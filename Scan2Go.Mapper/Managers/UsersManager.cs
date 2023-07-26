@@ -16,6 +16,18 @@ public class UsersManager : BaseManager
     {
     }
 
+    public OperationResult CreateUser(UsersModel usersModel)
+    {
+        Users users = Mapper.Map<UsersModel, Users>(usersModel);
+
+        OperationResult operationResult = new OperationResult(Modules.User.AsInt(), Operations.CreateUser.AsInt());
+
+        new UsersBusiness(operationResult, this.user).SaveUsers(users);
+        usersModel.UserId = users.UserId;
+
+        return operationResult;
+    }
+
     public OperationResult DeleteUser(int userId)
     {
         OperationResult operationResult = new OperationResult((int)Modules.User, (int)Operations.DeleteUser);

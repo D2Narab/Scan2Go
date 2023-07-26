@@ -79,6 +79,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BondJamesBond.
+        /// </summary>
+        public static string BondJamesBond {
+            get {
+                return ResourceManager.GetString("BondJamesBond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DefinitionIsUsedAnotherRecord.
         /// </summary>
         public static string DefinitionIsUsedAnotherRecord {

@@ -3,6 +3,8 @@
 @using Scan2Go.Mapper.Models.UserModels
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.Text;
+@using Newtonsoft.Json
+@using System.Net
 
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
@@ -56,6 +58,7 @@
     }
 
     input[type="text"],
+    input[type="password"],
     input[type="checkbox"] {
         width: 100%;
         padding: 8px;
@@ -75,6 +78,25 @@
 
         button:hover {
             background-color: #0056b3;
+        }
+
+    .error-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: yellow;
+        color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        animation: fadeInOut 3s ease-in-out;
+    }
+
+        .error-message.bad-request {
+            background-color: orange;
+        }
+
+        .error-message.internal-server-error {
+            background-color: #ff5c5c;
         }
 </style>
 
@@ -98,11 +120,17 @@
                     else
                     {
                         <div>
+                            <label for="userCode">User Code:</label>
+                            <input type="text" id="userCode" @bind="_user.UserCode" />
+
                             <label for="userName">User Name:</label>
                             <input type="text" id="userName" @bind="_user.UserName" />
 
                             <label for="userSurname">User Surname:</label>
                             <input type="text" id="userSurname" @bind="_user.UserSurname" />
+
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" @bind="_user.Password" />
 
                             <label for="isActive">Is Active:</label>
                             <input type="checkbox" id="isActive" @bind="_user.IsActive" />
@@ -111,18 +139,25 @@
                         </div>
                     }
                 </div>
+                @if (_showError)
+                {
+                    <div id="errorMessage" class="error-message @GetErrorClass()">
+                        @(_errorMessage)
+                    </div>
+                }
             </div>
         </div>
+
     </div>
 }
-
-
 
 @code {
     [Parameter] public EventCallback OnUserSaved { get; set; }
     private UsersModel _user;
     private bool _showModal = false;
-
+    private bool _showError = false;
+    private string _errorMessage = "";
+    private HttpStatusCode _errorCode = HttpStatusCode.OK;
 
     // Method to set the user details from the parent component
     public Task SetUser(UsersModel usersModel)
@@ -142,7 +177,16 @@
 
         try
         {
-            var response = await Http.PutAsync($"https://localhost:44387/Users/SaveUser", content);
+            HttpResponseMessage response;
+
+            if (_user.PkId == 0)
+            {
+                response = await Http.PostAsync($"https://localhost:44387/Users/CreateUser", content);
+            }
+            else
+            {
+                response = await Http.PatchAsync($"https://localhost:44387/Users/SaveUser", content);
+            }
 
             if (response.IsSuccessStatusCode)
             {
@@ -150,9 +194,39 @@
                 await OnUserSaved.InvokeAsync();
                 CloseModal();
             }
-            else
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                // Handle save failure, e.g., show an error message
+                _errorCode = response.StatusCode;
+
+                var reponseJsonString = await response.Content.ReadAsStringAsync();
+
+                // Deserialize the JSON response into a dynamic object
+                dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(reponseJsonString);
+
+                // Extract the message from the resultObject property of the jsonResponse
+                string message = jsonResponse.message;
+                _errorMessage = message;
+                _showError = true;
+
+                StateHasChanged(); // Notify the component to re-render
+
+                // Hide the error message after 3 seconds
+                await Task.Delay(4000);
+                _showError = false;
+                StateHasChanged();
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                string message = "Internal Server Error: an error has occurred, please notify the system admin!";
+                _errorMessage = message;
+                _showError = true;
+
+                StateHasChanged(); // Notify the component to re-render
+
+                // Hide the error message after 3 seconds
+                await Task.Delay(4000);
+                _showError = false;
+                StateHasChanged();
             }
         }
         catch (Exception e)
@@ -168,5 +242,20 @@
         _showModal = false; // Hide the modal
 
         StateHasChanged();
+    }
+
+    private string GetErrorClass()
+    {
+        if (_errorCode == HttpStatusCode.BadRequest)
+        {
+            return "error-message bad-request";
+        }
+
+        if (_errorCode == HttpStatusCode.InternalServerError)
+        {
+            return "error-message internal-server-error";
+        }
+
+        return "error-message";
     }
 }

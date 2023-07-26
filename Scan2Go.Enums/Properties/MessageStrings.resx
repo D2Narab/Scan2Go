@@ -123,6 +123,9 @@
   <data name="AnErrorHasAccured" xml:space="preserve">
     <value>AnErrorHasAccured</value>
   </data>
+  <data name="BondJamesBond" xml:space="preserve">
+    <value>BondJamesBond</value>
+  </data>
   <data name="DefinitionIsUsedAnotherRecord" xml:space="preserve">
     <value>DefinitionIsUsedAnotherRecord</value>
   </data>

@@ -73,6 +73,13 @@ public class UsersBusiness : BaseBusiness
 
     public void SaveUsers(Users users)
     {
+        UsersValidation.CheckUser(users);
+
+        if (this.OperationState == false)
+        {
+            return;
+        }
+
         this.AddDetailResult(UsersFacade.SaveUsers(users));
     }
 }

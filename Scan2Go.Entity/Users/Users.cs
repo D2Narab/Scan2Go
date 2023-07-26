@@ -114,6 +114,8 @@ public class Users : EntityStateBase, IUser
             this.AddParam(Field.UserName, DbType.String, this.UserName);
         }
 
+        this.AddParam(Field.IsActive, DbType.Boolean, this.IsActive);
+
         return this.GetSqlParameters();
     }
 

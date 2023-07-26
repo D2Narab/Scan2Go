@@ -20,6 +20,15 @@ namespace Scan2Go.Api.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
+        [Route("CreateUser")]
+        public IActionResult CreateUser(UsersModel usersModel)
+        {
+            OperationResult operationResult = new UsersManager(this.CurrentUser).CreateUser(usersModel);
+            return this.ReturnOperationResult(operationResult);
+        }
+
+        [AllowAnonymous]
         [HttpDelete]
         [Route("DeleteUser/{userId:int}")]
         public IActionResult DeleteUser(int userId)
@@ -47,7 +56,7 @@ namespace Scan2Go.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPut]
+        [HttpPatch]
         [Route("SaveUser")]
         public IActionResult SaveUser(UsersModel usersModel)
         {
