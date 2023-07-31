@@ -5,6 +5,7 @@
 @using System.Text;
 @using Newtonsoft.Json
 @using System.Net
+@using Scan2Go.Enums
 
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
@@ -181,11 +182,11 @@
 
             if (_user.PkId == 0)
             {
-                response = await Http.PostAsync($"https://localhost:44387/Users/CreateUser", content);
+                response = await Http.PostAsync(Endpoints.CreateUser, content);
             }
             else
             {
-                response = await Http.PatchAsync($"https://localhost:44387/Users/SaveUser", content);
+                response = await Http.PatchAsync(Endpoints.SaveUser, content);
             }
 
             if (response.IsSuccessStatusCode)

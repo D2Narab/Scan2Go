@@ -145,9 +145,8 @@ else
     {
         try
         {
-            //var response = await Http.GetAsync("https://localhost:44387/Users/GetUsersList");
-
             var response = await Http.GetAsync(Endpoints.GetUsersList);
+
             if (response.IsSuccessStatusCode)
             {
             }
@@ -191,7 +190,7 @@ else
     {
         try
         {
-            var response = await Http.GetAsync($"https://localhost:44387/Users/GetUser/{userId}");
+            var response = await Http.GetAsync(Endpoints.GetUser(userId));
 
             var jsonString = await response.Content.ReadAsStringAsync();
 
@@ -226,6 +225,7 @@ else
         {
             await DeleteUser(userIdToDelete);
         }
+
         showDeleteConfirmation = false;
     }
 
@@ -233,7 +233,7 @@ else
     {
         try
         {
-            var response = await Http.DeleteAsync($"https://localhost:44387/Users/DeleteUser/{userId}");
+            var response = await Http.DeleteAsync(Endpoints.DeleteUser(userId));
 
             // Check if the delete operation was successful
             if (response.IsSuccessStatusCode)
