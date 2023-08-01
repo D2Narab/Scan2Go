@@ -11,6 +11,8 @@
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using Utility.Core;
 @using System.Text.Json
+@using Utility
+@using Utility.Bases.EntityBases
 @inject HttpClient Http
 
 <!-- Import the EditUserPopup component -->
@@ -87,27 +89,34 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var entity in _apiResponse.ResultObject.ListItemBases)
+            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)//Do some extenstion methods for JSon Element
             {
-                @*<tr data-userid="@entity.Id" class="@GetRowCssClass(entity)" @ondblclick="@(() => ShowEditUserPopup(entity.Id))">
-        <td>@entity.UserCode</td>
-        <td>@entity.UserName</td>
-        <td>@entity.UserSurname</td>
-        <td>
-        @if (entity.IsActive)
-        {
-        <span class="tick-icon">&#10004;</span> <!-- Tick icon (✓) -->
-        }
-        else
-        {
-        <span class="x-icon">&#10008;</span> <!-- X icon (✘) -->
-        }
-        </td>
-        <td>
-        <button @onclick="@(() => ConfirmDeleteUser(entity.Id))">Delete</button>
-        </td>
-        </tr>*@
+                var id = entity.GetProperty("id").GetInt32();
+                var userCode = entity.GetProperty("userCode").GetString();
+                var userName = entity.GetProperty("userName").GetString();
+                var userSurname = entity.GetProperty("userSurname").GetString();
+                var isActive = entity.GetProperty("isActive").GetBoolean();
+
+                <tr data-userid="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => ShowEditUserPopup(id))">
+                    <td>@userCode</td>
+                    <td>@userName</td>
+                    <td>@userSurname</td>
+                    <td>
+                        @if (isActive)
+                        {
+                            <span class="tick-icon">&#10004;</span> <!-- Tick icon (✓) -->
+                        }
+                        else
+                        {
+                            <span class="x-icon">&#10008;</span> <!-- X icon (✘) -->
+                        }
+                    </td>
+                    <td>
+                        <button @onclick="@(() => ConfirmDeleteUser(id))">Delete</button>
+                    </td>
+                </tr>
             }
+
         </tbody>
     </table>
 }
@@ -138,12 +147,16 @@ else
 
     public class ApiResponse
     {
+        [JsonPropertyName("resultObject")]
         public ResultObject ResultObject { get; set; } = new();
     }
 
     public class ResultObject
     {
+        [JsonPropertyName("listItemBases")]
         public List<dynamic> ListItemBases { get; set; } = new();
+
+        [JsonPropertyName("listCaptionBases")]
         public List<ListCaptionBase> ListCaptionBases { get; set; } = new();
     }
 
@@ -161,7 +174,16 @@ else
                 Console.WriteLine("Failed to load entity list: ");//Todo general entity name should come here.
             }
 
-            _apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
+            //_apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
+
+            foreach (var VARIABLE in _apiResponse.ResultObject.ListCaptionBases)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+
         }
         catch (Exception e)
         {
@@ -170,10 +192,10 @@ else
         }
     }
 
-    private string GetRowCssClass(BaseModel baseModel)
+
+    private string GetRowCssClass(dynamic entity)
     {
-        //return _apiResponse.ResultObject.ListItemBases.IndexOf(baseModel) % 2 == 0 ? "even-row" : "";
-        return "even-row";
+        return _apiResponse.ResultObject.ListItemBases.IndexOf(entity) % 2 == 0 ? "even-row" : "";
     }
 
     /**************************************************************************************************/
