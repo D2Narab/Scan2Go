@@ -77,6 +77,8 @@ public class UsersFacade : FacadeBase
 
         listSourceBase.TotalRecordCount = dataTable.Rows.Count;
 
+        listSourceBase.ListCaptionBases = new ListCaptionBasesFacade(this.languageEnum).GetCaptions(listSourceBase, listSourceBase.ListItemType.Name);
+
         return listSourceBase;
     }
 
