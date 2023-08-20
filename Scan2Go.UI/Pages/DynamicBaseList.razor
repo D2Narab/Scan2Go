@@ -1,18 +1,14 @@
 ﻿@page "/DynamicBaseList"
-@using Scan2Go.Entity.Users
-@using System.Text.Json.Serialization
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
-@using Scan2Go.Mapper.BaseClasses
-
 @using Scan2Go.Mapper.Models.UserModels
-@using Utility.Bases
 @using JsonSerializer = System.Text.Json.JsonSerializer
-@using Utility.Core;
 @using System.Text.Json
-@using Utility
-@using Utility.Bases.EntityBases
+@using Scan2Go.UI.BaseClasses
+@using Utility.Enum.GeneralEnums
+@using Utility.Extensions
+
 @inject HttpClient Http
 
 <!-- Import the EditUserPopup component -->
@@ -57,7 +53,7 @@
     }
 </style>
 
-<PageTitle>Users List</PageTitle>
+<PageTitle>@_apiResponse.ResultObject.RecordInfo</PageTitle>
 
 <button class="add-user-button" @onclick="HandleAddUserClick">
     <i class="fas fa-plus"></i>
@@ -66,7 +62,7 @@
 
 <h1>Users List</h1>
 
-<p>Total Records : will be printed here ...</p>
+<p>Total Records : @_apiResponse.ResultObject.TotalRecordCount.ToString()</p>
 
 @if (_apiResponse.ResultObject.ListItemBases == null)
 {
@@ -89,38 +85,48 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)//Do some extenstion methods for JSon Element
+            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)
             {
-                var id = entity.GetProperty("id").GetInt32();
-                var userCode = entity.GetProperty("userCode").GetString();
-                var userName = entity.GetProperty("userName").GetString();
-                var userSurname = entity.GetProperty("userSurname").GetString();
-                var isActive = entity.GetProperty("isActive").GetBoolean();
+                var id = entity.GetPropertyAsInt("id");
 
-                <tr data-userid="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => ShowEditUserPopup(id))">
-                    <td>@userCode</td>
-                    <td>@userName</td>
-                    <td>@userSurname</td>
-                    <td>
-                        @if (isActive)
+                <tr data-entityId="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => ShowEditUserPopup(id))">
+                    @foreach (var listItemCaption in _apiResponse.ResultObject.ListCaptionBases.Where(p => p.IsVisible))
+                    {
+                        switch (listItemCaption.ListRenderType)
                         {
-                            <span class="tick-icon">&#10004;</span> <!-- Tick icon (✓) -->
+                            case ListRenderTypes.Default:
+                                <td>@entity.GetPropertyAsString(listItemCaption.CorrespondingField)</td>
+                                break;
+                            case ListRenderTypes.Tick:
+                                {
+                                    <td>
+                                        @if (entity.GetPropertyAsBoolean(listItemCaption.CorrespondingField))
+                                        {
+                                            <span class="tick-icon">&#10004;</span>
+                                            @:<!-- Tick icon (✓) -->
+                                        }
+                                        else
+                                        {
+                                            <span class="x-icon">&#10008;</span>
+                                            @:<!-- X icon (✘) -->
+                                        }
+                                    </td>
+                                    break;
+                                }
+                            default:
+                                <td>@entity.GetPropertyAsString(listItemCaption.CorrespondingField)</td>
+                                break;
                         }
-                        else
-                        {
-                            <span class="x-icon">&#10008;</span> <!-- X icon (✘) -->
-                        }
-                    </td>
+                    }
+
                     <td>
                         <button @onclick="@(() => ConfirmDeleteUser(id))">Delete</button>
                     </td>
                 </tr>
             }
-
         </tbody>
     </table>
 }
-
 
 <!-- Add the ConfirmDialog component -->
 <ConfirmDialog IsVisible="showDeleteConfirmation"
@@ -129,8 +135,12 @@ else
                OnConfirmationChanged="DeleteUserConfirmed" />
 
 @code {
-    //private List<ISelectableItem> _entityList;
-    //private List<ISelectableItem> _entityList;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEntityList();
+    }
+
     private ApiResponse? _apiResponse = new();
 
     // Callback method to handle user saved event
@@ -140,25 +150,7 @@ else
         await LoadEntityList();
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadEntityList();
-    }
-
-    public class ApiResponse
-    {
-        [JsonPropertyName("resultObject")]
-        public ResultObject ResultObject { get; set; } = new();
-    }
-
-    public class ResultObject
-    {
-        [JsonPropertyName("listItemBases")]
-        public List<dynamic> ListItemBases { get; set; } = new();
-
-        [JsonPropertyName("listCaptionBases")]
-        public List<ListCaptionBase> ListCaptionBases { get; set; } = new();
-    }
+    
 
     private async Task LoadEntityList()
     {
@@ -171,19 +163,11 @@ else
             }
             else
             {
-                Console.WriteLine("Failed to load entity list: ");//Todo general entity name should come here.
+                Console.WriteLine("Failed to load list: ");
             }
-
-            //_apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
             _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
-
-            foreach (var VARIABLE in _apiResponse.ResultObject.ListCaptionBases)
-            {
-                Console.WriteLine(VARIABLE);
-            }
-
         }
         catch (Exception e)
         {
