@@ -49,6 +49,26 @@ class Program
                             // Do something with the base64 PDF data
                             Console.WriteLine("Attachment is a PDF:");
                             Console.WriteLine(base64Pdf);
+
+                            // Specify the folder path and file name
+                            string folderPath = @"D:\D2\Scan2Go\MailImports"; // Change this to your desired folder path
+                            //string fileName = $"{message.Date.ToString().Replace('/','_')} {mimePart.FileName}.txt";
+                            string fileName = "output.txt";
+
+                            // Combine the folder path and file name to create the full file path
+                            string filePath = Path.Combine(folderPath, fileName);
+
+                            try
+                            {
+                                // Write the text to the file
+                                File.WriteAllText(filePath, base64Pdf);
+
+                                Console.WriteLine("Text written to file: " + filePath);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error occurred: " + ex.Message);
+                            }
                         }
                     }
                     else
