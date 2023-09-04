@@ -1,4 +1,4 @@
-﻿@page "/DynamicBaseList"
+﻿@page "/DynamicBaseList/{listEndpoint}"
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
@@ -72,6 +72,10 @@ else if (_apiResponse.ResultObject.ListItemBases.Any() == false)
 {
     <p><em>No records has been found!</em></p>
 }
+else if (_apiResponse.ResultObject.ListCaptionBases.Any() == false)
+{
+    <p><em>No list captions has been found!</em></p>
+}
 else
 {
     <table class="table">
@@ -135,9 +139,23 @@ else
                OnConfirmationChanged="DeleteUserConfirmed" />
 
 @code {
-    
+
+    [Parameter]
+    public string listEndpoint { get; set; }
+    public string listEndpointDecoded { get; set; } = "";
+
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     // Decode the URL-encoded parameter to get the original string
+    //     listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
+
+    //     await Task.Yield();
+    //     // Use the decoded parameter in your component logic
+    // }
+
     protected override async Task OnInitializedAsync()
     {
+        listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
         await LoadEntityList();
     }
 
@@ -148,15 +166,13 @@ else
     {
         // Reload the users list when the user is successfully saved
         await LoadEntityList();
-    }
-
-    
+    }   
 
     private async Task LoadEntityList()
     {
         try
         {
-            var response = await Http.GetAsync(Endpoints.GetUsersList);//Todo: this will be passed as a parameter in an object.
+            var response = await Http.GetAsync(listEndpointDecoded);
 
             if (response.IsSuccessStatusCode)
             {
