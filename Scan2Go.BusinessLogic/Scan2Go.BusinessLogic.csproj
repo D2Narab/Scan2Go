@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Scan2Go.DataLayer\Scan2Go.DataLayer.csproj" />
     <ProjectReference Include="..\Scan2Go.Entity\Scan2Go.Entity.csproj" />
     <ProjectReference Include="..\Scan2Go.Enums\Scan2Go.Enums.csproj" />
@@ -14,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="MailReader">
+      <HintPath>..\packages\MailReader.dll</HintPath>
+    </Reference>
     <Reference Include="Utility">
       <HintPath>..\packages\Utility.dll</HintPath>
     </Reference>
