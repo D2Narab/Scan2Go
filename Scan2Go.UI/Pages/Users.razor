@@ -1,0 +1,265 @@
+﻿@page "/Users"
+@using Scan2Go.Entity.Users
+@using System.Text.Json.Serialization
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
+@using Scan2Go.Enums
+
+@using Scan2Go.Mapper.Models.UserModels
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@using Utility.Core;
+@inject HttpClient Http
+
+<!-- Import the EditUserPopup component -->
+<EditUserPopup @ref="editUserPopup" OnUserSaved="HandleUserSaved" />
+
+<style>
+    .tick-icon {
+        color: green;
+    }
+
+    .x-icon {
+        color: red;
+    }
+
+    /* New style for even rows */
+    .even-row {
+        background-color: #f2f2f2; /* You can use any color here */
+    }
+
+    /* Custom style for the container of the Add User button */
+    .add-user-button-container {
+        position: relative;
+    }
+
+    /* Custom style for the Add User button */
+    .add-user-button {
+        background-color: #007bff; /* You can use any color you like */
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<PageTitle>Users List</PageTitle>
+
+<button class="add-user-button" @onclick="HandleAddUserClick">
+    <i class="fas fa-plus"></i>
+</button>
+
+
+<h1>Users List</h1>
+
+<p>This component demonstrates fetching users data from the server.</p>
+
+@if (_usersList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_usersList.Any() == false)
+{
+    <p><em>No users has been found!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User Code</th>
+                <th>User Name</th>
+                <th>User Surname</th>
+                <th>Is Active</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in _usersList)
+            {
+                <tr data-userid="@user.UserId" class="@GetRowCssClass(user)" @ondblclick="@(() => ShowEditUserPopup(user.UserId))">
+                    <td>@user.UserCode</td>
+                    <td>@user.UserName</td>
+                    <td>@user.UserSurname</td>
+                    <td>
+                        @if (user.IsActive)
+                        {
+                            <span class="tick-icon">&#10004;</span> <!-- Tick icon (✓) -->
+                        }
+                        else
+                        {
+                            <span class="x-icon">&#10008;</span> <!-- X icon (✘) -->
+                        }
+                    </td>
+                    <td>
+                        <button @onclick="@(() => ConfirmDeleteUser(user.UserId))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<!-- Add the ConfirmDialog component -->
+<ConfirmDialog IsVisible="showDeleteConfirmation"
+               Title="Confirm Delete"
+               Message="Are you sure you want to delete this user?"
+               OnConfirmationChanged="DeleteUserConfirmed" />
+
+@code {
+    private List<UserListItemModel> _usersList;
+
+    // Callback method to handle user saved event
+    private async Task HandleUserSaved()
+    {
+        // Reload the users list when the user is successfully saved
+        await LoadUsersList();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUsersList();
+    }
+
+    public class ApiResponse
+    {
+        public ResultObject ResultObject { get; set; }
+    }
+
+    public class ResultObject
+    {
+        public List<UserListItemModel> ListItemBases { get; set; }
+    }
+
+    private async Task LoadUsersList()
+    {
+        try
+        {
+            var response = await Http.GetAsync(Endpoints.GetUsersList);
+
+            if (response.IsSuccessStatusCode)
+            {
+            }
+            else
+            {
+                // Handle error scenario if necessary
+                // For example, display an error message to the user
+                Console.WriteLine("Failed to load users list: ");
+            }
+            var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>();
+            _usersList = apiResponse?.ResultObject?.ListItemBases;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private string GetRowCssClass(UserListItemModel user)
+    {
+        return _usersList.IndexOf(user) % 2 == 0 ? "even-row" : "";
+    }
+
+    /**************************************************************************************************/
+
+    private EditUserPopup editUserPopup;
+
+    private async Task ShowEditUserPopup(int userId)
+    {
+        // Fetch the user details using another API call using the userId
+        var user = await FetchUserDetails(userId);
+        if (user != null)
+        {
+            // Set the _user field in the EditUserPopup component to display the user details
+            await editUserPopup.SetUser(user);
+        }
+    }
+
+    private async Task<UsersModel> FetchUserDetails(int userId)
+    {
+        try
+        {
+            var response = await Http.GetAsync(Endpoints.GetUser(userId));
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            // Deserialize the JSON response into a dynamic object
+            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
+
+            // Extract the UsersModel from the resultObject property of the jsonResponse
+            UsersModel user = jsonResponse.resultObject.ToObject<UsersModel>();
+
+            return user;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    /**************************************************************************************************/
+    private bool showDeleteConfirmation;
+    private int userIdToDelete;
+
+    private async Task ConfirmDeleteUser(int userId)
+    {
+        userIdToDelete = userId;
+        showDeleteConfirmation = true;
+    }
+
+    private async Task DeleteUserConfirmed(bool confirmed)
+    {
+        if (confirmed)
+        {
+            await DeleteUser(userIdToDelete);
+        }
+
+        showDeleteConfirmation = false;
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync(Endpoints.DeleteUser(userId));
+
+            // Check if the delete operation was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Reload the users list after successful deletion
+                await LoadUsersList();
+            }
+            else
+            {
+                // Handle error scenario if necessary
+                // For example, display an error message to the user
+                Console.WriteLine("Failed to delete user.");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private async Task HandleAddUserClick()
+    {
+        // Implement the logic to open the Add User popup here
+        // You can use the same approach used for EditUserPopup
+        // For example, set a flag or call a method to show the popup
+        await editUserPopup.SetUser(new UsersModel());
+    }
+
+}

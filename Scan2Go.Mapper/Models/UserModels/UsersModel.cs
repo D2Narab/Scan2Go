@@ -1,10 +1,13 @@
-﻿using Utility.Bases;
+﻿using Scan2Go.Mapper.BaseClasses;
+using Utility.Bases;
 using Utility.Enum;
 
 namespace Scan2Go.Mapper.Models.UserModels;
 
-public class UsersModel : IUser
+public class UsersModel : BaseModel, IUser
 {
+    public bool IsActive { get; set; }
+    public string Password { get; set; }
     public string UserCode { get; set; }
     public int UserId { get; set; }
     public string UserName { get; set; }
@@ -58,4 +61,10 @@ public class UsersModel : IUser
     }
 
     #endregion IUser Members
+
+    #region BaseModel Members
+
+    public override int PkId => UserId;
+
+    #endregion BaseModel Members
 }

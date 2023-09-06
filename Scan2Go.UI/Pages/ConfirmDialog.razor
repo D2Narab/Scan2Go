@@ -1,0 +1,27 @@
+﻿<!-- ConfirmDialog.razor -->
+@if (IsVisible)
+{
+    <div class="confirmation-dialog">
+        <h3>@Title</h3>
+        <p>@Message</p>
+        <button @onclick="Confirm">Yes</button>
+        <button @onclick="Cancel">No</button>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Message { get; set; }
+    [Parameter] public EventCallback<bool> OnConfirmationChanged { get; set; }
+
+    private async Task Confirm()
+    {
+        await OnConfirmationChanged.InvokeAsync(true);
+    }
+
+    private async Task Cancel()
+    {
+        await OnConfirmationChanged.InvokeAsync(false);
+    }
+}

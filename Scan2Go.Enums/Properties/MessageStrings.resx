@@ -123,6 +123,9 @@
   <data name="AnErrorHasAccured" xml:space="preserve">
     <value>AnErrorHasAccured</value>
   </data>
+  <data name="BondJamesBond" xml:space="preserve">
+    <value>BondJamesBond</value>
+  </data>
   <data name="DefinitionIsUsedAnotherRecord" xml:space="preserve">
     <value>DefinitionIsUsedAnotherRecord</value>
   </data>
@@ -147,6 +150,16 @@
   <data name="UsageAreaCannotBeEmpty" xml:space="preserve">
     <value>UsageAreaCannotBeEmpty</value>
   </data>
+  <data name="UserListRecordInfo" xml:space="preserve">
+    <value>UserListRecordInfo</value>
+  </data>
+  <data name="UserNameCannotBeEmpty" xml:space="preserve">
+    <value>UserNameCannotBeEmpty</value>
+  </data>
+  <data name="UserPasswordCannotBeEmpty" xml:space="preserve">
+    <value>UserPasswordCannotBeEmpty</value>
+  </data>
+</root>
 
 <data name="CarsList" xml:space="preserve">
 <value>CarsList</value>

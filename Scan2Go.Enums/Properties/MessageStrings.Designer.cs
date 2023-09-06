@@ -79,6 +79,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BondJamesBond.
+        /// </summary>
+        public static string BondJamesBond {
+            get {
+                return ResourceManager.GetString("BondJamesBond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DefinitionIsUsedAnotherRecord.
         /// </summary>
         public static string DefinitionIsUsedAnotherRecord {
@@ -149,6 +158,34 @@ namespace Scan2Go.Enums.Properties {
                 return ResourceManager.GetString("UsageAreaCannotBeEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserListRecordInfo.
+        /// </summary>
+        public static string UserListRecordInfo {
+            get {
+                return ResourceManager.GetString("UserListRecordInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserNameCannotBeEmpty.
+        /// </summary>
+        public static string UserNameCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("UserNameCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserPasswordCannotBeEmpty.
+        /// </summary>
+        public static string UserPasswordCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("UserPasswordCannotBeEmpty", resourceCulture);
+            }
+        }
+    }
 
 
 /// <summary>

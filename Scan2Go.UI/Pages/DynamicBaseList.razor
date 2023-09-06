@@ -1,0 +1,292 @@
+﻿@page "/DynamicBaseList/{listEndpoint}"
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
+@using Scan2Go.Enums
+@using Scan2Go.Mapper.Models.UserModels
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@using System.Text.Json
+@using Scan2Go.UI.BaseClasses
+@using Utility.Enum.GeneralEnums
+@using Utility.Extensions
+
+@inject HttpClient Http
+
+<!-- Import the EditUserPopup component -->
+<EditUserPopup @ref="editUserPopup" OnUserSaved="HandleEntitySaved" />
+
+<style>
+    .tick-icon {
+        color: green;
+    }
+
+    .x-icon {
+        color: red;
+    }
+
+    /* New style for even rows */
+    .even-row {
+        background-color: #f2f2f2; /* You can use any color here */
+    }
+
+    /* Custom style for the container of the Add User button */
+    .add-user-button-container {
+        position: relative;
+    }
+
+    /* Custom style for the Add User button */
+    .add-user-button {
+        background-color: #007bff; /* You can use any color you like */
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<PageTitle>@_apiResponse.ResultObject.RecordInfo</PageTitle>
+
+<button class="add-user-button" @onclick="HandleAddUserClick">
+    <i class="fas fa-plus"></i>
+</button>
+
+
+<h1>Users List</h1>
+
+<p>Total Records : @_apiResponse.ResultObject.TotalRecordCount.ToString()</p>
+
+@if (_apiResponse.ResultObject.ListItemBases == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_apiResponse.ResultObject.ListItemBases.Any() == false)
+{
+    <p><em>No records has been found!</em></p>
+}
+else if (_apiResponse.ResultObject.ListCaptionBases.Any() == false)
+{
+    <p><em>No list captions has been found!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var listItemCaption in _apiResponse.ResultObject.ListCaptionBases.Where(p => p.IsVisible))
+                {
+                    <th>@listItemCaption.ColumnCaption</th>
+                }
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)
+            {
+                var id = entity.GetPropertyAsInt("id");
+
+                <tr data-entityId="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => ShowEditUserPopup(id))">
+                    @foreach (var listItemCaption in _apiResponse.ResultObject.ListCaptionBases.Where(p => p.IsVisible))
+                    {
+                        switch (listItemCaption.ListRenderType)
+                        {
+                            case ListRenderTypes.Default:
+                                <td>@entity.GetPropertyAsString(listItemCaption.CorrespondingField)</td>
+                                break;
+                            case ListRenderTypes.Tick:
+                                {
+                                    <td>
+                                        @if (entity.GetPropertyAsBoolean(listItemCaption.CorrespondingField))
+                                        {
+                                            <span class="tick-icon">&#10004;</span>
+                                            @:<!-- Tick icon (✓) -->
+                                        }
+                                        else
+                                        {
+                                            <span class="x-icon">&#10008;</span>
+                                            @:<!-- X icon (✘) -->
+                                        }
+                                    </td>
+                                    break;
+                                }
+                            default:
+                                <td>@entity.GetPropertyAsString(listItemCaption.CorrespondingField)</td>
+                                break;
+                        }
+                    }
+
+                    <td>
+                        <button @onclick="@(() => ConfirmDeleteUser(id))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Add the ConfirmDialog component -->
+<ConfirmDialog IsVisible="showDeleteConfirmation"
+               Title="Confirm Delete"
+               Message="Are you sure you want to delete this user?"
+               OnConfirmationChanged="DeleteUserConfirmed" />
+
+@code {
+
+    [Parameter]
+    public string listEndpoint { get; set; }
+    public string listEndpointDecoded { get; set; } = "";
+
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     // Decode the URL-encoded parameter to get the original string
+    //     listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
+
+    //     await Task.Yield();
+    //     // Use the decoded parameter in your component logic
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
+        await LoadEntityList();
+    }
+
+    private ApiResponse? _apiResponse = new();
+
+    // Callback method to handle user saved event
+    private async Task HandleEntitySaved()
+    {
+        // Reload the users list when the user is successfully saved
+        await LoadEntityList();
+    }   
+
+    private async Task LoadEntityList()
+    {
+        try
+        {
+            var response = await Http.GetAsync(listEndpointDecoded);
+
+            if (response.IsSuccessStatusCode)
+            {
+            }
+            else
+            {
+                Console.WriteLine("Failed to load list: ");
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+
+    private string GetRowCssClass(dynamic entity)
+    {
+        return _apiResponse.ResultObject.ListItemBases.IndexOf(entity) % 2 == 0 ? "even-row" : "";
+    }
+
+    /**************************************************************************************************/
+
+    private EditUserPopup editUserPopup;
+
+    private async Task ShowEditUserPopup(int userId)
+    {
+        // Fetch the user details using another API call using the userId
+        var user = await FetchUserDetails(userId);
+        if (user != null)
+        {
+            // Set the _user field in the EditUserPopup component to display the user details
+            await editUserPopup.SetUser(user);
+        }
+    }
+
+    private async Task<UsersModel> FetchUserDetails(int userId)
+    {
+        try
+        {
+            var response = await Http.GetAsync(Endpoints.GetUser(userId));
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            // Deserialize the JSON response into a dynamic object
+            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
+
+            // Extract the UsersModel from the resultObject property of the jsonResponse
+            UsersModel user = jsonResponse.resultObject.ToObject<UsersModel>();
+
+            return user;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    /**************************************************************************************************/
+    private bool showDeleteConfirmation;
+    private int userIdToDelete;
+
+    private async Task ConfirmDeleteUser(int userId)
+    {
+        userIdToDelete = userId;
+        showDeleteConfirmation = true;
+    }
+
+    private async Task DeleteUserConfirmed(bool confirmed)
+    {
+        if (confirmed)
+        {
+            await DeleteUser(userIdToDelete);
+        }
+
+        showDeleteConfirmation = false;
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync(Endpoints.DeleteUser(userId));
+
+            // Check if the delete operation was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Reload the users list after successful deletion
+                await LoadEntityList();
+            }
+            else
+            {
+                // Handle error scenario if necessary
+                // For example, display an error message to the user
+                Console.WriteLine("Failed to delete user.");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private async Task HandleAddUserClick()
+    {
+        // Implement the logic to open the Add User popup here
+        // You can use the same approach used for EditUserPopup
+        // For example, set a flag or call a method to show the popup
+        await editUserPopup.SetUser(new UsersModel());
+    }
+
+}

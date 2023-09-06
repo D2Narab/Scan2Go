@@ -1,0 +1,82 @@
+﻿@using Scan2Go.Enums
+
+@inject NavigationManager navigationManager
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Scan2Go.UI</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="nav-scrollable">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <!-- Settings main menu without the arrow icon and collapse class -->
+            <a class="nav-link" href="#" @onclick="ToggleSettingsSubMenu">
+                <span class="oi oi-wrench" aria-hidden="true"></span> Settings
+            </a>
+            <!-- Users submenu under Settings -->
+            @if (_settingsSubMenuOpen)
+            {
+                <div class="px-3" id="settingsSubMenu">
+                    <div class="nav-item">
+                        <NavLink class="nav-link" @onclick="(() => NavigateToDynamicBaseList(Endpoints.GetUsersList))">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Users
+                        </NavLink>
+                    </div>
+                    <!-- Add more submenu items here if needed -->
+                </div>
+            }
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool _settingsSubMenuOpen;
+
+    private void ToggleNavMenu()
+    {
+        _settingsSubMenuOpen = !_settingsSubMenuOpen;
+    }
+
+    private void ToggleSettingsSubMenu()
+    {
+        _settingsSubMenuOpen = !_settingsSubMenuOpen;
+    }
+
+    //public string UserListEndpoint = Endpoints.GetUsersList;
+
+    // private void NavigateToDynamicBaseList(string listEndPoint)
+    // {
+    //     navigationManager.NavigateTo($"DynamicBaseList/{listEndPoint}");
+    // }
+
+    private void NavigateToDynamicBaseList(string listEndPointParameter)
+    {
+        // Encode the string parameter to make it URL-safe
+        string encodedParameter = Uri.EscapeDataString(listEndPointParameter);
+
+        // Navigate to the DynamicBaseList component with the encoded parameter
+        navigationManager.NavigateTo($"DynamicBaseList/{encodedParameter}");
+    }
+
+
+}
