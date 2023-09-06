@@ -88,6 +88,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CarsList.
+        /// </summary>
+        public static string CarsList {
+            get {
+                return ResourceManager.GetString("CarsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DefinitionIsUsedAnotherRecord.
         /// </summary>
         public static string DefinitionIsUsedAnotherRecord {
@@ -186,15 +195,4 @@ namespace Scan2Go.Enums.Properties {
             }
         }
     }
-
-
-/// <summary>
-///   Looks up a localized string similar to CarsList.
-/// </summary>
-public static string CarsList {
-get {
-return ResourceManager.GetString("CarsList", resourceCulture);
-}
-}
-}
 }

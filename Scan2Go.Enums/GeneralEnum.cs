@@ -3,7 +3,8 @@
 public enum Modules
 {
     Translations = 1,
-    User = 2
+    User = 2,
+    Cars = 3
 }
 
 public enum TranslationUsageArea
