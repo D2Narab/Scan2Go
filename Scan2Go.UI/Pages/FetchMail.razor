@@ -1,0 +1,75 @@
+﻿@page "/fetchmail"
+@using Scan2Go.Entity.IdsAndDocuments
+@using Scan2Go.UI.BaseClasses
+@using System.Text.Json;
+@using Utility.Extensions
+@inject HttpClient Http
+
+<PageTitle>Reading mail from outlook and progressing attachments</PageTitle>
+
+<h1>Data of scanned documents</h1>
+
+<p>This component demonstrates fetching mail data from the outlook and show progress data from Regula API responses.</p>
+
+@if (_apiResponse.ResultObject.ListItemBases == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_apiResponse.ResultObject.ListItemBases.Any() == false)
+{
+    <p><em>Waiting response from mail fetching...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Document Type</th>
+                <th>Identity Number</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Document Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)
+            {
+                <tr>
+                    <td>@entity.GetPropertyAsString("scannedDocumentTypeName")</td>
+                    <td>@entity.GetPropertyAsString("personalNumber")</td>
+                    <td>@entity.GetPropertyAsString("name")</td>
+                    <td>@entity.GetPropertyAsString("surname")</td>
+                    <td>@entity.GetPropertyAsString("documentNumber")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ApiResponse? _apiResponse = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://localhost:44387/Monitoring/GetMails");
+
+            if (response.IsSuccessStatusCode)
+            {
+            }
+            else
+            {
+                Console.WriteLine("Failed to load list: ");
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}

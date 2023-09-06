@@ -43,9 +43,9 @@ internal class MonitoringLogic
         return base64List;
     }
 
-    public IList<IDsAndDocuments> PrepareIdAndDocumentsResultFromResponse(dynamic response)
+    public IList<IIDsAndDocuments> PrepareIdAndDocumentsResultFromResponse(dynamic response)
     {
-        IList<IDsAndDocuments> idsAndDocumentsList = new List<IDsAndDocuments>();
+        IList<IIDsAndDocuments> idsAndDocumentsList = new List<IIDsAndDocuments>();
 
         if (response.ContainerList == null || response.ContainerList.List == null)
         {

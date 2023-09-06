@@ -4,6 +4,13 @@ using BusinessLogic.CarsBusinessLogic;
 using MailKit.Search;
 using MailReader;
 using Scan2Go.Entity.IdsAndDocuments;
+using Scan2Go.Entity.Users;
+using Scan2Go.Enums.Properties;
+using Scan2Go.Enums;
+using Utility.Bases.EntityBases;
+using Utility.Enum;
+using Scan2Go.Facade;
+using System.Data;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
@@ -12,7 +19,7 @@ public class MonitoringBusiness
     private MonitoringLogic _monitoringLogic;
     private MonitoringLogic MonitoringLogic => _monitoringLogic ??= new MonitoringLogic();
 
-    public async Task<IList<IDsAndDocuments>> GetMails()
+    public async Task<ListSourceBase> GetMails()
     {
         MailReadingResults mailReadingResults = await ReadMail();
 
@@ -20,9 +27,23 @@ public class MonitoringBusiness
 
         dynamic response = await CallRegulaApiAndGetResponse(base64List);
 
-        IList<IDsAndDocuments> idAndDocumentsList = MonitoringLogic.PrepareIdAndDocumentsResultFromResponse(response);
+        IList<IIDsAndDocuments> idAndDocumentsList = MonitoringLogic.PrepareIdAndDocumentsResultFromResponse(response);
 
-        return idAndDocumentsList;
+        ListSourceBase listSourceBase = new ListSourceBase();
+        listSourceBase.ListItemBases = new List<ListItemBase>();
+        listSourceBase.ListItemType = typeof(UserListItem);
+        listSourceBase.RecordInfo = EnumMethods.GetResourceString(nameof(MessageStrings.DocumentListRecordInfo), LanguageEnum.EN);
+
+        foreach (var idsAndDocuments in idAndDocumentsList)
+        {
+            listSourceBase.ListItemBases.Add(idsAndDocuments);
+        }
+
+        listSourceBase.TotalRecordCount = idAndDocumentsList.Count;
+
+        listSourceBase.ListCaptionBases = new ListCaptionBasesFacade(LanguageEnum.EN).GetCaptions(listSourceBase, listSourceBase.ListItemType.Name);
+
+        return listSourceBase;
     }
 
     /// <summary>

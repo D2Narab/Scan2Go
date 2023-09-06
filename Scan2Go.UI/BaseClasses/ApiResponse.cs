@@ -11,11 +11,11 @@ namespace Scan2Go.UI.BaseClasses
 
     public class ResultObject
     {
-        [JsonPropertyName("listItemBases")]
-        public List<dynamic> ListItemBases { get; set; } = new();
-
         [JsonPropertyName("listCaptionBases")]
         public List<ListCaptionBase> ListCaptionBases { get; set; } = new();
+
+        [JsonPropertyName("listItemBases")]
+        public List<dynamic> ListItemBases { get; set; } = new();
 
         [JsonPropertyName("recordInfo")]
         public string? RecordInfo { get; set; }

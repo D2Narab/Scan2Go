@@ -106,6 +106,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DocumentListRecordInfo.
+        /// </summary>
+        public static string DocumentListRecordInfo {
+            get {
+                return ResourceManager.GetString("DocumentListRecordInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ListTranslations.
         /// </summary>
         public static string ListTranslations {

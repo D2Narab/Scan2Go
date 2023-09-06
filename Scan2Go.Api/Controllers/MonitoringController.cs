@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Scan2Go.Api.BaseClasses;
+using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Mapper.Managers;
 using Utility.Core;
 
@@ -10,7 +11,7 @@ namespace Scan2Go.Api.Controllers;
 public class MonitoringController : BaseController
 {
     [AllowAnonymous]
-    [HttpPost]
+    [HttpGet]
     [Route("GetMails")]
     public async Task<IActionResult> GetMails()
     {
