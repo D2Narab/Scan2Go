@@ -8,8 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.1.0" />
+    <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MailReader">
+      <HintPath>..\packages\MailReader.dll</HintPath>
+    </Reference>
+    <Reference Include="Utility">
+      <HintPath>..\packages\Utility.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
