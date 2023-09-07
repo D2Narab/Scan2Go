@@ -16,24 +16,34 @@
 else
 {
     <div class="identity-cards">
-        @foreach (var card in IdentityCards)
+        @foreach (var identityCard in IdentityCards)
         {
             <div class="identity-card">
                 <div class="portrait">
-                    @if (!string.IsNullOrWhiteSpace(card.PortraitImage))
+                    @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
                     {
-                        <img src="data:image/jpeg;base64,@card.PortraitImage" alt="Portrait Image" />
+                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
                     }
                     else
                     {
-                        <p>No image available</p>
+                        <p>No Portrait available</p>
+                    }
+
+                    @if (string.IsNullOrWhiteSpace(identityCard.DocumentFrontSide) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image" />
+                    }
+                    else
+                    {
+                        <p>No document front side image available</p>
                     }
                 </div>
                 <div class="details">
-                    <p><strong>Name:</strong> @card.Name @card.Surname</p>
-                    <p><strong>Document Number:</strong> @card.DocumentNumber</p>
-                    <p><strong>Personal Number:</strong> @card.PersonalNumber</p>
-                    <p><strong>Scanned Document Type:</strong> @card.ScannedDocumentTypeName</p>
+                    <p><strong>Name:</strong> @identityCard.Name @identityCard.Surname</p>
+                    <p><strong>Document Number:</strong> @identityCard.DocumentNumber</p>
+                    <p><strong>Personal Number:</strong> @identityCard.PersonalNumber</p>
+                    <p><strong>Scanned Document Type:</strong> @identityCard.ScannedDocumentTypeName</p>
+                    <p><strong>Date Of Expiry:</strong> @identityCard.DateOfExpiry</p>
                 </div>
             </div>
         }

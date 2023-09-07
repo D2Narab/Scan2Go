@@ -1,8 +1,10 @@
 ﻿using MailReader;
 using MimeKit;
+using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Enums;
+using System.Drawing;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
@@ -87,11 +89,23 @@ internal class MonitoringLogic
 
                 identityCard.DocumentNumber = bufTextValue;
 
+                fieldNameToFind = "Date of Expiry";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
+
+                identityCard.DateOfExpiry = bufTextValue;
+
                 fieldNameToFind = "Portrait";
                 string portraitProperty = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherFieldAsDynamic(container, "FieldName", fieldNameToFind, "image");
+                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
 
                 identityCard.PortraitImage = portraitProperty;
+
+                fieldNameToFind = "Document front side";
+                string documentFrontSideProperty = Utility.Extensions.PrimitiveExtensions
+                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "valueList", "value");
+
+                identityCard.DocumentFrontSide = documentFrontSideProperty;
 
                 idsAndDocumentsList.Add(identityCard);
             }

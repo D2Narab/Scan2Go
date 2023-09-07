@@ -1,10 +1,11 @@
 ﻿using Scan2Go.Enums;
-using Utility.Extensions;
 
 namespace Scan2Go.Entity.IdsAndDocuments
 {
     public class IdentityCard : IIDsAndDocuments
     {
+        public string DateOfExpiry { get; set; }
+        public string DocumentFrontSide { get; set; }
         public string DocumentNumber { get; set; }
         public string Name { get; set; }
         public string PersonalNumber { get; set; }
