@@ -1,8 +1,6 @@
 ﻿@page "/fetchmail"
 @using Scan2Go.Entity.IdsAndDocuments
-@using Scan2Go.UI.BaseClasses
-@using System.Text.Json;
-@using Utility.Extensions
+@using Newtonsoft.Json
 @inject HttpClient Http
 
 <PageTitle>Reading mail from outlook and progressing attachments</PageTitle>
@@ -11,43 +9,65 @@
 
 <p>This component demonstrates fetching mail data from the outlook and show progress data from Regula API responses.</p>
 
-@if (_apiResponse.ResultObject.ListItemBases == null)
-{
-    <p><em>Loading...</em></p>
-}
-else if (_apiResponse.ResultObject.ListItemBases.Any() == false)
+@if (IdentityCards.Any() == false)
 {
     <p><em>Waiting response from mail fetching...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Document Type</th>
-                <th>Identity Number</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Document Number</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)
-            {
-                <tr>
-                    <td>@entity.GetPropertyAsString("scannedDocumentTypeName")</td>
-                    <td>@entity.GetPropertyAsString("personalNumber")</td>
-                    <td>@entity.GetPropertyAsString("name")</td>
-                    <td>@entity.GetPropertyAsString("surname")</td>
-                    <td>@entity.GetPropertyAsString("documentNumber")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="identity-cards">
+        @foreach (var card in IdentityCards)
+        {
+            <div class="identity-card">
+                <div class="portrait">
+                    @if (!string.IsNullOrWhiteSpace(card.PortraitImage))
+                    {
+                        <img src="data:image/jpeg;base64,@card.PortraitImage" alt="Portrait Image" />
+                    }
+                    else
+                    {
+                        <p>No image available</p>
+                    }
+                </div>
+                <div class="details">
+                    <p><strong>Name:</strong> @card.Name @card.Surname</p>
+                    <p><strong>Document Number:</strong> @card.DocumentNumber</p>
+                    <p><strong>Personal Number:</strong> @card.PersonalNumber</p>
+                    <p><strong>Scanned Document Type:</strong> @card.ScannedDocumentTypeName</p>
+                </div>
+            </div>
+        }
+    </div>
 }
 
+<style>
+    .identity-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .identity-card {
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        max-width: 300px;
+    }
+
+    .portrait img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .details {
+        margin-top: 10px;
+    }
+</style>
+
+
 @code {
-    private ApiResponse? _apiResponse = new();
+    private IList<IdentityCard> IdentityCards = new List<IdentityCard>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,14 +77,15 @@ else
 
             if (response.IsSuccessStatusCode)
             {
+                var jsonResponseString = await response.Content.ReadAsStringAsync();
+                dynamic jsonResponseDynamic = JsonConvert.DeserializeObject<dynamic>(jsonResponseString);
+
+                IdentityCards = jsonResponseDynamic.resultObject.ToObject<List<IdentityCard>>();
             }
             else
             {
                 Console.WriteLine("Failed to load list: ");
             }
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
         }
         catch (Exception e)
         {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Scan2Go.Api.BaseClasses;
-using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Mapper.Managers;
 using Utility.Core;
 

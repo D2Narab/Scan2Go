@@ -87,6 +87,12 @@ internal class MonitoringLogic
 
                 identityCard.DocumentNumber = bufTextValue;
 
+                fieldNameToFind = "Portrait";
+                string portraitProperty = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherFieldAsDynamic(container, "FieldName", fieldNameToFind, "image");
+
+                identityCard.PortraitImage = portraitProperty;
+
                 idsAndDocumentsList.Add(identityCard);
             }
         }
