@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
-internal class MonitoringLogic
+public class MonitoringLogic
 {
     public async Task<IList<string>> ExtractAttachmentsAsBase64(MailReadingResults mailReadingResults)
     {
@@ -68,43 +68,61 @@ internal class MonitoringLogic
                 string fieldNameToFind = "Personal Number";
                 string bufTextValue = Utility.Extensions.PrimitiveExtensions
                     .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-
                 identityCard.PersonalNumber = bufTextValue;
 
                 fieldNameToFind = "Given Names";
                 bufTextValue = Utility.Extensions.PrimitiveExtensions
                     .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-
                 identityCard.Name = bufTextValue;
 
                 fieldNameToFind = "Surname";
                 bufTextValue = Utility.Extensions.PrimitiveExtensions
                     .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-
                 identityCard.Surname = bufTextValue;
 
                 fieldNameToFind = "Document Number";
                 bufTextValue = Utility.Extensions.PrimitiveExtensions
                     .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-
                 identityCard.DocumentNumber = bufTextValue;
 
                 fieldNameToFind = "Date of Expiry";
                 bufTextValue = Utility.Extensions.PrimitiveExtensions
                     .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-
                 identityCard.DateOfExpiry = bufTextValue;
+
+                fieldNameToFind = "Date of Birth";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
+                identityCard.DateOfBirth = bufTextValue;
+
+                fieldNameToFind = "Issuing State Name";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "value");
+                identityCard.IssuingStateName = bufTextValue;
+
+                fieldNameToFind = "Nationality";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "value");
+                identityCard.Nationality = bufTextValue;
 
                 fieldNameToFind = "Portrait";
                 string portraitProperty = Utility.Extensions.PrimitiveExtensions
                     .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
-
                 identityCard.PortraitImage = portraitProperty;
+
+                fieldNameToFind = "Ghost portrait";
+                string ghostPortraitProperty = Utility.Extensions.PrimitiveExtensions
+                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
+                identityCard.GhostPortrait = ghostPortraitProperty;
+
+                fieldNameToFind = "Signature";
+                string signatureProperty = Utility.Extensions.PrimitiveExtensions
+                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
+                identityCard.Signature = signatureProperty;
 
                 fieldNameToFind = "Document front side";
                 string documentFrontSideProperty = Utility.Extensions.PrimitiveExtensions
                     .GetSubFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "valueList", "value");
-
                 identityCard.DocumentFrontSide = documentFrontSideProperty;
 
                 idsAndDocumentsList.Add(identityCard);

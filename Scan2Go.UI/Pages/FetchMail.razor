@@ -20,15 +20,7 @@ else
         {
             <div class="identity-card">
                 <div class="portrait">
-                    @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
-                    }
-                    else
-                    {
-                        <p>No Portrait available</p>
-                    }
-
+                    <p><strong>Document Front side:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.DocumentFrontSide) == false)
                     {
                         <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image" />
@@ -37,13 +29,69 @@ else
                     {
                         <p>No document front side image available</p>
                     }
+                    <p><strong>Portrait:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
+                    }
+                    else
+                    {
+                        <p>No Portrait available</p>
+                    }
+                    <p><strong>Ghost Portrait:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(identityCard.GhostPortrait) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image" />
+                    }
+                    else
+                    {
+                        <p>No Ghost Portrait available</p>
+                    }
+                    <p><strong>Signature:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(identityCard.Signature) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature" />
+                    }
+                    else
+                    {
+                        <p>No Signature available</p>
+                    }
                 </div>
                 <div class="details">
-                    <p><strong>Name:</strong> @identityCard.Name @identityCard.Surname</p>
-                    <p><strong>Document Number:</strong> @identityCard.DocumentNumber</p>
-                    <p><strong>Personal Number:</strong> @identityCard.PersonalNumber</p>
-                    <p><strong>Scanned Document Type:</strong> @identityCard.ScannedDocumentTypeName</p>
-                    <p><strong>Date Of Expiry:</strong> @identityCard.DateOfExpiry</p>
+                    <table>
+                        <tr>
+                            <td><strong>Date Of Expiry:</strong></td>
+                            <td class="@(identityCard.IsExpired ? "expired" : "not-expired")">@identityCard.DateOfExpiry</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Name:</strong></td>
+                            <td>@identityCard.Name @identityCard.Surname</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Document Number:</strong></td>
+                            <td>@identityCard.DocumentNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Personal Number:</strong></td>
+                            <td>@identityCard.PersonalNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Issuing State:</strong></td>
+                            <td>@identityCard.IssuingStateName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nationality:</strong></td>
+                            <td>@identityCard.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date Of Birth:</strong></td>
+                            <td>@identityCard.DateOfBirth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Age:</strong></td>
+                            <td>@identityCard.Age</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         }
@@ -55,25 +103,74 @@ else
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
+        flex-direction: column;
     }
 
     .identity-card {
         border: 1px solid #ccc;
         padding: 10px;
         display: flex;
-        flex-direction: column;
-        max-width: 300px;
+        flex-direction: row; /* Align images and table horizontally */
+        max-width: 900px;
     }
 
-    .portrait img {
-        max-width: 100%;
-        height: auto;
+    .portrait {
+        flex: 1; /* Make the portrait section take up 50% of the available space */
+        margin-right: 10px; /* Add some spacing between images and table */
     }
+
+        .portrait img {
+            max-width: 100%;
+            height: auto;
+        }
 
     .details {
-        margin-top: 10px;
+        flex: 1; /* Make the details section take up 50% of the available space */
+        margin-left: 10px; /* Add some spacing between images and table */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        table th,
+        table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f5f5f5;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        table strong {
+            font-weight: normal;
+            color: #333;
+        }
+
+    .expired {
+        color: red;
+    }
+
+    .not-expired {
+        color: green;
     }
 </style>
+
 
 
 @code {
