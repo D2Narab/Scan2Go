@@ -51,45 +51,45 @@ internal class MonitoringLogic
         {
             return idsAndDocumentsList;
         }
-        //TODO we have to try this with a response that has many, will do it later.
-        //foreach (var container in response.ContainerList)
-        //{
-        string documentType = Utility.Extensions.PrimitiveExtensions
-            .GetFieldValueAccordingToFieldName(response.ContainerList, "dDescription");
 
-        if (string.IsNullOrEmpty(documentType) == false && documentType.Equals("Identity Card"))
+        foreach (var container in response.ContainerList)
         {
-            IdentityCard identityCard = new IdentityCard();
+            string documentType = Utility.Extensions.PrimitiveExtensions
+            .GetFieldValueAccordingToFieldName(container, "dDescription");
 
-            identityCard.ScannedDocumentType = ScannedDocumentType.Id;
+            if (string.IsNullOrEmpty(documentType) == false && documentType.Equals("Identity Card"))
+            {
+                IdentityCard identityCard = new IdentityCard();
 
-            string fieldNameToFind = "Personal Number";
-            string bufTextValue = Utility.Extensions.PrimitiveExtensions
-                .GetFieldValueInTheSameLevelOfAnotherField(response.ContainerList, "FieldName", fieldNameToFind, "Buf_Text");
+                identityCard.ScannedDocumentType = ScannedDocumentType.Id;
 
-            identityCard.PersonalNumber = bufTextValue;
+                string fieldNameToFind = "Personal Number";
+                string bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
 
-            fieldNameToFind = "Given Names";
-            bufTextValue = Utility.Extensions.PrimitiveExtensions
-                .GetFieldValueInTheSameLevelOfAnotherField(response.ContainerList, "FieldName", fieldNameToFind, "Buf_Text");
+                identityCard.PersonalNumber = bufTextValue;
 
-            identityCard.Name = bufTextValue;
+                fieldNameToFind = "Given Names";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
 
-            fieldNameToFind = "Surname";
-            bufTextValue = Utility.Extensions.PrimitiveExtensions
-                .GetFieldValueInTheSameLevelOfAnotherField(response.ContainerList, "FieldName", fieldNameToFind, "Buf_Text");
+                identityCard.Name = bufTextValue;
 
-            identityCard.Surname = bufTextValue;
+                fieldNameToFind = "Surname";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
 
-            fieldNameToFind = "Document Number";
-            bufTextValue = Utility.Extensions.PrimitiveExtensions
-                .GetFieldValueInTheSameLevelOfAnotherField(response.ContainerList, "FieldName", fieldNameToFind, "Buf_Text");
+                identityCard.Surname = bufTextValue;
 
-            identityCard.DocumentNumber = bufTextValue;
+                fieldNameToFind = "Document Number";
+                bufTextValue = Utility.Extensions.PrimitiveExtensions
+                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
 
-            idsAndDocumentsList.Add(identityCard);
+                identityCard.DocumentNumber = bufTextValue;
+
+                idsAndDocumentsList.Add(identityCard);
+            }
         }
-        //}
 
         return idsAndDocumentsList;
     }
