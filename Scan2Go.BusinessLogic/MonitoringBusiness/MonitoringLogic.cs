@@ -4,7 +4,12 @@ using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Enums;
+using System.Data.Common;
 using System.Drawing;
+using Scan2Go.Entity.BaseClasses;
+using Utility.Extensions;
+using Scan2Go.Entity.Cars;
+using System.Reflection;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
@@ -56,74 +61,48 @@ public class MonitoringLogic
 
         foreach (var container in response.ContainerList)
         {
-            string documentType = Utility.Extensions.PrimitiveExtensions
+            string documentCategory = Utility.Extensions.PrimitiveExtensions
             .GetFieldValueAccordingToFieldName(container, "dDescription");
 
-            if (string.IsNullOrEmpty(documentType) == false && documentType.Equals("Identity Card"))
+            if (string.IsNullOrEmpty(documentCategory) == false && documentCategory.Equals("Identity Card"))
             {
                 IdentityCard identityCard = new IdentityCard();
 
                 identityCard.ScannedDocumentType = ScannedDocumentType.Id;
+                identityCard.DocumentCategory = documentCategory;
 
-                string fieldNameToFind = "Personal Number";
-                string bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-                identityCard.PersonalNumber = bufTextValue;
+                PropertyInfo[] properties = identityCard.GetType().GetProperties();
 
-                fieldNameToFind = "Given Names";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-                identityCard.Name = bufTextValue;
+                foreach (var property in properties)
+                {
+                    if (Attribute.IsDefined(property, typeof(RegulaAttributes)) == false || property.CanWrite == false)
+                    {
+                        continue;
+                    }
 
-                fieldNameToFind = "Surname";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-                identityCard.Surname = bufTextValue;
+                    string propertyName = property.Name;
 
-                fieldNameToFind = "Document Number";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-                identityCard.DocumentNumber = bufTextValue;
+                    var attribute = typeof(IdentityCard).GetCustomAttribute<RegulaAttributes>(propertyName);
 
-                fieldNameToFind = "Date of Expiry";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-                identityCard.DateOfExpiry = bufTextValue;
+                    string extractedValue;
 
-                fieldNameToFind = "Date of Birth";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "Buf_Text");
-                identityCard.DateOfBirth = bufTextValue;
+                    if (string.IsNullOrEmpty(attribute.FieldToBeFoundValue))
+                    {
+                        extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
+                    }
+                    else if (string.IsNullOrEmpty(attribute.SubFieldName))
+                    {
+                        extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                            attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
+                    }
+                    else
+                    {
+                        extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
+                            attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
+                    }
 
-                fieldNameToFind = "Issuing State Name";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "value");
-                identityCard.IssuingStateName = bufTextValue;
-
-                fieldNameToFind = "Nationality";
-                bufTextValue = Utility.Extensions.PrimitiveExtensions
-                    .GetFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "value");
-                identityCard.Nationality = bufTextValue;
-
-                fieldNameToFind = "Portrait";
-                string portraitProperty = Utility.Extensions.PrimitiveExtensions
-                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
-                identityCard.PortraitImage = portraitProperty;
-
-                fieldNameToFind = "Ghost portrait";
-                string ghostPortraitProperty = Utility.Extensions.PrimitiveExtensions
-                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
-                identityCard.GhostPortrait = ghostPortraitProperty;
-
-                fieldNameToFind = "Signature";
-                string signatureProperty = Utility.Extensions.PrimitiveExtensions
-                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "FieldName", fieldNameToFind, "image", "image");
-                identityCard.Signature = signatureProperty;
-
-                fieldNameToFind = "Document front side";
-                string documentFrontSideProperty = Utility.Extensions.PrimitiveExtensions
-                    .GetSubFieldValueInTheSameLevelOfAnotherField(container, "fieldName", fieldNameToFind, "valueList", "value");
-                identityCard.DocumentFrontSide = documentFrontSideProperty;
+                    property.SetValue(identityCard, extractedValue);
+                }
 
                 idsAndDocumentsList.Add(identityCard);
             }

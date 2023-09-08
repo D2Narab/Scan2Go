@@ -20,10 +20,18 @@ else
         {
             <div class="identity-card">
                 <div class="portrait">
+                    <p><strong>Document category:</strong></p>
+                    <td>@identityCard.DocumentCategory</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document type:</strong></p>
+                    <td>@identityCard.DocumentType</td>
+                    <p><strong></strong></p>
+
                     <p><strong>Document Front side:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.DocumentFrontSide) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image" />
+                        <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image"/>
                     }
                     else
                     {
@@ -32,7 +40,7 @@ else
                     <p><strong>Portrait:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
+                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image"/>
                     }
                     else
                     {
@@ -41,7 +49,7 @@ else
                     <p><strong>Ghost Portrait:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.GhostPortrait) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image" />
+                        <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image"/>
                     }
                     else
                     {
@@ -50,7 +58,7 @@ else
                     <p><strong>Signature:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.Signature) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature" />
+                        <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature"/>
                     }
                     else
                     {
