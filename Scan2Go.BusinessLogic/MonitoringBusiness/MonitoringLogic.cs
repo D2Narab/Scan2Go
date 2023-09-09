@@ -3,6 +3,7 @@ using Scan2Go.Entity.BaseClasses;
 using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Enums;
 using System.Reflection;
+using MailReader;
 using Utility.Extensions;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
@@ -74,9 +75,27 @@ public class MonitoringLogic
 
                 idsAndDocumentsList.Add(passport);
             }
+            else if (documentCategory.Equals("Driving License"))
+            {
+                var drivingLicense = CreateDrivingLicense(container, documentCategory);
+
+                idsAndDocumentsList.Add(drivingLicense);
+            }
         }
 
         return idsAndDocumentsList;
+    }
+
+    private IIDsAndDocuments CreateDrivingLicense(dynamic container, string documentCategory)
+    {
+        DrivingLicense drivingLicense = new DrivingLicense();
+
+        drivingLicense.ScannedDocumentType = ScannedDocumentType.DrivingLicense;
+        drivingLicense.DocumentCategory = documentCategory;
+
+        FillPropertiesAccordingToAttributeValues(container, drivingLicense);
+
+        return drivingLicense;
     }
 
     private IIDsAndDocuments CreateIdentityCard(dynamic container, string documentCategory)
@@ -125,6 +144,10 @@ public class MonitoringLogic
             else if (iDsAndDocuments is Passport)
             {
                 regulaAttributes = typeof(Passport).GetCustomAttribute<RegulaAttributes>(propertyName);
+            }
+            else if (iDsAndDocuments is DrivingLicense)
+            {
+                regulaAttributes = typeof(DrivingLicense).GetCustomAttribute<RegulaAttributes>(propertyName);
             }
 
             string extractedValue = string.Empty;

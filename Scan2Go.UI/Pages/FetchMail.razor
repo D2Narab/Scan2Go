@@ -9,7 +9,7 @@
 
 <p>This component demonstrates fetching mail data from the outlook and show progress data from Regula API responses.</p>
 
-@if (IdentityCards.Any() == false && Passports.Any() == false)
+@if (IdentityCards.Any() == false && Passports.Any() == false && DrivingLicenses.Any() == false)
 {
     <p><em>Waiting response from mail fetching...</em></p>
 }
@@ -206,6 +206,95 @@ else
             </div>
         }
     </div>
+    /****************************************************************************************************************************************/
+    <div class="identity-cards">
+        @foreach (var drivingLicense in DrivingLicenses)
+        {
+            <div class="identity-card">
+                <div class="portrait">
+                    <p><strong>Document category:</strong></p>
+                    <td>@drivingLicense.DocumentCategory</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document type:</strong></p>
+                    <td>@drivingLicense.DocumentName</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document Image:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(drivingLicense.DocumentFrontSide) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@drivingLicense.DocumentFrontSide" alt="Document Front Side Image" />
+                    }
+                    else
+                    {
+                        <p>No document front side image available</p>
+                    }
+                    <p><strong>Portrait:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(drivingLicense.PortraitImage) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@drivingLicense.PortraitImage" alt="Portrait Image" />
+                    }
+                    else
+                    {
+                        <p>No Portrait available</p>
+                    }
+                    <p><strong>Signature:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(drivingLicense.Signature) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@drivingLicense.Signature" alt="Signature" />
+                    }
+                    else
+                    {
+                        <p>No Signature available</p>
+                    }
+                </div>
+                <div class="details">
+                    <table>
+                        <tr>
+                            <td><strong>Date Of Expiry:</strong></td>
+                            <td class="@(drivingLicense.IsExpired ? "expired" : "not-expired")">@drivingLicense.DateOfExpiry</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Name:</strong></td>
+                            <td>@drivingLicense.Name @drivingLicense.Surname</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Document Number:</strong></td>
+                            <td>@drivingLicense.DocumentNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Personal Number:</strong></td>
+                            <td>@drivingLicense.PersonalNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Issuing State:</strong></td>
+                            <td>@drivingLicense.IssuingStateName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DL Category:</strong></td>
+                            <td>@drivingLicense.DlCategory</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date of Issue:</strong></td>
+                            <td>@drivingLicense.DateOfIssue</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Place of Birth:</strong></td>
+                            <td>@drivingLicense.PlaceOFBirth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date Of Birth:</strong></td>
+                            <td>@drivingLicense.DateOfBirth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Age:</strong></td>
+                            <td>@drivingLicense.Age</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
 }
 
 <style>
@@ -286,6 +375,7 @@ else
 @code {
     private IList<IdentityCard> IdentityCards = new List<IdentityCard>();
     private IList<Passport> Passports = new List<Passport>();
+    private IList<DrivingLicense> DrivingLicenses = new List<DrivingLicense>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -298,15 +388,10 @@ else
                 var jsonResponseString = await response.Content.ReadAsStringAsync();
                 dynamic jsonResponseDynamic = JsonConvert.DeserializeObject<dynamic>(jsonResponseString);
 
-                // if (jsonResponseDynamic.resultObject.idDocuments != null)
-                // {
-                    IdentityCards = jsonResponseDynamic.resultObject.idDocuments.ToObject<List<IdentityCard>>();
-                //}
 
-                // if (jsonResponseDynamic.resultObject.passports != null)
-                // {
-                    Passports = jsonResponseDynamic.resultObject.passports.ToObject<List<Passport>>();
-                //}
+                IdentityCards = jsonResponseDynamic.resultObject.idDocuments.ToObject<List<IdentityCard>>();
+                Passports = jsonResponseDynamic.resultObject.passports.ToObject<List<Passport>>();
+                DrivingLicenses = jsonResponseDynamic.resultObject.drivingLicenses.ToObject<List<DrivingLicense>>();
             }
             else
             {
