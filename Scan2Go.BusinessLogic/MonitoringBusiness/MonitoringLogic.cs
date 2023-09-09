@@ -25,8 +25,8 @@ public class MonitoringLogic
 
             foreach (var attachment in message.Attachments)
             {
-                if (attachment is not MimePart mimePart ||
-                    mimePart.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) == false)
+                if (attachment is not MimePart mimePart 
+                    /*|| mimePart.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) == false*/)
                 {
                     //Console.WriteLine("Error: Attachment is not a PDF.");
 
@@ -61,53 +61,113 @@ public class MonitoringLogic
 
         foreach (var container in response.ContainerList)
         {
-            string documentCategory = Utility.Extensions.PrimitiveExtensions
-            .GetFieldValueAccordingToFieldName(container, "dDescription");
+            string documentCategory = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, "dDescription");
 
-            if (string.IsNullOrEmpty(documentCategory) == false && documentCategory.Equals("Identity Card"))
+            if (string.IsNullOrEmpty(documentCategory))
             {
-                IdentityCard identityCard = new IdentityCard();
+                continue;
+            }
 
-                identityCard.ScannedDocumentType = ScannedDocumentType.Id;
-                identityCard.DocumentCategory = documentCategory;
-
-                PropertyInfo[] properties = identityCard.GetType().GetProperties();
-
-                foreach (var property in properties)
-                {
-                    if (Attribute.IsDefined(property, typeof(RegulaAttributes)) == false || property.CanWrite == false)
-                    {
-                        continue;
-                    }
-
-                    string propertyName = property.Name;
-
-                    var attribute = typeof(IdentityCard).GetCustomAttribute<RegulaAttributes>(propertyName);
-
-                    string extractedValue;
-
-                    if (string.IsNullOrEmpty(attribute.FieldToBeFoundValue))
-                    {
-                        extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
-                    }
-                    else if (string.IsNullOrEmpty(attribute.SubFieldName))
-                    {
-                        extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
-                            attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
-                    }
-                    else
-                    {
-                        extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
-                            attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
-                    }
-
-                    property.SetValue(identityCard, extractedValue);
-                }
+            if (documentCategory.Equals("Identity Card"))
+            {
+                var identityCard = CreateIdentityCard(container,documentCategory);
 
                 idsAndDocumentsList.Add(identityCard);
+            }
+            else if (documentCategory.Equals("Passport"))
+            {
+                var passport = CreatePassport(container, documentCategory);
+
+                idsAndDocumentsList.Add(passport);
             }
         }
 
         return idsAndDocumentsList;
+    }
+
+    private IIDsAndDocuments CreateIdentityCard(dynamic container,string documentCategory)
+    {
+        IdentityCard identityCard = new IdentityCard();
+
+        identityCard.ScannedDocumentType = ScannedDocumentType.Id;
+        identityCard.DocumentCategory = documentCategory;
+
+        PropertyInfo[] properties = identityCard.GetType().GetProperties();
+
+        foreach (var property in properties)
+        {
+            if (Attribute.IsDefined(property, typeof(RegulaAttributes)) == false || property.CanWrite == false)
+            {
+                continue;
+            }
+
+            string propertyName = property.Name;
+
+            var attribute = typeof(IdentityCard).GetCustomAttribute<RegulaAttributes>(propertyName);
+
+            string extractedValue;
+
+            if (string.IsNullOrEmpty(attribute.FieldToBeFoundValue))
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
+            }
+            else if (string.IsNullOrEmpty(attribute.SubFieldName))
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
+            }
+            else
+            {
+                extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
+                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
+            }
+
+            property.SetValue(identityCard, extractedValue);
+        }
+
+        return identityCard;
+    }
+
+    private IIDsAndDocuments CreatePassport(dynamic container, string documentCategory)
+    {
+        Passport passport = new Passport();
+
+        passport.ScannedDocumentType = ScannedDocumentType.Passport;
+        passport.DocumentCategory = documentCategory;
+
+        PropertyInfo[] properties = passport.GetType().GetProperties();
+
+        foreach (var property in properties)
+        {
+            if (Attribute.IsDefined(property, typeof(RegulaAttributes)) == false || property.CanWrite == false)
+            {
+                continue;
+            }
+
+            string propertyName = property.Name;
+
+            var attribute = typeof(Passport).GetCustomAttribute<RegulaAttributes>(propertyName);
+
+            string extractedValue;
+
+            if (string.IsNullOrEmpty(attribute.FieldToBeFoundValue))
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
+            }
+            else if (string.IsNullOrEmpty(attribute.SubFieldName))
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
+            }
+            else
+            {
+                extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
+                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
+            }
+
+            property.SetValue(passport, extractedValue);
+        }
+
+        return passport;
     }
 }

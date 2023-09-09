@@ -10,9 +10,9 @@ public class MonitoringManager
     {
         OperationResult operationResult = new OperationResult();
 
-        IList<IIDsAndDocuments> mails = await new MonitoringBusiness().GetMails();
+        IDsAndDocumentsResults IDsAndDocumentsResults = await new MonitoringBusiness().GetMails();
 
-        operationResult.ResultObject = mails;
+        operationResult.ResultObject = IDsAndDocumentsResults;
         return operationResult;
     }
 }

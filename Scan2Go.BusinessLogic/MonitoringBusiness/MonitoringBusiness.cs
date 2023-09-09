@@ -1,6 +1,7 @@
 ﻿using MailKit.Search;
 using MailReader;
 using Scan2Go.Entity.IdsAndDocuments;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
@@ -10,17 +11,43 @@ public class MonitoringBusiness
     private MonitoringLogic _monitoringLogic;
     private MonitoringLogic MonitoringLogic => _monitoringLogic ??= new MonitoringLogic();
 
-    public async Task<IList<IIDsAndDocuments>> GetMails()
+    public async Task<IDsAndDocumentsResults> GetMails()
     {
         MailReadingResults mailReadingResults = await ReadMail();
 
         IList<string> base64List = await MonitoringLogic.ExtractAttachmentsAsBase64(mailReadingResults);
 
+        //Handle this with a proper message later
+        if (base64List.Any() == false)
+        {
+            return new IDsAndDocumentsResults();
+        }
+
         dynamic response = await CallRegulaApiAndGetResponse(base64List);
+
+        //Handle this with a proper message later
+        if (response == null)
+        {
+            return new IDsAndDocumentsResults();
+        }
 
         IList<IIDsAndDocuments> idAndDocumentsList = MonitoringLogic.PrepareIdAndDocumentsResultFromResponse(response);
 
-        return idAndDocumentsList;
+        IDsAndDocumentsResults IDsAndDocumentsResults = new IDsAndDocumentsResults();
+        //TODO Move this later to the constroctor of IDsAndDocumentsResults
+        foreach (IIDsAndDocuments idAndDocument in idAndDocumentsList)
+        {
+            if (idAndDocument.ScannedDocumentType == Enums.ScannedDocumentType.Id)
+            {
+                IDsAndDocumentsResults.IdDocuments.Add((IdentityCard)idAndDocument);
+            }
+            else if (idAndDocument.ScannedDocumentType == Enums.ScannedDocumentType.Passport)
+            {
+                IDsAndDocumentsResults.Passports.Add((Passport)idAndDocument);
+            }
+        }
+
+        return IDsAndDocumentsResults;
     }
 
     /// <summary>

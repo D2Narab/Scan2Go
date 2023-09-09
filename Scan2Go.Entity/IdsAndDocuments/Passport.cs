@@ -4,21 +4,27 @@ using Utility.Extensions;
 
 namespace Scan2Go.Entity.IdsAndDocuments
 {
-    public class IdentityCard : IIDsAndDocuments
+    public class Passport : IIDsAndDocuments
     {
+        [RegulaAttributes("fieldName", "Authority", "value")]
+        public string Authority { get; set; }
+
         [RegulaAttributes("FieldName", "Date of Birth", "Buf_Text")]
         public string DateOfBirth { get; set; }
 
-        [RegulaAttributes("FieldName", "Date of Expiry", "Buf_Text")]
+        [RegulaAttributes("FieldMask", "{DAY}{SPACE}{MONTH}{SPACE}{YEAR}", "Buf_Text")]
         public string DateOfExpiry { get; set; }
+
+        [RegulaAttributes("FieldName", "Date of Issue", "Buf_Text")]
+        public string DateOfIssue { get; set; }
 
         public string DocumentCategory { get; set; }
 
-        [RegulaAttributes("DocumentName")]
-        public string DocumentType { get; set; }
-
         [RegulaAttributes("fieldName", "Document front side", "valueList", "value")]
         public string DocumentFrontSide { get; set; }
+
+        [RegulaAttributes("DocumentName")]
+        public string DocumentName { get; set; }
 
         [RegulaAttributes("FieldName", "Document Number", "Buf_Text")]
         public string DocumentNumber { get; set; }
@@ -38,10 +44,11 @@ namespace Scan2Go.Entity.IdsAndDocuments
         [RegulaAttributes("FieldName", "Personal Number", "Buf_Text")]
         public string PersonalNumber { get; set; }
 
+        [RegulaAttributes("fieldName", "Place of Birth", "value")]
+        public string PlaceOFBİrth { get; set; }
+
         [RegulaAttributes("FieldName", "Portrait", "image", "image")]
         public string PortraitImage { get; set; }
-
-        public string ScannedDocumentTypeName => ScannedDocumentType.ToString();
 
         [RegulaAttributes("FieldName", "Signature", "image", "image")]
         public string Signature { get; set; }

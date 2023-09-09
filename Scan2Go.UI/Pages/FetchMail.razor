@@ -9,7 +9,7 @@
 
 <p>This component demonstrates fetching mail data from the outlook and show progress data from Regula API responses.</p>
 
-@if (IdentityCards.Any() == false)
+@if (IdentityCards.Any() == false && Passports.Any() == false)
 {
     <p><em>Waiting response from mail fetching...</em></p>
 }
@@ -31,7 +31,7 @@ else
                     <p><strong>Document Front side:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.DocumentFrontSide) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image"/>
+                        <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image" />
                     }
                     else
                     {
@@ -40,7 +40,7 @@ else
                     <p><strong>Portrait:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image"/>
+                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
                     }
                     else
                     {
@@ -49,7 +49,7 @@ else
                     <p><strong>Ghost Portrait:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.GhostPortrait) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image"/>
+                        <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image" />
                     }
                     else
                     {
@@ -58,7 +58,7 @@ else
                     <p><strong>Signature:</strong></p>
                     @if (string.IsNullOrWhiteSpace(identityCard.Signature) == false)
                     {
-                        <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature"/>
+                        <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature" />
                     }
                     else
                     {
@@ -98,6 +98,94 @@ else
                         <tr>
                             <td><strong>Age:</strong></td>
                             <td>@identityCard.Age</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @foreach (var passport in Passports)
+        {
+            <div class="identity-card">
+                <div class="portrait">
+                    <p><strong>Document category:</strong></p>
+                    <td>@passport.DocumentCategory</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document type:</strong></p>
+                    <td>@passport.DocumentName</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document Image:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(passport.DocumentFrontSide) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@passport.DocumentFrontSide" alt="Document Front Side Image" />
+                    }
+                    else
+                    {
+                        <p>No document front side image available</p>
+                    }
+                    <p><strong>Portrait:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(passport.PortraitImage) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@passport.PortraitImage" alt="Portrait Image" />
+                    }
+                    else
+                    {
+                        <p>No Portrait available</p>
+                    }
+                    <p><strong>Ghost Portrait:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(passport.GhostPortrait) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@passport.GhostPortrait" alt="Ghost Image" />
+                    }
+                    else
+                    {
+                        <p>No Ghost Portrait available</p>
+                    }
+                    <p><strong>Signature:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(passport.Signature) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@passport.Signature" alt="Signature" />
+                    }
+                    else
+                    {
+                        <p>No Signature available</p>
+                    }
+                </div>
+                <div class="details">
+                    <table>
+                        <tr>
+                            <td><strong>Date Of Expiry:</strong></td>
+                            <td class="@(passport.IsExpired ? "expired" : "not-expired")">@passport.DateOfExpiry</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Name:</strong></td>
+                            <td>@passport.Name @passport.Surname</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Document Number:</strong></td>
+                            <td>@passport.DocumentNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Personal Number:</strong></td>
+                            <td>@passport.PersonalNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Issuing State:</strong></td>
+                            <td>@passport.IssuingStateName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nationality:</strong></td>
+                            <td>@passport.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date Of Birth:</strong></td>
+                            <td>@passport.DateOfBirth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Age:</strong></td>
+                            <td>@passport.Age</td>
                         </tr>
                     </table>
                 </div>
@@ -183,6 +271,7 @@ else
 
 @code {
     private IList<IdentityCard> IdentityCards = new List<IdentityCard>();
+    private IList<Passport> Passports = new List<Passport>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -195,7 +284,15 @@ else
                 var jsonResponseString = await response.Content.ReadAsStringAsync();
                 dynamic jsonResponseDynamic = JsonConvert.DeserializeObject<dynamic>(jsonResponseString);
 
-                IdentityCards = jsonResponseDynamic.resultObject.ToObject<List<IdentityCard>>();
+                // if (jsonResponseDynamic.resultObject.idDocuments != null)
+                // {
+                    IdentityCards = jsonResponseDynamic.resultObject.idDocuments.ToObject<List<IdentityCard>>();
+                //}
+
+                // if (jsonResponseDynamic.resultObject.passports != null)
+                // {
+                    Passports = jsonResponseDynamic.resultObject.passports.ToObject<List<Passport>>();
+                //}
             }
             else
             {
