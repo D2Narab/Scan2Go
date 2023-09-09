@@ -105,21 +105,28 @@ public class MonitoringLogic
 
             var attribute = typeof(IdentityCard).GetCustomAttribute<RegulaAttributes>(propertyName);
 
-            string extractedValue;
+            string extractedValue=string.Empty;
 
-            if (string.IsNullOrEmpty(attribute.FieldToBeFoundValue))
+            if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameOnly)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
             }
-            else if (string.IsNullOrEmpty(attribute.SubFieldName))
+            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
                     attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
             }
-            else
+            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)
             {
                 extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
                     attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
+            }
+            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.TwoMainFieldNamesWithTwoValuesAndSecondFieldName)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    attribute.FieldName, attribute.FieldToBeFoundValue,
+                    attribute.SecondMainFieldName, attribute.SecondMainFieldToBeFoundValue,
+                    attribute.SecondaryFieldName);
             }
 
             property.SetValue(identityCard, extractedValue);
@@ -148,21 +155,28 @@ public class MonitoringLogic
 
             var attribute = typeof(Passport).GetCustomAttribute<RegulaAttributes>(propertyName);
 
-            string extractedValue;
+            string extractedValue = string.Empty;
 
-            if (string.IsNullOrEmpty(attribute.FieldToBeFoundValue))
+            if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameOnly)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
             }
-            else if (string.IsNullOrEmpty(attribute.SubFieldName))
+            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
                     attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
             }
-            else
+            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)
             {
                 extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
                     attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
+            }
+            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.TwoMainFieldNamesWithTwoValuesAndSecondFieldName)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    attribute.FieldName, attribute.FieldToBeFoundValue,
+                    attribute.SecondMainFieldName, attribute.SecondMainFieldToBeFoundValue,
+                    attribute.SecondaryFieldName);
             }
 
             property.SetValue(passport, extractedValue);

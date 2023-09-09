@@ -6,47 +6,51 @@ namespace Scan2Go.Entity.IdsAndDocuments
 {
     public class IdentityCard : IIDsAndDocuments
     {
-        [RegulaAttributes("FieldName", "Date of Birth", "Buf_Text")]
+        [RegulaAttributes(new[] { "FieldName", "Date of Birth", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string DateOfBirth { get; set; }
 
-        [RegulaAttributes("FieldName", "Date of Expiry", "Buf_Text")]
+        [RegulaAttributes(new[] { "FieldName", "Date of Expiry", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string DateOfExpiry { get; set; }
 
         public string DocumentCategory { get; set; }
 
-        [RegulaAttributes("DocumentName")]
+        [RegulaAttributes(new[] { "DocumentName" }, DynamicJSonExtractionType.MainFieldNameOnly)]
         public string DocumentType { get; set; }
 
-        [RegulaAttributes("fieldName", "Document front side", "valueList", "value")]
+        [RegulaAttributes(new[] { "fieldName", "Document front side", "valueList", "value" },
+            DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)]
         public string DocumentFrontSide { get; set; }
 
-        [RegulaAttributes("FieldName", "Document Number", "Buf_Text")]
+        [RegulaAttributes(new[] { "FieldName", "Document Number", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string DocumentNumber { get; set; }
 
-        [RegulaAttributes("FieldName", "Ghost portrait", "image", "image")]
+        [RegulaAttributes(new[] { "FieldName", "Ghost portrait", "image", "image" },
+            DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)]
         public string GhostPortrait { get; set; }
 
-        [RegulaAttributes("fieldName", "Issuing State Name", "value")]
+        [RegulaAttributes(new[] { "fieldName", "Issuing State Name", "value" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string IssuingStateName { get; set; }
 
-        [RegulaAttributes("FieldName", "Given Names", "Buf_Text")]
+        [RegulaAttributes(new[] { "FieldName", "Given Names", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string Name { get; set; }
 
-        [RegulaAttributes("fieldName", "Nationality", "value")]
+        [RegulaAttributes(new[] { "fieldName", "Nationality", "value" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string Nationality { get; set; }
 
-        [RegulaAttributes("FieldName", "Personal Number", "Buf_Text")]
+        [RegulaAttributes(new[] { "FieldName", "Personal Number", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string PersonalNumber { get; set; }
 
-        [RegulaAttributes("FieldName", "Portrait", "image", "image")]
+        [RegulaAttributes(new[] { "FieldName", "Portrait", "image", "image" },
+            DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)]
         public string PortraitImage { get; set; }
 
         public string ScannedDocumentTypeName => ScannedDocumentType.ToString();
 
-        [RegulaAttributes("FieldName", "Signature", "image", "image")]
+        [RegulaAttributes(new[] { "FieldName", "Signature", "image", "image" },
+            DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)]
         public string Signature { get; set; }
 
-        [RegulaAttributes("FieldName", "Surname", "Buf_Text")]
+        [RegulaAttributes(new[] { "FieldName", "Surname", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string Surname { get; set; }
 
         #region IDsAndDocuments

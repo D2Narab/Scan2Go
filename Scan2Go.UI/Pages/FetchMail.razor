@@ -103,7 +103,9 @@ else
                 </div>
             </div>
         }
-
+    </div>
+    /****************************************************************************************************************************************/
+    <div class="identity-cards">
         @foreach (var passport in Passports)
         {
             <div class="identity-card">
@@ -176,8 +178,20 @@ else
                             <td>@passport.IssuingStateName</td>
                         </tr>
                         <tr>
+                            <td><strong>Authority:</strong></td>
+                            <td>@passport.Authority</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date of Issue:</strong></td>
+                            <td>@passport.DateOfIssue</td>
+                        </tr>
+                        <tr>
                             <td><strong>Nationality:</strong></td>
                             <td>@passport.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Place of Birth:</strong></td>
+                            <td>@passport.PlaceOFBirth</td>
                         </tr>
                         <tr>
                             <td><strong>Date Of Birth:</strong></td>

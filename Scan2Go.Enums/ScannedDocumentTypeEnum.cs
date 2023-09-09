@@ -7,3 +7,11 @@ public enum ScannedDocumentType
     DrivingLicense = 3,
     Visa = 4
 }
+
+public enum DynamicJSonExtractionType
+{
+    MainFieldNameOnly = 1,
+    MainFieldNameWithValueAndSecondFieldName = 2,
+    MainFieldNameWithValueAndSecondFieldNameWithSubValue = 3,
+    TwoMainFieldNamesWithTwoValuesAndSecondFieldName = 4
+}
