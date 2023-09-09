@@ -1,15 +1,9 @@
-﻿using MailReader;
-using MimeKit;
-using Newtonsoft.Json.Linq;
-using Org.BouncyCastle.Asn1.Ocsp;
+﻿using MimeKit;
+using Scan2Go.Entity.BaseClasses;
 using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Enums;
-using System.Data.Common;
-using System.Drawing;
-using Scan2Go.Entity.BaseClasses;
-using Utility.Extensions;
-using Scan2Go.Entity.Cars;
 using System.Reflection;
+using Utility.Extensions;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
@@ -25,7 +19,7 @@ public class MonitoringLogic
 
             foreach (var attachment in message.Attachments)
             {
-                if (attachment is not MimePart mimePart 
+                if (attachment is not MimePart mimePart
                     /*|| mimePart.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) == false*/)
                 {
                     //Console.WriteLine("Error: Attachment is not a PDF.");
@@ -70,7 +64,7 @@ public class MonitoringLogic
 
             if (documentCategory.Equals("Identity Card"))
             {
-                var identityCard = CreateIdentityCard(container,documentCategory);
+                var identityCard = CreateIdentityCard(container, documentCategory);
 
                 idsAndDocumentsList.Add(identityCard);
             }
@@ -85,52 +79,14 @@ public class MonitoringLogic
         return idsAndDocumentsList;
     }
 
-    private IIDsAndDocuments CreateIdentityCard(dynamic container,string documentCategory)
+    private IIDsAndDocuments CreateIdentityCard(dynamic container, string documentCategory)
     {
         IdentityCard identityCard = new IdentityCard();
 
         identityCard.ScannedDocumentType = ScannedDocumentType.Id;
         identityCard.DocumentCategory = documentCategory;
 
-        PropertyInfo[] properties = identityCard.GetType().GetProperties();
-
-        foreach (var property in properties)
-        {
-            if (Attribute.IsDefined(property, typeof(RegulaAttributes)) == false || property.CanWrite == false)
-            {
-                continue;
-            }
-
-            string propertyName = property.Name;
-
-            var attribute = typeof(IdentityCard).GetCustomAttribute<RegulaAttributes>(propertyName);
-
-            string extractedValue=string.Empty;
-
-            if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameOnly)
-            {
-                extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
-            }
-            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)
-            {
-                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
-                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
-            }
-            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)
-            {
-                extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
-                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
-            }
-            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.TwoMainFieldNamesWithTwoValuesAndSecondFieldName)
-            {
-                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
-                    attribute.FieldName, attribute.FieldToBeFoundValue,
-                    attribute.SecondMainFieldName, attribute.SecondMainFieldToBeFoundValue,
-                    attribute.SecondaryFieldName);
-            }
-
-            property.SetValue(identityCard, extractedValue);
-        }
+        FillPropertiesAccordingToAttributeValues(container, identityCard);
 
         return identityCard;
     }
@@ -142,7 +98,14 @@ public class MonitoringLogic
         passport.ScannedDocumentType = ScannedDocumentType.Passport;
         passport.DocumentCategory = documentCategory;
 
-        PropertyInfo[] properties = passport.GetType().GetProperties();
+        FillPropertiesAccordingToAttributeValues(container, passport);
+
+        return passport;
+    }
+
+    private void FillPropertiesAccordingToAttributeValues(dynamic container, IIDsAndDocuments iDsAndDocuments)
+    {
+        PropertyInfo[] properties = iDsAndDocuments.GetType().GetProperties();
 
         foreach (var property in properties)
         {
@@ -153,35 +116,42 @@ public class MonitoringLogic
 
             string propertyName = property.Name;
 
-            var attribute = typeof(Passport).GetCustomAttribute<RegulaAttributes>(propertyName);
+            RegulaAttributes regulaAttributes = null;
+
+            if (iDsAndDocuments is IdentityCard)
+            {
+                regulaAttributes = typeof(IdentityCard).GetCustomAttribute<RegulaAttributes>(propertyName);
+            }
+            else if (iDsAndDocuments is Passport)
+            {
+                regulaAttributes = typeof(Passport).GetCustomAttribute<RegulaAttributes>(propertyName);
+            }
 
             string extractedValue = string.Empty;
 
-            if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameOnly)
+            if (regulaAttributes.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameOnly)
             {
-                extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, attribute.FieldName);
+                extractedValue = PrimitiveExtensions.GetFieldValueAccordingToFieldName(container, regulaAttributes.FieldName);
             }
-            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)
+            else if (regulaAttributes.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
-                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName);
+                    regulaAttributes.FieldName, regulaAttributes.FieldToBeFoundValue, regulaAttributes.SecondaryFieldName);
             }
-            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)
+            else if (regulaAttributes.DynamicJSonExtractionType == DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldNameWithSubValue)
             {
                 extractedValue = PrimitiveExtensions.GetSubFieldValueInTheSameLevelOfAnotherField(container,
-                    attribute.FieldName, attribute.FieldToBeFoundValue, attribute.SecondaryFieldName, attribute.SubFieldName);
+                    regulaAttributes.FieldName, regulaAttributes.FieldToBeFoundValue, regulaAttributes.SecondaryFieldName, regulaAttributes.SubFieldName);
             }
-            else if (attribute.DynamicJSonExtractionType == DynamicJSonExtractionType.TwoMainFieldNamesWithTwoValuesAndSecondFieldName)
+            else if (regulaAttributes.DynamicJSonExtractionType == DynamicJSonExtractionType.TwoMainFieldNamesWithTwoValuesAndSecondFieldName)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
-                    attribute.FieldName, attribute.FieldToBeFoundValue,
-                    attribute.SecondMainFieldName, attribute.SecondMainFieldToBeFoundValue,
-                    attribute.SecondaryFieldName);
+                    regulaAttributes.FieldName, regulaAttributes.FieldToBeFoundValue,
+                    regulaAttributes.SecondMainFieldName, regulaAttributes.SecondMainFieldToBeFoundValue,
+                    regulaAttributes.SecondaryFieldName);
             }
 
-            property.SetValue(passport, extractedValue);
+            property.SetValue(iDsAndDocuments, extractedValue);
         }
-
-        return passport;
     }
 }
