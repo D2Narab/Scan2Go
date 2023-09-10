@@ -382,26 +382,31 @@ else
     }
 
     .identity-card {
-        border: 1px solid #ccc;
-        padding: 10px;
+        border: 1px solid #e0e0e0;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
         display: flex;
-        flex-direction: row; /* Align images and table horizontally */
+        flex-direction: row;
         max-width: 900px;
     }
 
     .portrait {
-        flex: 1; /* Make the portrait section take up 50% of the available space */
-        margin-right: 10px; /* Add some spacing between images and table */
+        flex: 1;
+        margin-right: 20px;
     }
 
         .portrait img {
             max-width: 100%;
             height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
     .details {
-        flex: 1; /* Make the details section take up 50% of the available space */
-        margin-left: 10px; /* Add some spacing between images and table */
+        flex: 1;
+        margin-left: 20px;
     }
 
     table {
@@ -409,15 +414,16 @@ else
         border-collapse: collapse;
         border-spacing: 0;
         background-color: #fff;
-        border-radius: 5px;
+        border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
         table th,
         table td {
-            padding: 12px 15px;
+            padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
         }
 
         table th {
@@ -432,11 +438,6 @@ else
             background-color: #e0e0e0;
         }
 
-        table strong {
-            font-weight: normal;
-            color: #333;
-        }
-
     .expired {
         color: red;
     }
@@ -445,6 +446,7 @@ else
         color: green;
     }
 </style>
+
 
 
 
