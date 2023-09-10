@@ -9,7 +9,7 @@
 
 <p>This component demonstrates fetching mail data from the outlook and show progress data from Regula API responses.</p>
 
-@if (IdentityCards.Any() == false && Passports.Any() == false && DrivingLicenses.Any() == false)
+@if (IdentityCards.Any() == false && Passports.Any() == false && DrivingLicenses.Any() == false && Visas.Any() == false)
 {
     <p><em>Waiting response from mail fetching...</em></p>
 }
@@ -295,6 +295,82 @@ else
             </div>
         }
     </div>
+    /****************************************************************************************************************************************/
+    <div class="identity-cards">
+        @foreach (var visa in Visas)
+        {
+            <div class="identity-card">
+                <div class="portrait">
+                    <p><strong>Document category:</strong></p>
+                    <td>@visa.DocumentCategory</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document type:</strong></p>
+                    <td>@visa.DocumentType</td>
+                    <p><strong></strong></p>
+
+                    <p><strong>Document Image:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(visa.DocumentFrontSide) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@visa.DocumentFrontSide" alt="Document Front Side Image" />
+                    }
+                    else
+                    {
+                        <p>No document front side image available</p>
+                    }
+                    <p><strong>Portrait:</strong></p>
+                    @if (string.IsNullOrWhiteSpace(visa.PortraitImage) == false)
+                    {
+                        <img src="data:image/jpeg;base64,@visa.PortraitImage" alt="Portrait Image" />
+                    }
+                    else
+                    {
+                        <p>No Portrait available</p>
+                    }
+                </div>
+                <div class="details">
+                    <table>
+                        <tr>
+                            <td><strong>Date Of Expiry:</strong></td>
+                            <td class="@(visa.IsExpired ? "expired" : "not-expired")">@visa.DateOfExpiry</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Name:</strong></td>
+                            <td>@visa.Name @visa.Surname</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Visa Number:</strong></td>
+                            <td>@visa.VisaNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Issuing State:</strong></td>
+                            <td>@visa.IssuingStateName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date of Issue:</strong></td>
+                            <td>@visa.DateOfIssue</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Duration of state:</strong></td>
+                            <td>@visa.DurationOfStay</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Valid from:</strong></td>
+                            <td>@visa.VisaValidFrom</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date Of Birth:</strong></td>
+                            <td>@visa.DateOfBirth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Age:</strong></td>
+                            <td>@visa.Age</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
 }
 
 <style>
@@ -376,6 +452,7 @@ else
     private IList<IdentityCard> IdentityCards = new List<IdentityCard>();
     private IList<Passport> Passports = new List<Passport>();
     private IList<DrivingLicense> DrivingLicenses = new List<DrivingLicense>();
+    private IList<Visa> Visas = new List<Visa>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -392,6 +469,7 @@ else
                 IdentityCards = jsonResponseDynamic.resultObject.idDocuments.ToObject<List<IdentityCard>>();
                 Passports = jsonResponseDynamic.resultObject.passports.ToObject<List<Passport>>();
                 DrivingLicenses = jsonResponseDynamic.resultObject.drivingLicenses.ToObject<List<DrivingLicense>>();
+                Visas = jsonResponseDynamic.resultObject.visas.ToObject<List<Visa>>();
             }
             else
             {

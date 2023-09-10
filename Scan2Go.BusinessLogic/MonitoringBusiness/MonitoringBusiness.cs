@@ -49,6 +49,10 @@ public class MonitoringBusiness
             {
                 IDsAndDocumentsResults.DrivingLicenses.Add((DrivingLicense)idAndDocument);
             }
+            else if (idAndDocument.ScannedDocumentType == Enums.ScannedDocumentType.Visa)
+            {
+                IDsAndDocumentsResults.Visas.Add((Visa)idAndDocument);
+            }
         }
 
         return IDsAndDocumentsResults;

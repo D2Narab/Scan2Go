@@ -81,9 +81,27 @@ public class MonitoringLogic
 
                 idsAndDocumentsList.Add(drivingLicense);
             }
+            else if (documentCategory.Equals("Visa"))
+            {
+                var visa = CreateVisaLicense(container, documentCategory);
+
+                idsAndDocumentsList.Add(visa);
+            }
         }
 
         return idsAndDocumentsList;
+    }
+
+    private IIDsAndDocuments CreateVisaLicense(object container, string documentCategory)
+    {
+        Visa visa = new Visa();
+
+        visa.ScannedDocumentType = ScannedDocumentType.Visa;
+        visa.DocumentCategory = documentCategory;
+
+        FillPropertiesAccordingToAttributeValues(container, visa);
+
+        return visa;
     }
 
     private IIDsAndDocuments CreateDrivingLicense(dynamic container, string documentCategory)
@@ -148,6 +166,10 @@ public class MonitoringLogic
             else if (iDsAndDocuments is DrivingLicense)
             {
                 regulaAttributes = typeof(DrivingLicense).GetCustomAttribute<RegulaAttributes>(propertyName);
+            }
+            else if (iDsAndDocuments is Visa)
+            {
+                regulaAttributes = typeof(Visa).GetCustomAttribute<RegulaAttributes>(propertyName);
             }
 
             string extractedValue = string.Empty;
