@@ -19,6 +19,11 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="(() => NavigateToDynamicBaseList(Endpoints.GetCustomersList))">
+                <span class="oi oi-plus" aria-hidden="true"></span> Customers
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
                 <span class="oi oi-plus" aria-hidden="true"></span> Cars
             </NavLink>
