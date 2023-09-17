@@ -47,11 +47,11 @@ namespace Scan2Go.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("GetUsersList")]
-        public IActionResult GetUsersList()
+        public IActionResult GetUsersList(UsersSearchCriteriaModel usersSearchCriteriaModel)
         {
-            OperationResult operationResult = new UsersManager(this.CurrentUser).GetUsersList();
+            OperationResult operationResult = new UsersManager(this.CurrentUser).GetUsersList(usersSearchCriteriaModel);
             return this.ReturnOperationResult(operationResult);
         }
 

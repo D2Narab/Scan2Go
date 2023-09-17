@@ -61,9 +61,9 @@ public class UsersFacade : FacadeBase
         return entityCollectionBase;
     }
 
-    public ListSourceBase GetUsersListItems()
+    public ListSourceBase GetUsersListItems(UsersSearchCriteria usersSearchCriteria)
     {
-        DataTable dataTable = new UsersDAO().GetUsersListItems();
+        DataTable dataTable = new UsersDAO().GetUsersListItems(usersSearchCriteria);
 
         ListSourceBase listSourceBase = new ListSourceBase();
         listSourceBase.ListItemBases = new List<ListItemBase>();

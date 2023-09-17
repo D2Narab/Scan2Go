@@ -32,7 +32,8 @@ public class UsersDAO : Scan2GoDataLayerBase
         return operationResult;
     }
 
-    public DataTable GetUsersListItems()
+    //TODO will use the Criteria later if needed.
+    public DataTable GetUsersListItems(UsersSearchCriteria usersSearchCriteria)
     {
         SqlSelectFactory sqlSelectFactory = UsersSql.GetUsersListItems();
 

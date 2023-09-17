@@ -36,6 +36,7 @@ public class BaseManager
                 cfg.CreateMap<UsersModel, UserListItem>();
                 cfg.CreateMap<UserListItem, UserListItemModel>();
                 cfg.CreateMap<UserListItem, UsersModel>();
+                cfg.CreateMap<UsersSearchCriteriaModel, UsersSearchCriteria>();
                 cfg.CreateMap<ListSourceBase, ListSourceModel<UsersModel>>();
                 cfg.CreateMap<ListSourceBase, ListSourceModel<UserListItemModel>>();
                 cfg.CreateMap<ListItemBase, ListItemModelBase<UserListItemModel>>();
