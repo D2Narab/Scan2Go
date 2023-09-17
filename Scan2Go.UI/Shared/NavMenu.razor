@@ -15,22 +15,22 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                🏠 Home
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" @onclick="(() => NavigateToDynamicBaseList(Endpoints.GetCustomersList))">
-                <span class="oi oi-plus" aria-hidden="true"></span> Customers
+                👤 Customers
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Cars
+                🚗 Cars
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Rents
+                💼 Rents
             </NavLink>
         </div>
         <div class="nav-item px-3">
@@ -41,7 +41,7 @@
         <div class="nav-item px-3">
             <!-- Settings main menu without the arrow icon and collapse class -->
             <a class="nav-link" href="#" @onclick="ToggleSettingsSubMenu">
-                <span class="oi oi-wrench" aria-hidden="true"></span> Settings
+                ⚙️ Settings
             </a>
             <!-- Users submenu under Settings -->
             @if (_settingsSubMenuOpen)
@@ -49,7 +49,7 @@
                 <div class="px-3" id="settingsSubMenu">
                     <div class="nav-item">
                         <NavLink class="nav-link" @onclick="(() => NavigateToDynamicBaseList(Endpoints.GetUsersList))">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Users
+                            👥 Users
                         </NavLink>
                     </div>
                     <!-- Add more submenu items here if needed -->
