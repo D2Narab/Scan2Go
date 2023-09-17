@@ -48,11 +48,13 @@ public class UsersManager : BaseManager
         return operationResult;
     }
 
-    public OperationResult GetUsersList()
+    public OperationResult GetUsersList(UsersSearchCriteriaModel usersSearchCriteriaModel)
     {
+        UsersSearchCriteria usersSearchCriteria = Mapper.Map<UsersSearchCriteriaModel, UsersSearchCriteria>(usersSearchCriteriaModel);
+
         OperationResult operationResult = new OperationResult();
 
-        ListSourceBase users = new UsersBusiness(operationResult, this.user).GetUsersList();
+        ListSourceBase users = new UsersBusiness(operationResult, this.user).GetUsersList(usersSearchCriteria);
 
         operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<UserListItemModel>>(users);
 

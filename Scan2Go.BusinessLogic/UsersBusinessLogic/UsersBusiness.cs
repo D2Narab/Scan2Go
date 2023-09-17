@@ -41,9 +41,9 @@ public class UsersBusiness : BaseBusiness
         return UsersFacade.GetUsers(userId);
     }
 
-    public ListSourceBase GetUsersList()
+    public ListSourceBase GetUsersList(UsersSearchCriteria usersSearchCriteria)
     {
-        return UsersFacade.GetUsersListItems();
+        return UsersFacade.GetUsersListItems(usersSearchCriteria);
     }
 
     public Users Login(string userName, string password, bool needsValidationFromContext = true)

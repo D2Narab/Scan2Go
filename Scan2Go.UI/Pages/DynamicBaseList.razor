@@ -6,6 +6,7 @@
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.Text.Json
 @using Scan2Go.UI.BaseClasses
+@using System.Text;
 @using Utility.Enum.GeneralEnums
 @using Utility.Extensions
 
@@ -166,24 +167,42 @@ else
     {
         // Reload the users list when the user is successfully saved
         await LoadEntityList();
-    }   
+    }
 
     private async Task LoadEntityList()
     {
         try
         {
-            var response = await Http.GetAsync(listEndpointDecoded);
+            string entityName = listEndpointDecoded.Split('/')[3];
+
+            if (entityName.EndsWith('s'))
+            {
+                entityName = entityName.Substring(0,entityName.Length - 1);
+            }
+
+            var requestBody = new
+            {
+                orderByColumn = $"{entityName}Id",
+                range = 50,
+                sortType = "ASC",
+                startFrom = 0
+            };
+
+            var jsonRequest = JsonSerializer.Serialize(requestBody);
+
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            var response = await Http.PostAsync(listEndpointDecoded, content);
 
             if (response.IsSuccessStatusCode)
             {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
             }
             else
             {
                 Console.WriteLine("Failed to load list: ");
             }
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
         }
         catch (Exception e)
         {
