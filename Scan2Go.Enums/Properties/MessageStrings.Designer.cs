@@ -203,5 +203,15 @@ namespace Scan2Go.Enums.Properties {
                 return ResourceManager.GetString("UserPasswordCannotBeEmpty", resourceCulture);
             }
         }
-    }
+
+
+/// <summary>
+///   Looks up a localized string similar to CustomersList.
+/// </summary>
+public static string CustomersList {
+get {
+return ResourceManager.GetString("CustomersList", resourceCulture);
+}
+}
+}
 }

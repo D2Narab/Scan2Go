@@ -6,6 +6,16 @@ public class Endpoints : DataLayerEnumBase
 {
     public const string endpointAddress = "https://localhost:44387/";
 
+    #region Customers
+
+    public static readonly Endpoints CreateCustomer = new Endpoints("Customers/CreateCustomer");
+    public static readonly Func<int, Endpoints> DeleteCustomer = new Func<int, Endpoints>(param => new Endpoints($"Customers/DeleteCustomer/{param}"));
+    public static readonly Func<int, Endpoints> GetCustomer = new Func<int, Endpoints>(param => new Endpoints($"Customers/GetCustomer/{param}"));
+    public static readonly Endpoints GetCustomersList = new Endpoints("Customers/GetCustomersList");
+    public static readonly Endpoints SaveCustomer = new Endpoints("Customers/SaveCustomer");
+
+    #endregion Customers
+
     #region Users
 
     public static readonly Endpoints CreateUser = new Endpoints("Users/CreateUser");

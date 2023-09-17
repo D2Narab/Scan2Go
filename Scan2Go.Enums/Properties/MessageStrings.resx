@@ -165,4 +165,8 @@
   <data name="DocumentListRecordInfo" xml:space="preserve">
     <value>DocumentListRecordInfo</value>
   </data>
+
+<data name="CustomersList" xml:space="preserve">
+<value>CustomersList</value>
+</data>
 </root>

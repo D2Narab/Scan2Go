@@ -4,7 +4,8 @@ public enum Modules
 {
     Translations = 1,
     User = 2,
-    Cars = 3
+    Cars = 3,
+	Customers = 4
 }
 
 public enum TranslationUsageArea
@@ -15,5 +16,6 @@ public enum TranslationUsageArea
 }
 public enum ListItemTypes
 {
-    UserListItem = 1
+    UserListItem = 1,
+	CustomersListItem = 2
 }

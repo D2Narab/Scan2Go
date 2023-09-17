@@ -7,5 +7,7 @@ public enum Operations
     DeleteUser = 3,
     CreateUser = 4,
 	DeleteCars = 5,
-	SaveCars = 6
+	SaveCars = 6,
+	DeleteCustomers = 7,
+	SaveCustomers = 8
 }
