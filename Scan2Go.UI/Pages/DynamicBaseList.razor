@@ -145,21 +145,18 @@ else
 
     [Parameter]
     public int SetHashCode { get; set; }
-
     public PassingObject PassedObject { get; set; }
-    // protected override async Task OnParametersSetAsync()
-    // {
-    //     // Decode the URL-encoded parameter to get the original string
-    //     listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
 
-    // Decode the parameter
-    // string decodedObject = Uri.UnescapeDataString(passingObjectString);
-    //}
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         PassedObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
         await LoadEntityList();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // PassedObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
+        // await LoadEntityList();
     }
 
     private ApiResponse? _apiResponse = new();
