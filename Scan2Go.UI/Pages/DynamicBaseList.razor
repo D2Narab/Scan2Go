@@ -143,15 +143,18 @@ else
 
 @code {
 
-    [Parameter] public int SetHashCode { get; set; }
+    [Parameter]
+    public int SetHashCode { get; set; }
+
     public PassingObject PassedObject { get; set; }
     // protected override async Task OnParametersSetAsync()
     // {
     //     // Decode the URL-encoded parameter to get the original string
     //     listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
 
-            // Decode the parameter
-            string decodedObject = Uri.UnescapeDataString(passingObjectString);
+    // Decode the parameter
+    // string decodedObject = Uri.UnescapeDataString(passingObjectString);
+    //}
 
     protected override async Task OnInitializedAsync()
     {
