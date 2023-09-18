@@ -17,5 +17,6 @@ public enum TranslationUsageArea
 public enum ListItemTypes
 {
     UserListItem = 1,
-	CustomersListItem = 2
+	CustomersListItem = 2,
+    CarsListItem = 3
 }

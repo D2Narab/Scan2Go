@@ -4,7 +4,17 @@ namespace Scan2Go.Enums;
 
 public class Endpoints : DataLayerEnumBase
 {
-    public const string endpointAddress = "https://localhost:44387/";
+    public const string EndpointAddress = "https://localhost:44387/";
+
+    #region Cars
+
+    public static readonly Endpoints CreateCar = new Endpoints("Cars/CreateCar");
+    public static readonly Func<int, Endpoints> DeleteCar = new Func<int, Endpoints>(param => new Endpoints($"Cars/DeleteCar/{param}"));
+    public static readonly Func<int, Endpoints> GetCar = new Func<int, Endpoints>(param => new Endpoints($"Cars/GetCar/{param}"));
+    public static readonly Endpoints GetCarsList = new Endpoints("Cars/GetCarsList");
+    public static readonly Endpoints SaveCar = new Endpoints("Cars/SaveCar");
+
+    #endregion Cars
 
     #region Customers
 
@@ -26,7 +36,7 @@ public class Endpoints : DataLayerEnumBase
 
     #endregion Users
 
-    private Endpoints(string internalValue) : base(endpointAddress + internalValue)
+    private Endpoints(string internalValue) : base(EndpointAddress + internalValue)
     {
     }
 

@@ -26,7 +26,7 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
+            <NavLink class="nav-link" @onclick="(() => NavigateToDynamicBaseList(_carsPassingObject))">
                 🚗 Cars
             </NavLink>
         </div>
@@ -64,9 +64,11 @@
 
 @code {
     private bool _settingsSubMenuOpen;
-    private static PassingObject _userPassingObject = new() { Endpoint = Endpoints.GetUsersList, EntityName = "User" };
-    private static PassingObject _customersPassingObject = new() { Endpoint = Endpoints.GetCustomersList, EntityName = "Customer" };
 
+    private static PassingObject _carsPassingObject = new() { Endpoint = Endpoints.GetCarsList, EntityName = "Car" };
+    private static PassingObject _customersPassingObject = new() { Endpoint = Endpoints.GetCustomersList, EntityName = "Customer" };
+    private static PassingObject _userPassingObject = new() { Endpoint = Endpoints.GetUsersList, EntityName = "User" };
+    
     private void ToggleNavMenu()
     {
         _settingsSubMenuOpen = !_settingsSubMenuOpen;
