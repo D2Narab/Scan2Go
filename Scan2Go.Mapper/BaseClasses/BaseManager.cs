@@ -1,4 +1,6 @@
 ﻿using Scan2Go.Entity.Users;
+using Scan2Go.Entity.Rents;
+using Scan2Go.Mapper.Models.RentsModels;
 using Scan2Go.Entity.Customers;
 using Scan2Go.Mapper.Models.CustomersModels;
 using Scan2Go.Entity.Cars;
@@ -58,6 +60,14 @@ public class BaseManager
                 cfg.CreateMap<CustomersModel, Customers>();
                 cfg.CreateMap<CustomersSearchCriteria, CustomersSearchCriteriaModel>();
                 cfg.CreateMap<CustomersSearchCriteriaModel, CustomersSearchCriteria>();
+            
+                cfg.CreateMap<ListItemBase, ListItemModelBase<RentsListItemModel>>();
+                cfg.CreateMap<ListSourceBase, ListSourceModel<RentsListItemModel>>();
+                cfg.CreateMap<Rents, RentsModel>();
+                cfg.CreateMap<RentsListItem, RentsListItemModel>();
+                cfg.CreateMap<RentsModel, Rents>();
+                cfg.CreateMap<RentsSearchCriteria, RentsSearchCriteriaModel>();
+                cfg.CreateMap<RentsSearchCriteriaModel, RentsSearchCriteria>();
               });
 
             return config.CreateMapper();

@@ -213,5 +213,15 @@ get {
 return ResourceManager.GetString("CustomersList", resourceCulture);
 }
 }
+
+
+/// <summary>
+///   Looks up a localized string similar to RentsList.
+/// </summary>
+public static string RentsList {
+get {
+return ResourceManager.GetString("RentsList", resourceCulture);
+}
+}
 }
 }

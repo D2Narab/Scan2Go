@@ -13,6 +13,7 @@ public class TableName : DataLayerEnumBase
     public static readonly DataLayerEnumBase Def_CarBrands = new TableName("Def_CarBrands");
     public static readonly DataLayerEnumBase Def_CarModels = new TableName("Def_CarModels");
     public static readonly DataLayerEnumBase Customers = new TableName("Customers");
+    public static readonly DataLayerEnumBase Rents = new TableName("Rents");
 
     public TableName(string internalValue) : base(internalValue)
     {

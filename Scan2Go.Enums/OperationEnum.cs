@@ -9,5 +9,7 @@ public enum Operations
 	DeleteCars = 5,
 	SaveCars = 6,
 	DeleteCustomers = 7,
-	SaveCustomers = 8
+	SaveCustomers = 8,
+	DeleteRents = 9,
+	SaveRents = 10
 }

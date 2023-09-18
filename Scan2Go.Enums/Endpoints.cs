@@ -26,6 +26,16 @@ public class Endpoints : DataLayerEnumBase
 
     #endregion Customers
 
+    #region Rents
+
+    public static readonly Endpoints CreateRent = new Endpoints("Rents/CreateRent");
+    public static readonly Func<int, Endpoints> DeleteRent = new Func<int, Endpoints>(param => new Endpoints($"Rents/DeleteRent/{param}"));
+    public static readonly Func<int, Endpoints> GetRent = new Func<int, Endpoints>(param => new Endpoints($"Rents/GetRent/{param}"));
+    public static readonly Endpoints GetRentsList = new Endpoints("Rents/GetRentsList");
+    public static readonly Endpoints SaveRent = new Endpoints("Rents/SaveRent");
+
+    #endregion Rents
+
     #region Users
 
     public static readonly Endpoints CreateUser = new Endpoints("Users/CreateUser");

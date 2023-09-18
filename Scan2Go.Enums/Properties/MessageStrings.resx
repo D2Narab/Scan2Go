@@ -169,4 +169,8 @@
 <data name="CustomersList" xml:space="preserve">
 <value>CustomersList</value>
 </data>
+
+<data name="RentsList" xml:space="preserve">
+<value>RentsList</value>
+</data>
 </root>
