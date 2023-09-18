@@ -1,7 +1,8 @@
 ﻿@using Scan2Go.Enums
 @using Scan2Go.UI.BaseClasses
 
-@inject NavigationManager navigationManager
+@inject NavigationManager NavigationManager
+@inject StateContainer StateContainer;
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -78,13 +79,8 @@
 
     private void NavigateToDynamicBaseList(PassingObject passingObject)
     {
-        // Serialize the customer object to JSON
-        string passingObjectJson = System.Text.Json.JsonSerializer.Serialize(passingObject);
+        StateContainer.AddRoutingObjectParameter(passingObject);
 
-        // Encode the JSON string parameter to make it URL-safe
-        string encodedParameter = Uri.EscapeDataString(passingObjectJson);
-
-        // Navigate to the DynamicBaseList component with the encoded parameter
-        navigationManager.NavigateTo($"DynamicBaseList?passingObject={encodedParameter}");
+        NavigationManager.NavigateTo($"DynamicBaseList/{passingObject.GetHashCode()}");
     }
 }

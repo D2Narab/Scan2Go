@@ -1,4 +1,4 @@
-﻿@page "/DynamicBaseList"
+﻿@page "/DynamicBaseList/{SetHashCode:int}"
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
@@ -11,6 +11,7 @@
 @using Utility.Extensions
 
 @inject HttpClient Http
+@inject StateContainer StateContainer
 @inject NavigationManager navigationManager
 
 <!-- Import the EditUserPopup component -->
@@ -142,35 +143,19 @@ else
 
 @code {
 
-    private PassingObject passingObject { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        string objectParameter = navigationManager.Uri;
-
-        if (string.IsNullOrWhiteSpace(objectParameter) == false)
-        {
-            // Parse the query parameters
-            var uri = new Uri(objectParameter, UriKind.Absolute);
-            var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
-            string passingObjectString = queryString["passingObject"];
+    [Parameter] public int SetHashCode { get; set; }
+    public PassingObject PassedObject { get; set; }
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     // Decode the URL-encoded parameter to get the original string
+    //     listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
 
             // Decode the parameter
             string decodedObject = Uri.UnescapeDataString(passingObjectString);
 
-            try
-            {
-                // Deserialize the JSON string back to the object
-                passingObject = System.Text.Json.JsonSerializer.Deserialize<PassingObject>(decodedObject);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-        }
-
+    protected override async Task OnInitializedAsync()
+    {
+        PassedObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
         await LoadEntityList();
     }
 
@@ -189,7 +174,7 @@ else
         {
             var requestBody = new
             {
-                orderByColumn = $"{passingObject.EntityName}Id",
+                orderByColumn = $"{PassedObject.EntityName}Id",
                 range = 50,
                 sortType = "ASC",
                 startFrom = 0
@@ -199,7 +184,7 @@ else
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-            var response = await Http.PostAsync(passingObject.Endpoint, content);
+            var response = await Http.PostAsync(PassedObject.Endpoint, content);
 
             if (response.IsSuccessStatusCode)
             {
