@@ -1,4 +1,4 @@
-﻿@page "/DynamicBaseList/{listEndpoint}"
+﻿@page "/DynamicBaseList/{SetHashCode:int}"
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
@@ -11,6 +11,7 @@
 @using Utility.Extensions
 
 @inject HttpClient Http
+@inject StateContainer StateContainer
 
 <!-- Import the EditUserPopup component -->
 <EditUserPopup @ref="editUserPopup" OnUserSaved="HandleEntitySaved" />
@@ -141,10 +142,8 @@ else
 
 @code {
 
-    [Parameter]
-    public string listEndpoint { get; set; }
-    public string listEndpointDecoded { get; set; } = "";
-
+    [Parameter] public int SetHashCode { get; set; }
+    public PassingObject PassedObject { get; set; }
     // protected override async Task OnParametersSetAsync()
     // {
     //     // Decode the URL-encoded parameter to get the original string
@@ -156,7 +155,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        listEndpointDecoded = Uri.UnescapeDataString(listEndpoint);
+        PassedObject = (PassingObject)StateContainer.ObjectTunnel[SetHashCode];
         await LoadEntityList();
     }
 
@@ -173,16 +172,9 @@ else
     {
         try
         {
-            string entityName = listEndpointDecoded.Split('/')[3];
-
-            if (entityName.EndsWith('s'))
-            {
-                entityName = entityName.Substring(0,entityName.Length - 1);
-            }
-
             var requestBody = new
             {
-                orderByColumn = $"{entityName}Id",
+                orderByColumn = $"{PassedObject.EntityName}Id",
                 range = 50,
                 sortType = "ASC",
                 startFrom = 0
@@ -192,7 +184,7 @@ else
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-            var response = await Http.PostAsync(listEndpointDecoded, content);
+            var response = await Http.PostAsync(PassedObject.Endpoint, content);
 
             if (response.IsSuccessStatusCode)
             {
