@@ -67,7 +67,7 @@
 
     private void NavigateToDynamicBaseList(PassingObject passingObject)
     {
-        StateContainer.ObjectTunnel.Add(passingObject.GetHashCode(), passingObject);
+        StateContainer.AddRoutingObjectParameter(passingObject);
 
         NavigationManager.NavigateTo($"DynamicBaseList/{passingObject.GetHashCode()}");
     }

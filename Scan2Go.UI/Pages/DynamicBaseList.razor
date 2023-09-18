@@ -155,7 +155,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        PassedObject = (PassingObject)StateContainer.ObjectTunnel[SetHashCode];
+        PassedObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
         await LoadEntityList();
     }
 
