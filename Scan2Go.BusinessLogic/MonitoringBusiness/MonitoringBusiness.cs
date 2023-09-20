@@ -23,18 +23,19 @@ public class MonitoringBusiness
             return new IDsAndDocumentsResults();
         }
 
-        dynamic response = await CallRegulaApiAndGetResponse(base64List);
+        IList<IIDsAndDocuments> idAndDocumentsList = new List<IIDsAndDocuments>();
 
-        //Handle this with a proper message later
-        if (response == null)
+        foreach (var base64String in base64List)
         {
-            return new IDsAndDocumentsResults();
+            dynamic response = await CallRegulaApiAndGetResponse(base64String);
+
+            IIDsAndDocuments iiDsAndDocuments = MonitoringLogic.PrepareIdAndDocumentsResultFromResponse(response);
+
+            idAndDocumentsList.Add(iiDsAndDocuments);
         }
 
-        IList<IIDsAndDocuments> idAndDocumentsList = MonitoringLogic.PrepareIdAndDocumentsResultFromResponse(response);
-
         IDsAndDocumentsResults IDsAndDocumentsResults = new IDsAndDocumentsResults();
-        //TODO Move this later to the constroctor of IDsAndDocumentsResults
+        //TODO Move this later to the constructor of IDsAndDocumentsResults
         foreach (IIDsAndDocuments idAndDocument in idAndDocumentsList)
         {
             if (idAndDocument.ScannedDocumentType == Enums.ScannedDocumentType.Id)
@@ -62,27 +63,25 @@ public class MonitoringBusiness
     /// This will be moved to a separate class later.
     /// </summary>
     /// <returns></returns>
-    private async Task<dynamic> CallRegulaApiAndGetResponse(IList<string> base64List)
+    private async Task<dynamic> CallRegulaApiAndGetResponse(string base64String)
     {
         var listElements = new List<object>();
 
-        foreach (var base64String in base64List)
+        // Create an object for each element in the "List" variable
+        var listElement = new
         {
-            // Create an object for each element in the "List" variable
-            var listElement = new
+            format = ".jpg",
+            light = 6,
+            page_idx = 0,
+            ImageData = new
             {
-                format = ".jpg",
-                light = 6,
-                page_idx = 0,
-                ImageData = new
-                {
-                    image = base64String
-                }
-            };
+                image = base64String
+            }
+        };
 
-            // Add the object to the list
-            listElements.Add(listElement);
-        }
+        // Add the object to the list
+        listElements.Add(listElement);
+
 
         // Create the final request object with the list
         var request = new

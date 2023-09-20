@@ -45,13 +45,13 @@ public class MonitoringLogic
         return base64List;
     }
 
-    public IList<IIDsAndDocuments> PrepareIdAndDocumentsResultFromResponse(dynamic response)
+    public IIDsAndDocuments PrepareIdAndDocumentsResultFromResponse(dynamic response)
     {
-        IList<IIDsAndDocuments> idsAndDocumentsList = new List<IIDsAndDocuments>();
+        IIDsAndDocuments iiDsAndDocuments = new IIDsAndDocuments();
 
         if (response.ContainerList == null || response.ContainerList.List == null)
         {
-            return idsAndDocumentsList;
+            return iiDsAndDocuments;
         }
 
         foreach (var container in response.ContainerList)
@@ -63,33 +63,36 @@ public class MonitoringLogic
                 continue;
             }
 
-            if (documentCategory.Equals("Identity Card"))
+            switch (documentCategory)
             {
-                var identityCard = CreateIdentityCard(container, documentCategory);
+                case "Identity Card":
+                    {
+                        var identityCard = CreateIdentityCard(container, documentCategory);
 
-                idsAndDocumentsList.Add(identityCard);
-            }
-            else if (documentCategory.Equals("Passport"))
-            {
-                var passport = CreatePassport(container, documentCategory);
+                        return identityCard;
+                    }
+                case "Passport":
+                    {
+                        var passport = CreatePassport(container, documentCategory);
 
-                idsAndDocumentsList.Add(passport);
-            }
-            else if (documentCategory.Equals("Driving License"))
-            {
-                var drivingLicense = CreateDrivingLicense(container, documentCategory);
+                        return passport;
+                    }
+                case "Driving License":
+                    {
+                        var drivingLicense = CreateDrivingLicense(container, documentCategory);
 
-                idsAndDocumentsList.Add(drivingLicense);
-            }
-            else if (documentCategory.Equals("Visa"))
-            {
-                var visa = CreateVisaLicense(container, documentCategory);
+                        return drivingLicense;
+                    }
+                case "Visa":
+                    {
+                        var visa = CreateVisaLicense(container, documentCategory);
 
-                idsAndDocumentsList.Add(visa);
+                        return visa;
+                    }
             }
         }
 
-        return idsAndDocumentsList;
+        return iiDsAndDocuments;
     }
 
     private IIDsAndDocuments CreateVisaLicense(object container, string documentCategory)
@@ -194,6 +197,37 @@ public class MonitoringLogic
                     regulaAttributes.FieldName, regulaAttributes.FieldToBeFoundValue,
                     regulaAttributes.SecondMainFieldName, regulaAttributes.SecondMainFieldToBeFoundValue,
                     regulaAttributes.SecondaryFieldName);
+            }
+
+            if (propertyName.Equals("DateOfBirth") && extractedValue.Contains("?"))
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    "fieldName", "Date of Birth", "value");
+
+                if (extractedValue.Contains("?"))
+                {
+                    extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                        "fieldName", "Date of Birth", "status", "2", "value");
+                }
+            }
+
+            if (propertyName.Equals("PersonalNumber") && extractedValue.ContainsArabicNumbers())
+            {
+                string personalNumberInArabic = new string(extractedValue);
+
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    "fieldName", "Personal Number", "value");
+
+                if (extractedValue.ContainsArabicNumbers())
+                {
+                    extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                        "fieldName", "Personal Number", "lcid", "0", "value");
+
+                    if (extractedValue.ContainsArabicNumbers() == false)
+                    {
+                        extractedValue = extractedValue + "\n" + personalNumberInArabic;
+                    }
+                }
             }
 
             property.SetValue(iDsAndDocuments, extractedValue);
