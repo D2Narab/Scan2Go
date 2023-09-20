@@ -199,7 +199,7 @@ public class MonitoringLogic
                     regulaAttributes.SecondaryFieldName);
             }
 
-            if (propertyName.Equals("DateOfBirth") && extractedValue.Contains("?"))
+            if (propertyName.Equals("DateOfBirth") && extractedValue is not null && extractedValue.Contains("?"))
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
                     "fieldName", "Date of Birth", "value");
