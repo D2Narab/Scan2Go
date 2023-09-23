@@ -4,6 +4,7 @@ using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Enums;
 using System.Reflection;
 using MailReader;
+using Scan2Go.Entity.Rents;
 using Utility.Extensions;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
@@ -211,7 +212,7 @@ public class MonitoringLogic
                 }
             }
 
-            if (propertyName.Equals("PersonalNumber") && extractedValue.ContainsArabicNumbers())
+            if (propertyName.Equals("PersonalNumber") && extractedValue is not null && extractedValue.ContainsArabicNumbers())
             {
                 string personalNumberInArabic = new string(extractedValue);
 
@@ -231,6 +232,18 @@ public class MonitoringLogic
             }
 
             property.SetValue(iDsAndDocuments, extractedValue);
+        }
+    }
+
+    public void CheckAllDocumentsForValidation(IDsAndDocumentsResults idsAndDocumentsResults, Rents rent)
+    {
+        foreach (var visa in idsAndDocumentsResults.Visas)
+        {
+            if (visa.IsExpired)
+            {
+                /*Get translated message later.*/
+                visa.ErrorMessages.Add("Visa is expired, the rent cannot be processed!");
+            }
         }
     }
 }

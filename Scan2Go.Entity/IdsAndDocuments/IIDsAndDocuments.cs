@@ -53,6 +53,10 @@ public class IIDsAndDocuments
         }
     }
 
+    public IList<string> ErrorMessages = new List<string>();
+
+    public string FullName => Name + ' ' + Surname;
+
     public bool IsExpired
     {
         get
@@ -65,6 +69,6 @@ public class IIDsAndDocuments
             return false;
         }
     }
-
+    
     #endregion Other Properties
 }

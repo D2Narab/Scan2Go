@@ -14,7 +14,7 @@ public class MonitoringController : BaseController
     [Route("GetMails")]
     public async Task<IActionResult> GetMails()
     {
-        OperationResult operationResult = await new MonitoringManager().GetMails();
+        OperationResult operationResult = await new MonitoringManager(this.CurrentUser).GetMails();
         return this.ReturnOperationResult(operationResult);
     }
 }

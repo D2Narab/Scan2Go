@@ -1,15 +1,28 @@
 ﻿using MailKit.Search;
 using MailReader;
 using Scan2Go.Entity.IdsAndDocuments;
+using Scan2Go.Enums.Properties;
 using System.Collections.Generic;
 using System.Text;
+using Scan2Go.BusinessLogic.BaseClasses;
+using Scan2Go.BusinessLogic.RentsBusinessLogic;
+using Utility.Bases;
+using Utility.Core;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
-public class MonitoringBusiness
+public class MonitoringBusiness : BaseBusiness
 {
     private MonitoringLogic _monitoringLogic;
     private MonitoringLogic MonitoringLogic => _monitoringLogic ??= new MonitoringLogic();
+
+    public MonitoringBusiness(OperationResult operationResult, IUser currentUser) : base(operationResult, currentUser)
+    {
+    }
+
+    public MonitoringBusiness(BaseBusiness baseBusiness) : base(baseBusiness)
+    {
+    }
 
     public async Task<IDsAndDocumentsResults> GetMails()
     {
@@ -56,6 +69,43 @@ public class MonitoringBusiness
             }
         }
 
+        /************************************************ Analyze,extract and check ****************************************/
+        var customerName = string.Empty;
+
+        customerName = IDsAndDocumentsResults.IdDocuments.FirstOrDefault()?.FullName;
+
+        if (string.IsNullOrEmpty(customerName))
+        {
+            customerName = IDsAndDocumentsResults.Passports.FirstOrDefault()?.FullName;
+        }
+
+        if (string.IsNullOrEmpty(customerName))
+        {
+            customerName = IDsAndDocumentsResults.Visas.FirstOrDefault()?.FullName;
+        }
+
+        /*TODO Move this to validation later*/
+        if (string.IsNullOrEmpty(customerName))
+        {
+            this.AddDetailResult(new OperationResult { State = false, MessageStringKey = nameof(MessageStrings.WasNotAbleToExtractFullName) });
+
+            return new IDsAndDocumentsResults();
+        }
+
+        var rent = new RentsBusiness(this).GetRentByCustomerName(customerName);
+
+        /*TODO Move this to validation later*/
+        if (rent is null)
+        {
+            this.AddDetailResult(new OperationResult { State = false, MessageStringKey = nameof(MessageStrings.NoRentWasFoundWithTheFullName) });
+
+            return new IDsAndDocumentsResults();
+        }
+        
+        MonitoringLogic.CheckAllDocumentsForValidation(IDsAndDocumentsResults, rent);
+
+        /*******************************************************************************************************************/
+        
         return IDsAndDocumentsResults;
     }
 

@@ -18,88 +18,105 @@ else
     <div class="identity-cards">
         @foreach (var identityCard in IdentityCards)
         {
-            <div class="identity-card">
-                <div class="portrait">
-                    <p><strong>Document category:</strong></p>
-                    <td>@identityCard.DocumentCategory</td>
-                    <p><strong></strong></p>
+            <div style="display: flex; flex-direction: row;">
+                <div class="identity-card">
+                    <div class="portrait">
+                        <p><strong>Document category:</strong></p>
+                        <td>@identityCard.DocumentCategory</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document type:</strong></p>
-                    <td>@identityCard.DocumentType</td>
-                    <p><strong></strong></p>
+                        <p><strong>Document type:</strong></p>
+                        <td>@identityCard.DocumentType</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document Front side:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(identityCard.DocumentFrontSide) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image" />
-                    }
-                    else
-                    {
-                        <p>No document front side image available</p>
-                    }
-                    <p><strong>Portrait:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
-                    }
-                    else
-                    {
-                        <p>No Portrait available</p>
-                    }
-                    <p><strong>Ghost Portrait:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(identityCard.GhostPortrait) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image" />
-                    }
-                    else
-                    {
-                        <p>No Ghost Portrait available</p>
-                    }
-                    <p><strong>Signature:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(identityCard.Signature) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature" />
-                    }
-                    else
-                    {
-                        <p>No Signature available</p>
-                    }
+                        <p><strong>Document Front side:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(identityCard.DocumentFrontSide) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@identityCard.DocumentFrontSide" alt="Document Front Side Image" />
+                        }
+                        else
+                        {
+                            <p>No document front side image available</p>
+                        }
+                        <p><strong>Portrait:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(identityCard.PortraitImage) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@identityCard.PortraitImage" alt="Portrait Image" />
+                        }
+                        else
+                        {
+                            <p>No Portrait available</p>
+                        }
+                        <p><strong>Ghost Portrait:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(identityCard.GhostPortrait) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@identityCard.GhostPortrait" alt="Ghost Image" />
+                        }
+                        else
+                        {
+                            <p>No Ghost Portrait available</p>
+                        }
+                        <p><strong>Signature:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(identityCard.Signature) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@identityCard.Signature" alt="Signature" />
+                        }
+                        else
+                        {
+                            <p>No Signature available</p>
+                        }
+                    </div>
+                    <div class="details">
+                        <table>
+                            <tr>
+                                <td><strong>Date Of Expiry:</strong></td>
+                                <td class="@(identityCard.IsExpired ? "expired" : "not-expired")">@identityCard.DateOfExpiry</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>@identityCard.Name @identityCard.Surname</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Document Number:</strong></td>
+                                <td>@identityCard.DocumentNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Personal Number:</strong></td>
+                                <td>@identityCard.PersonalNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Issuing State:</strong></td>
+                                <td>@identityCard.IssuingStateName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nationality:</strong></td>
+                                <td>@identityCard.Nationality</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date Of Birth:</strong></td>
+                                <td>@identityCard.DateOfBirth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td>@identityCard.Age</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div class="details">
-                    <table>
-                        <tr>
-                            <td><strong>Date Of Expiry:</strong></td>
-                            <td class="@(identityCard.IsExpired ? "expired" : "not-expired")">@identityCard.DateOfExpiry</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Name:</strong></td>
-                            <td>@identityCard.Name @identityCard.Surname</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Document Number:</strong></td>
-                            <td>@identityCard.DocumentNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Personal Number:</strong></td>
-                            <td>@identityCard.PersonalNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Issuing State:</strong></td>
-                            <td>@identityCard.IssuingStateName</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Nationality:</strong></td>
-                            <td>@identityCard.Nationality</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date Of Birth:</strong></td>
-                            <td>@identityCard.DateOfBirth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Age:</strong></td>
-                            <td>@identityCard.Age</td>
-                        </tr>
-                    </table>
+                <div class="error-messages">
+                    @if (identityCard.ErrorMessages.Any())
+                    {
+                        <td><strong>The following errors were found</strong></td>
+
+                        <table>
+                            @foreach (string errorMessage in identityCard.ErrorMessages)
+                            {
+                                <tr>
+                                    <td>@errorMessage</td>
+                                </tr>
+                            }
+                        </table>
+                    }
                 </div>
             </div>
         }
@@ -108,100 +125,117 @@ else
     <div class="identity-cards">
         @foreach (var passport in Passports)
         {
-            <div class="identity-card">
-                <div class="portrait">
-                    <p><strong>Document category:</strong></p>
-                    <td>@passport.DocumentCategory</td>
-                    <p><strong></strong></p>
+            <div style="display: flex; flex-direction: row;">
+                <div class="identity-card">
+                    <div class="portrait">
+                        <p><strong>Document category:</strong></p>
+                        <td>@passport.DocumentCategory</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document type:</strong></p>
-                    <td>@passport.DocumentName</td>
-                    <p><strong></strong></p>
+                        <p><strong>Document type:</strong></p>
+                        <td>@passport.DocumentName</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document Image:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(passport.DocumentFrontSide) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@passport.DocumentFrontSide" alt="Document Front Side Image" />
-                    }
-                    else
-                    {
-                        <p>No document front side image available</p>
-                    }
-                    <p><strong>Portrait:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(passport.PortraitImage) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@passport.PortraitImage" alt="Portrait Image" />
-                    }
-                    else
-                    {
-                        <p>No Portrait available</p>
-                    }
-                    <p><strong>Ghost Portrait:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(passport.GhostPortrait) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@passport.GhostPortrait" alt="Ghost Image" />
-                    }
-                    else
-                    {
-                        <p>No Ghost Portrait available</p>
-                    }
-                    <p><strong>Signature:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(passport.Signature) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@passport.Signature" alt="Signature" />
-                    }
-                    else
-                    {
-                        <p>No Signature available</p>
-                    }
+                        <p><strong>Document Image:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(passport.DocumentFrontSide) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@passport.DocumentFrontSide" alt="Document Front Side Image" />
+                        }
+                        else
+                        {
+                            <p>No document front side image available</p>
+                        }
+                        <p><strong>Portrait:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(passport.PortraitImage) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@passport.PortraitImage" alt="Portrait Image" />
+                        }
+                        else
+                        {
+                            <p>No Portrait available</p>
+                        }
+                        <p><strong>Ghost Portrait:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(passport.GhostPortrait) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@passport.GhostPortrait" alt="Ghost Image" />
+                        }
+                        else
+                        {
+                            <p>No Ghost Portrait available</p>
+                        }
+                        <p><strong>Signature:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(passport.Signature) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@passport.Signature" alt="Signature" />
+                        }
+                        else
+                        {
+                            <p>No Signature available</p>
+                        }
+                    </div>
+                    <div class="details">
+                        <table>
+                            <tr>
+                                <td><strong>Date Of Expiry:</strong></td>
+                                <td class="@(passport.IsExpired ? "expired" : "not-expired")">@passport.DateOfExpiry</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>@passport.Name @passport.Surname</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Document Number:</strong></td>
+                                <td>@passport.DocumentNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Personal Number:</strong></td>
+                                <td>@passport.PersonalNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Issuing State:</strong></td>
+                                <td>@passport.IssuingStateName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Authority:</strong></td>
+                                <td>@passport.Authority</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Issue:</strong></td>
+                                <td>@passport.DateOfIssue</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nationality:</strong></td>
+                                <td>@passport.Nationality</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Place of Birth:</strong></td>
+                                <td>@passport.PlaceOFBirth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date Of Birth:</strong></td>
+                                <td>@passport.DateOfBirth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td>@passport.Age</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div class="details">
-                    <table>
-                        <tr>
-                            <td><strong>Date Of Expiry:</strong></td>
-                            <td class="@(passport.IsExpired ? "expired" : "not-expired")">@passport.DateOfExpiry</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Name:</strong></td>
-                            <td>@passport.Name @passport.Surname</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Document Number:</strong></td>
-                            <td>@passport.DocumentNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Personal Number:</strong></td>
-                            <td>@passport.PersonalNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Issuing State:</strong></td>
-                            <td>@passport.IssuingStateName</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Authority:</strong></td>
-                            <td>@passport.Authority</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date of Issue:</strong></td>
-                            <td>@passport.DateOfIssue</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Nationality:</strong></td>
-                            <td>@passport.Nationality</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Place of Birth:</strong></td>
-                            <td>@passport.PlaceOFBirth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date Of Birth:</strong></td>
-                            <td>@passport.DateOfBirth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Age:</strong></td>
-                            <td>@passport.Age</td>
-                        </tr>
-                    </table>
+                <div class="error-messages">
+                    @if (passport.ErrorMessages.Any())
+                    {
+                        <td><strong>The following errors were found</strong></td>
+
+                        <table>
+                            @foreach (string errorMessage in passport.ErrorMessages)
+                            {
+                                <tr>
+                                    <td>@errorMessage</td>
+                                </tr>
+                            }
+                        </table>
+                    }
                 </div>
             </div>
         }
@@ -210,87 +244,104 @@ else
     <div class="identity-cards">
         @foreach (var drivingLicense in DrivingLicenses)
         {
-            <div class="identity-card">
-                <div class="portrait">
-                    <p><strong>Document category:</strong></p>
-                    <td>@drivingLicense.DocumentCategory</td>
-                    <p><strong></strong></p>
+            <div style="display: flex; flex-direction: row;">
+                <div class="identity-card">
+                    <div class="portrait">
+                        <p><strong>Document category:</strong></p>
+                        <td>@drivingLicense.DocumentCategory</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document type:</strong></p>
-                    <td>@drivingLicense.DocumentName</td>
-                    <p><strong></strong></p>
+                        <p><strong>Document type:</strong></p>
+                        <td>@drivingLicense.DocumentName</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document Image:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(drivingLicense.DocumentFrontSide) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@drivingLicense.DocumentFrontSide" alt="Document Front Side Image" />
-                    }
-                    else
-                    {
-                        <p>No document front side image available</p>
-                    }
-                    <p><strong>Portrait:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(drivingLicense.PortraitImage) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@drivingLicense.PortraitImage" alt="Portrait Image" />
-                    }
-                    else
-                    {
-                        <p>No Portrait available</p>
-                    }
-                    <p><strong>Signature:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(drivingLicense.Signature) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@drivingLicense.Signature" alt="Signature" />
-                    }
-                    else
-                    {
-                        <p>No Signature available</p>
-                    }
+                        <p><strong>Document Image:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(drivingLicense.DocumentFrontSide) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@drivingLicense.DocumentFrontSide" alt="Document Front Side Image" />
+                        }
+                        else
+                        {
+                            <p>No document front side image available</p>
+                        }
+                        <p><strong>Portrait:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(drivingLicense.PortraitImage) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@drivingLicense.PortraitImage" alt="Portrait Image" />
+                        }
+                        else
+                        {
+                            <p>No Portrait available</p>
+                        }
+                        <p><strong>Signature:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(drivingLicense.Signature) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@drivingLicense.Signature" alt="Signature" />
+                        }
+                        else
+                        {
+                            <p>No Signature available</p>
+                        }
+                    </div>
+                    <div class="details">
+                        <table>
+                            <tr>
+                                <td><strong>Date Of Expiry:</strong></td>
+                                <td class="@(drivingLicense.IsExpired ? "expired" : "not-expired")">@drivingLicense.DateOfExpiry</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>@drivingLicense.Name @drivingLicense.Surname</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Document Number:</strong></td>
+                                <td>@drivingLicense.DocumentNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Personal Number:</strong></td>
+                                <td>@drivingLicense.PersonalNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Issuing State:</strong></td>
+                                <td>@drivingLicense.IssuingStateName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DL Category:</strong></td>
+                                <td>@drivingLicense.DlCategory</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Issue:</strong></td>
+                                <td>@drivingLicense.DateOfIssue</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Place of Birth:</strong></td>
+                                <td>@drivingLicense.PlaceOFBirth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date Of Birth:</strong></td>
+                                <td>@drivingLicense.DateOfBirth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td>@drivingLicense.Age</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div class="details">
-                    <table>
-                        <tr>
-                            <td><strong>Date Of Expiry:</strong></td>
-                            <td class="@(drivingLicense.IsExpired ? "expired" : "not-expired")">@drivingLicense.DateOfExpiry</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Name:</strong></td>
-                            <td>@drivingLicense.Name @drivingLicense.Surname</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Document Number:</strong></td>
-                            <td>@drivingLicense.DocumentNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Personal Number:</strong></td>
-                            <td>@drivingLicense.PersonalNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Issuing State:</strong></td>
-                            <td>@drivingLicense.IssuingStateName</td>
-                        </tr>
-                        <tr>
-                            <td><strong>DL Category:</strong></td>
-                            <td>@drivingLicense.DlCategory</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date of Issue:</strong></td>
-                            <td>@drivingLicense.DateOfIssue</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Place of Birth:</strong></td>
-                            <td>@drivingLicense.PlaceOFBirth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date Of Birth:</strong></td>
-                            <td>@drivingLicense.DateOfBirth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Age:</strong></td>
-                            <td>@drivingLicense.Age</td>
-                        </tr>
-                    </table>
+                <div class="error-messages">
+                    @if (drivingLicense.ErrorMessages.Any())
+                    {
+                        <td><strong>The following errors were found</strong></td>
+
+                        <table>
+                            @foreach (string errorMessage in drivingLicense.ErrorMessages)
+                            {
+                                <tr>
+                                    <td>@errorMessage</td>
+                                </tr>
+                            }
+                        </table>
+                    }
                 </div>
             </div>
         }
@@ -299,81 +350,105 @@ else
     <div class="identity-cards">
         @foreach (var visa in Visas)
         {
-            <div class="identity-card">
-                <div class="portrait">
-                    <p><strong>Document category:</strong></p>
-                    <td>@visa.DocumentCategory</td>
-                    <p><strong></strong></p>
+            <div style="display: flex; flex-direction: row;">
+                <div class="identity-card">
+                    <div class="portrait">
+                        <p><strong>Document category:</strong></p>
+                        <td>@visa.DocumentCategory</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document type:</strong></p>
-                    <td>@visa.DocumentType</td>
-                    <p><strong></strong></p>
+                        <p><strong>Document type:</strong></p>
+                        <td>@visa.DocumentType</td>
+                        <p><strong></strong></p>
 
-                    <p><strong>Document Image:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(visa.DocumentFrontSide) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@visa.DocumentFrontSide" alt="Document Front Side Image" />
-                    }
-                    else
-                    {
-                        <p>No document front side image available</p>
-                    }
-                    <p><strong>Portrait:</strong></p>
-                    @if (string.IsNullOrWhiteSpace(visa.PortraitImage) == false)
-                    {
-                        <img src="data:image/jpeg;base64,@visa.PortraitImage" alt="Portrait Image" />
-                    }
-                    else
-                    {
-                        <p>No Portrait available</p>
-                    }
+                        <p><strong>Document Image:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(visa.DocumentFrontSide) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@visa.DocumentFrontSide" alt="Document Front Side Image" />
+                        }
+                        else
+                        {
+                            <p>No document front side image available</p>
+                        }
+                        <p><strong>Portrait:</strong></p>
+                        @if (string.IsNullOrWhiteSpace(visa.PortraitImage) == false)
+                        {
+                            <img src="data:image/jpeg;base64,@visa.PortraitImage" alt="Portrait Image" />
+                        }
+                        else
+                        {
+                            <p>No Portrait available</p>
+                        }
+                    </div>
+                    <div class="details">
+                        <table>
+                            <tr>
+                                <td><strong>Date Of Expiry:</strong></td>
+                                <td class="@(visa.IsExpired ? "expired" : "not-expired")">@visa.DateOfExpiry</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>@visa.Name @visa.Surname</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Visa Number:</strong></td>
+                                <td>@visa.VisaNumber</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Issuing State:</strong></td>
+                                <td>@visa.IssuingStateName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Issue:</strong></td>
+                                <td>@visa.DateOfIssue</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duration of state:</strong></td>
+                                <td>@visa.DurationOfStay</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Valid from:</strong></td>
+                                <td>@visa.VisaValidFrom</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date Of Birth:</strong></td>
+                                <td>@visa.DateOfBirth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td>@visa.Age</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div class="details">
-                    <table>
-                        <tr>
-                            <td><strong>Date Of Expiry:</strong></td>
-                            <td class="@(visa.IsExpired ? "expired" : "not-expired")">@visa.DateOfExpiry</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Name:</strong></td>
-                            <td>@visa.Name @visa.Surname</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Visa Number:</strong></td>
-                            <td>@visa.VisaNumber</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Issuing State:</strong></td>
-                            <td>@visa.IssuingStateName</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date of Issue:</strong></td>
-                            <td>@visa.DateOfIssue</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Duration of state:</strong></td>
-                            <td>@visa.DurationOfStay</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Valid from:</strong></td>
-                            <td>@visa.VisaValidFrom</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date Of Birth:</strong></td>
-                            <td>@visa.DateOfBirth</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Age:</strong></td>
-                            <td>@visa.Age</td>
-                        </tr>
-                    </table>
+                <div class="error-messages">
+                    @if (visa.ErrorMessages.Any())
+                    {
+                        <td><strong>The following errors were found</strong></td>
+
+                        <table>
+                            @foreach (string errorMessage in visa.ErrorMessages)
+                            {
+                                <tr>
+                                    <td>@errorMessage</td>
+                                </tr>
+                            }
+                        </table>
+                    }
                 </div>
             </div>
+
         }
     </div>
 }
 
 <style>
+    .error-messages {
+        flex: 1;
+        margin-left: 20px;
+        color: red; /* Style error messages in red */
+    }
+
     .identity-cards {
         display: flex;
         flex-wrap: wrap;

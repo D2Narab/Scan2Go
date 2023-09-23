@@ -165,12 +165,16 @@
   <data name="DocumentListRecordInfo" xml:space="preserve">
     <value>DocumentListRecordInfo</value>
   </data>
-
-<data name="CustomersList" xml:space="preserve">
-<value>CustomersList</value>
-</data>
-
-<data name="RentsList" xml:space="preserve">
-<value>RentsList</value>
-</data>
+  <data name="CustomersList" xml:space="preserve">
+    <value>CustomersList</value>
+  </data>
+  <data name="RentsList" xml:space="preserve">
+    <value>RentsList</value>
+  </data>
+  <data name="WasNotAbleToExtractFullName" xml:space="preserve">
+    <value>WasNotAbleToExtractFullName</value>
+  </data>
+  <data name="NoRentWasFoundWithTheFullName" xml:space="preserve">
+    <value>NoRentWasFoundWithTheFullName</value>
+  </data>
 </root>

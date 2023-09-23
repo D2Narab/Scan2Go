@@ -97,6 +97,15 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CustomersList.
+        /// </summary>
+        public static string CustomersList {
+            get {
+                return ResourceManager.GetString("CustomersList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DefinitionIsUsedAnotherRecord.
         /// </summary>
         public static string DefinitionIsUsedAnotherRecord {
@@ -124,11 +133,29 @@ namespace Scan2Go.Enums.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NoRentWasFoundWithTheFullName.
+        /// </summary>
+        public static string NoRentWasFoundWithTheFullName {
+            get {
+                return ResourceManager.GetString("NoRentWasFoundWithTheFullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OperationWasNotCompleted.
         /// </summary>
         public static string OperationWasNotCompleted {
             get {
                 return ResourceManager.GetString("OperationWasNotCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RentsList.
+        /// </summary>
+        public static string RentsList {
+            get {
+                return ResourceManager.GetString("RentsList", resourceCulture);
             }
         }
         
@@ -203,25 +230,14 @@ namespace Scan2Go.Enums.Properties {
                 return ResourceManager.GetString("UserPasswordCannotBeEmpty", resourceCulture);
             }
         }
-
-
-/// <summary>
-///   Looks up a localized string similar to CustomersList.
-/// </summary>
-public static string CustomersList {
-get {
-return ResourceManager.GetString("CustomersList", resourceCulture);
-}
-}
-
-
-/// <summary>
-///   Looks up a localized string similar to RentsList.
-/// </summary>
-public static string RentsList {
-get {
-return ResourceManager.GetString("RentsList", resourceCulture);
-}
-}
-}
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WasNotAbleToExtractFullName.
+        /// </summary>
+        public static string WasNotAbleToExtractFullName {
+            get {
+                return ResourceManager.GetString("WasNotAbleToExtractFullName", resourceCulture);
+            }
+        }
+    }
 }

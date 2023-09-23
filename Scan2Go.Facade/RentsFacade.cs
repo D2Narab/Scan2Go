@@ -102,4 +102,12 @@ public class RentsFacade : FacadeBase
 
 		return rentsListItem;
 	}
+
+    public Rents GetRentByCustomerName(string customerName)
+    {
+        DataRow drRents = new RentsDAO().GetRentByCustomerName(customerName);
+        Rents rents = FillRents(drRents);
+
+        return rents;
+    }
 }
