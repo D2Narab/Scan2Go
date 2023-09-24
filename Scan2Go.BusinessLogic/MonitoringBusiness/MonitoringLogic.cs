@@ -4,6 +4,7 @@ using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Enums;
 using System.Reflection;
 using MailReader;
+using Scan2Go.Entity.Customers;
 using Scan2Go.Entity.Rents;
 using Utility.Extensions;
 
@@ -235,8 +236,26 @@ public class MonitoringLogic
         }
     }
 
-    public void CheckAllDocumentsForValidation(IDsAndDocumentsResults idsAndDocumentsResults, Rents rent)
+    public void CheckAllDocumentsForValidation(IDsAndDocumentsResults idsAndDocumentsResults, Rents rent,Customers customer)
     {
+        foreach (var identityCard in idsAndDocumentsResults.IdDocuments)
+        {
+            if (identityCard.PersonalNumber.Equals(customer.IdNumber) == false)
+            {
+                /*Get translated message later.*/
+                identityCard.ErrorMessages.Add("Identity Number does not match with customer data, please update it first!");
+            }
+        }
+
+        foreach (var passport in idsAndDocumentsResults.Passports)
+        {
+            if (passport.DocumentNumber.Equals(customer.PassportNumber) == false)
+            {
+                /*Get translated message later.*/
+                passport.ErrorMessages.Add("Passport Number does not match with customer data, please update it first!");
+            }
+        }
+
         foreach (var visa in idsAndDocumentsResults.Visas)
         {
             if (visa.IsExpired)

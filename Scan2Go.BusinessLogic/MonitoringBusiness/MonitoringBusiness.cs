@@ -5,6 +5,7 @@ using Scan2Go.Enums.Properties;
 using System.Collections.Generic;
 using System.Text;
 using Scan2Go.BusinessLogic.BaseClasses;
+using Scan2Go.BusinessLogic.CustomersBusinessLogic;
 using Scan2Go.BusinessLogic.RentsBusinessLogic;
 using Utility.Bases;
 using Utility.Core;
@@ -93,16 +94,23 @@ public class MonitoringBusiness : BaseBusiness
         }
 
         var rent = new RentsBusiness(this).GetRentByCustomerName(customerName);
-
+        
         /*TODO Move this to validation later*/
         if (rent is null)
         {
-            this.AddDetailResult(new OperationResult { State = false, MessageStringKey = nameof(MessageStrings.NoRentWasFoundWithTheFullName) });
+            //this.AddDetailResult(new OperationResult { State = false, MessageStringKey = nameof(MessageStrings.NoRentWasFoundWithTheFullName) });
 
-            return new IDsAndDocumentsResults();
+            foreach (IIDsAndDocuments idAndDocument in idAndDocumentsList)
+            {
+                idAndDocument.ErrorMessages.Add(new string("Rent was not found for the supplied customer!"));
+            }
+
+            return IDsAndDocumentsResults;
         }
+
+        var customer = new CustomersBusiness(this).GetCustomers(rent.CustomerId);
         
-        MonitoringLogic.CheckAllDocumentsForValidation(IDsAndDocumentsResults, rent);
+        MonitoringLogic.CheckAllDocumentsForValidation(IDsAndDocumentsResults, rent, customer);
 
         /*******************************************************************************************************************/
         
