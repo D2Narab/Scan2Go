@@ -71,9 +71,7 @@ public class MonitoringBusiness : BaseBusiness
         }
 
         /************************************************ Analyze,extract and check ****************************************/
-        var customerName = string.Empty;
-
-        customerName = IDsAndDocumentsResults.IdDocuments.FirstOrDefault()?.FullName;
+        string? customerName = IDsAndDocumentsResults.IdDocuments.FirstOrDefault()?.FullName;
 
         if (string.IsNullOrEmpty(customerName))
         {
@@ -83,6 +81,11 @@ public class MonitoringBusiness : BaseBusiness
         if (string.IsNullOrEmpty(customerName))
         {
             customerName = IDsAndDocumentsResults.Visas.FirstOrDefault()?.FullName;
+        }
+
+        if (string.IsNullOrEmpty(customerName))
+        {
+            customerName = IDsAndDocumentsResults.DrivingLicenses.FirstOrDefault()?.FullName;
         }
 
         /*TODO Move this to validation later*/

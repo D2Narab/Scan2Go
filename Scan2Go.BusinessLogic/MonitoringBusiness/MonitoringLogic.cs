@@ -7,6 +7,8 @@ using MailReader;
 using Scan2Go.Entity.Customers;
 using Scan2Go.Entity.Rents;
 using Utility.Extensions;
+using Scan2Go.Entity.Definitions;
+using Scan2Go.Facade;
 
 namespace Scan2Go.BusinessLogic.MonitoringBusiness;
 
@@ -238,6 +240,8 @@ public class MonitoringLogic
 
     public void CheckAllDocumentsForValidation(IDsAndDocumentsResults idsAndDocumentsResults, Rents rent,Customers customer)
     {
+        List<Definition> defCountries = new DefinitionFacade(Utility.Enum.LanguageEnum.EN).GetDefinitionList("Def_Countries").ToList();
+
         foreach (var identityCard in idsAndDocumentsResults.IdDocuments)
         {
             if (identityCard.PersonalNumber.Equals(customer.IdNumber) == false)
@@ -253,6 +257,24 @@ public class MonitoringLogic
             {
                 /*Get translated message later.*/
                 passport.ErrorMessages.Add("Passport Number does not match with customer data, please update it first!");
+            }
+        }
+
+        foreach (var drivingLicenses in idsAndDocumentsResults.DrivingLicenses)
+        {
+            if (defCountries.Any(p => p.NameValue.Contains(drivingLicenses.IssuingStateName)))
+            {
+                Definition country = defCountries.FirstOrDefault(p => p.NameValue.Contains(drivingLicenses.IssuingStateName));
+
+                if (country is not null && country.GetDetailValueByExactFieldName("IdpNeeded").AsBool())
+                {
+                    drivingLicenses.ErrorMessages.Add("International driving permit(IDP) is needed together with their local drivers license!");
+                }
+
+                if (drivingLicenses.IsExpired)
+                {
+                    drivingLicenses.ErrorMessages.Add("Drivers license is expired, the rent cannot be processed!");
+                }
             }
         }
 
