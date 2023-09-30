@@ -238,7 +238,7 @@ public class MonitoringLogic
         }
     }
 
-    public void CheckAllDocumentsForValidation(IDsAndDocumentsResults idsAndDocumentsResults, Rents rent,Customers customer)
+    public void CheckAllDocumentsForValidation(IDsAndDocumentsResults idsAndDocumentsResults, Rents rent, Customers customer)
     {
         List<Definition> defCountries = new DefinitionFacade(Utility.Enum.LanguageEnum.EN).GetDefinitionList("Def_Countries").ToList();
 
@@ -246,8 +246,20 @@ public class MonitoringLogic
         {
             if (identityCard.PersonalNumber.Equals(customer.IdNumber) == false)
             {
-                /*Get translated message later.*/
+                /*TODO Get translated message later.*/
                 identityCard.ErrorMessages.Add("Identity Number does not match with customer data, please update it first!");
+            }
+
+            if (identityCard.Age < 21)
+            {
+                /*TODO Get translated message later.*/
+                identityCard.ErrorMessages.Add("Age must be equal or more than 21 !");
+            }
+
+            if (identityCard.IsValidDocument == false)
+            {
+                /*TODO Get translated message later.*/
+                identityCard.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
             }
         }
 
@@ -255,8 +267,20 @@ public class MonitoringLogic
         {
             if (passport.DocumentNumber.Equals(customer.PassportNumber) == false)
             {
-                /*Get translated message later.*/
+                /*TODO Get translated message later.*/
                 passport.ErrorMessages.Add("Passport Number does not match with customer data, please update it first!");
+            }
+
+            if (passport.Age < 21)
+            {
+                /*TODO Get translated message later.*/
+                passport.ErrorMessages.Add("Age must be equal or more than 21!");
+            }
+
+            if (passport.IsValidDocument == false)
+            {
+                /*TODO Get translated message later.*/
+                passport.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
             }
         }
 
@@ -276,6 +300,18 @@ public class MonitoringLogic
                     drivingLicenses.ErrorMessages.Add("Drivers license is expired, the rent cannot be processed!");
                 }
             }
+
+            if (drivingLicenses.Age < 21)
+            {
+                /*TODO Get translated message later.*/
+                drivingLicenses.ErrorMessages.Add("Age must be equal or more than 21!");
+            }
+
+            if (drivingLicenses.IsValidDocument == false)
+            {
+                /*TODO Get translated message later.*/
+                drivingLicenses.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
+            }
         }
 
         foreach (var visa in idsAndDocumentsResults.Visas)
@@ -284,6 +320,18 @@ public class MonitoringLogic
             {
                 /*Get translated message later.*/
                 visa.ErrorMessages.Add("Visa is expired, the rent cannot be processed!");
+            }
+
+            if (visa.Age < 21)
+            {
+                /*TODO Get translated message later.*/
+                visa.ErrorMessages.Add("Age must be equal or more than 21!");
+            }
+
+            if (visa.IsValidDocument == false)
+            {
+                /*TODO Get translated message later.*/
+                visa.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
             }
         }
     }

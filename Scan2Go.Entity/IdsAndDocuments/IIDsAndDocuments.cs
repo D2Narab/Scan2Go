@@ -21,6 +21,12 @@ public class IIDsAndDocuments
     [RegulaAttributes(new[] { "DocumentName" }, DynamicJSonExtractionType.MainFieldNameOnly)]
     public string DocumentType { get; set; }
 
+    //[RegulaAttributes(new[] {"docType"}, DynamicJSonExtractionType.MainFieldNameOnly)]
+    //public string DocType { get; set; } = string.Empty;
+
+    [RegulaAttributes(new[] { "security" }, DynamicJSonExtractionType.MainFieldNameOnly)]
+    public string Security { get; set; } = string.Empty;
+
     [RegulaAttributes(new[] { "FieldName", "Given Names", "Buf_Text" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
     public string Name { get; set; }
 
@@ -62,6 +68,24 @@ public class IIDsAndDocuments
         get
         {
             if (DateOfExpiry.AsDateTime() < DateTime.Now)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool IsValidDocument
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Security))
+            {
+                return false;
+            }
+
+            if (Security.Equals("1"))
             {
                 return true;
             }
