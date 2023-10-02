@@ -1,5 +1,4 @@
-﻿@* @page "/DynamicBaseList/{SetHashCode:int}" *@
-@using Newtonsoft.Json
+﻿@using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
 @using Scan2Go.Mapper.Models.UserModels
@@ -12,9 +11,6 @@
 
 @inject HttpClient Http
 @inject StateContainer StateContainer
-
-<!-- Import the EditUserPopup component -->
-<EditUserPopup @ref="editUserPopup" OnUserSaved="HandleEntitySaved" />
 
 <style>
     .tick-icon {
@@ -94,7 +90,7 @@ else
             {
                 var id = entity.GetPropertyAsInt("id");
 
-                <tr data-entityId="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => ShowEditUserPopup(id))">
+                <tr data-entityId="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => SendClickedRowIdToBack(id))">
                     @foreach (var listItemCaption in _apiResponse.ResultObject.ListCaptionBases.Where(p => p.IsVisible))
                     {
                         switch (listItemCaption.ListRenderType)
@@ -141,8 +137,8 @@ else
 
 @code {
 
-    [Parameter]
-    public required PassingObject PassingObject { get; set; }
+    [Parameter] public required PassingObject PassingObject { get; set; }
+    [Parameter] public EventCallback<int> OnRowDoubleClick { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -155,13 +151,6 @@ else
     }
 
     private ApiResponse? _apiResponse = new();
-
-    // Callback method to handle user saved event
-    private async Task HandleEntitySaved()
-    {
-        // Reload the users list when the user is successfully saved
-        await LoadEntityList();
-    }
 
     private async Task LoadEntityList()
     {
@@ -198,48 +187,14 @@ else
         }
     }
 
-
     private string GetRowCssClass(dynamic entity)
     {
         return _apiResponse.ResultObject.ListItemBases.IndexOf(entity) % 2 == 0 ? "even-row" : "";
     }
 
-    /**************************************************************************************************/
-
-    private EditUserPopup editUserPopup;
-
-    private async Task ShowEditUserPopup(int userId)
+    private async Task SendClickedRowIdToBack(int userId)
     {
-        // Fetch the user details using another API call using the userId
-        var user = await FetchUserDetails(userId);
-        if (user != null)
-        {
-            // Set the _user field in the EditUserPopup component to display the user details
-            await editUserPopup.SetUser(user);
-        }
-    }
-
-    private async Task<UsersModel> FetchUserDetails(int userId)
-    {
-        try
-        {
-            var response = await Http.GetAsync(Endpoints.GetUser(userId));
-
-            var jsonString = await response.Content.ReadAsStringAsync();
-
-            // Deserialize the JSON response into a dynamic object
-            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
-
-            // Extract the UsersModel from the resultObject property of the jsonResponse
-            UsersModel user = jsonResponse.resultObject.ToObject<UsersModel>();
-
-            return user;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return null;
-        }
+        await OnRowDoubleClick.InvokeAsync(userId);
     }
 
     /**************************************************************************************************/
@@ -287,12 +242,13 @@ else
         }
     }
 
+    /**************************************************************************************************/
+
     private async Task HandleAddUserClick()
     {
         // Implement the logic to open the Add User popup here
         // You can use the same approach used for EditUserPopup
         // For example, set a flag or call a method to show the popup
-        await editUserPopup.SetUser(new UsersModel());
+        //await editUserPopup.SetUser(new UsersModel());
     }
-
 }
