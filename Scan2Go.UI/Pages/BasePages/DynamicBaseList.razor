@@ -1,4 +1,4 @@
-﻿@page "/DynamicBaseList/{SetHashCode:int}"
+﻿@* @page "/DynamicBaseList/{SetHashCode:int}" *@
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
@@ -63,8 +63,6 @@
     +
 </button>
 
-
-<h1>@_apiResponse.ResultObject.RecordInfo</h1>
 
 <p>Total Records : @_apiResponse.ResultObject.TotalRecordCount.ToString()</p>
 
@@ -145,19 +143,16 @@ else
 @code {
 
     [Parameter]
-    public int SetHashCode { get; set; }
-    public PassingObject PassedObject { get; set; }
+    public required PassingObject PassingObject { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        PassedObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
         await LoadEntityList();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        // PassedObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
-        // await LoadEntityList();
+
     }
 
     private ApiResponse? _apiResponse = new();
@@ -175,7 +170,7 @@ else
         {
             var requestBody = new
             {
-                orderByColumn = $"{PassedObject.EntityName}Id",
+                orderByColumn = $"{PassingObject.EntityName}Id",
                 range = 50,
                 sortType = "ASC",
                 startFrom = 0
@@ -185,7 +180,7 @@ else
 
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-            var response = await Http.PostAsync(PassedObject.Endpoint, content);
+            var response = await Http.PostAsync(PassingObject.Endpoint, content);
 
             if (response.IsSuccessStatusCode)
             {

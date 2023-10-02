@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.Api", "Scan2Go.Api\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.UI", "Scan2Go.UI\Scan2Go.UI.csproj", "{46210531-6136-4CB5-A5B5-2C0F62CE66AD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scan2Go.MailReader", "Scan2Go.MailReader\Scan2Go.MailReader.csproj", "{DBD772B1-AF16-4B13-8714-6D0D7EB7F80C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

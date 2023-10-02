@@ -86,4 +86,11 @@
 
         NavigationManager.NavigateTo($"DynamicBaseList/{passingObject.GetHashCode()}");
     }
+
+    private void NavigateToUsersList(PassingObject passingObject)
+    {
+        StateContainer.AddRoutingObjectParameter(passingObject);
+
+        NavigationManager.NavigateTo($"UsersList/{passingObject.GetHashCode()}");
+    }
 }
