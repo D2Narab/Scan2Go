@@ -555,6 +555,7 @@ else
     {
         try
         {
+            Http = new HttpClient();
             Http.Timeout = TimeSpan.FromMinutes(10);
             var response = await Http.GetAsync("https://localhost:44387/Monitoring/GetMails");
 
