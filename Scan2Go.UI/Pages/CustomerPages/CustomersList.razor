@@ -1,0 +1,23 @@
+﻿@page "/CustomersList/{SetHashCode:int}"
+@using Scan2Go.UI.BaseClasses
+@inject StateContainer StateContainer
+
+<div>
+    <h2>@CustomerListPassingObject.EntityName List</h2>
+    <DynamicBaseList PassingObject=@CustomerListPassingObject />
+</div>
+
+@code {
+    [Parameter] public int SetHashCode { get; set; }
+    public PassingObject CustomerListPassingObject { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        CustomerListPassingObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+}
