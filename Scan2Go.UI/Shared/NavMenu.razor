@@ -64,6 +64,13 @@
 
 @code {
     private bool _settingsSubMenuOpen;
+    private static PassingObject _userPassingObject = new()
+    {
+            Endpoint = Endpoints.GetUsersList,
+            EntityName = "User",
+            EntityListPageName = "UsersList"
+    };
+
 
     private static PassingObject _carsPassingObject = new() { Endpoint = Endpoints.GetCarsList, EntityName = "Car" };
     private static PassingObject _customersPassingObject = new() { Endpoint = Endpoints.GetCustomersList, EntityName = "Customer" };
@@ -80,17 +87,10 @@
         _settingsSubMenuOpen = !_settingsSubMenuOpen;
     }
 
-    private void NavigateToDynamicBaseList(PassingObject passingObject)
+    private void NavigateToEntityListPage(PassingObject passingObject)
     {
         StateContainer.AddRoutingObjectParameter(passingObject);
 
-        NavigationManager.NavigateTo($"DynamicBaseList/{passingObject.GetHashCode()}");
-    }
-
-    private void NavigateToUsersList(PassingObject passingObject)
-    {
-        StateContainer.AddRoutingObjectParameter(passingObject);
-
-        NavigationManager.NavigateTo($"UsersList/{passingObject.GetHashCode()}");
+        NavigationManager.NavigateTo($"{passingObject.EntityListPageName}/{passingObject.GetHashCode()}");
     }
 }
