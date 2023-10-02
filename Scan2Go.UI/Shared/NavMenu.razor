@@ -40,7 +40,7 @@
             {
                 <div class="px-3" id="settingsSubMenu">
                     <div class="nav-item">
-                        <NavLink class="nav-link" @onclick="(() => NavigateToUsersList(_userPassingObject))">
+                        <NavLink class="nav-link" @onclick="(() => NavigateToEntityListPage(_userPassingObject))">
                             <span class="oi oi-list-rich" aria-hidden="true"></span> Users
                         </NavLink>
                     </div>
@@ -53,7 +53,12 @@
 
 @code {
     private bool _settingsSubMenuOpen;
-    private static PassingObject _userPassingObject = new() { Endpoint = Endpoints.GetUsersList, EntityName = "User" };
+    private static PassingObject _userPassingObject = new()
+    {
+            Endpoint = Endpoints.GetUsersList,
+            EntityName = "User",
+            EntityListPageName = "UsersList"
+    };
 
     private void ToggleNavMenu()
     {
@@ -65,17 +70,10 @@
         _settingsSubMenuOpen = !_settingsSubMenuOpen;
     }
 
-    private void NavigateToDynamicBaseList(PassingObject passingObject)
+    private void NavigateToEntityListPage(PassingObject passingObject)
     {
         StateContainer.AddRoutingObjectParameter(passingObject);
 
-        NavigationManager.NavigateTo($"DynamicBaseList/{passingObject.GetHashCode()}");
-    }
-
-    private void NavigateToUsersList(PassingObject passingObject)
-    {
-        StateContainer.AddRoutingObjectParameter(passingObject);
-
-        NavigationManager.NavigateTo($"UsersList/{passingObject.GetHashCode()}");
+        NavigationManager.NavigateTo($"{passingObject.EntityListPageName}/{passingObject.GetHashCode()}");
     }
 }
