@@ -40,7 +40,7 @@
             {
                 <div class="px-3" id="settingsSubMenu">
                     <div class="nav-item">
-                        <NavLink class="nav-link" @onclick="(() => NavigateToDynamicBaseList(_userPassingObject))">
+                        <NavLink class="nav-link" @onclick="(() => NavigateToUsersList(_userPassingObject))">
                             <span class="oi oi-list-rich" aria-hidden="true"></span> Users
                         </NavLink>
                     </div>
@@ -70,5 +70,12 @@
         StateContainer.AddRoutingObjectParameter(passingObject);
 
         NavigationManager.NavigateTo($"DynamicBaseList/{passingObject.GetHashCode()}");
+    }
+
+    private void NavigateToUsersList(PassingObject passingObject)
+    {
+        StateContainer.AddRoutingObjectParameter(passingObject);
+
+        NavigationManager.NavigateTo($"UsersList/{passingObject.GetHashCode()}");
     }
 }
