@@ -80,17 +80,17 @@ public class IIDsAndDocuments
     {
         get
         {
-            if (string.IsNullOrEmpty(Security))
+            if (string.IsNullOrEmpty(DateOfExpiry))
             {
                 return false;
             }
 
-            if (Security.Equals("1"))
+            if (DateOfExpiry.Contains('?'))
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
     }
     
