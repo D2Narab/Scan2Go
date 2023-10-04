@@ -1,0 +1,338 @@
+﻿@using Scan2Go.Mapper.Models.UserModels
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@using System.Text;
+@using Newtonsoft.Json
+@using System.Net
+@using Scan2Go.Enums
+@using Scan2Go.Mapper.Models.CustomersModels
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject HttpClient Http
+
+<style>
+    .two-column-layout {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .column {
+        flex: 1;
+        margin-right: 10px; /* Adjust the margin as needed */
+    }
+
+        /* Adjust the width of the input fields */
+        .column input[type="text"] {
+            width: 100%; /* Set the width to 100% for full width */
+            /* You can specify a specific width in pixels or percentages, e.g., width: 250px; */
+        }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-dialog {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .modal-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .close {
+        cursor: pointer;
+    }
+
+    .modal-body {
+        text-align: left;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="checkbox"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    .error-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: yellow;
+        color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        animation: fadeInOut 3s ease-in-out;
+    }
+
+        .error-message.bad-request {
+            background-color: orange;
+        }
+
+        .error-message.internal-server-error {
+            background-color: #ff5c5c;
+        }
+</style>
+
+@if (_showModal)
+{
+    <div class="modal-backdrop">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Customer</h5>
+                    <button type="button" class="close" @onclick="CloseModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (_customersModel == null)
+                    {
+                        <div class="loading">Loading...</div>
+                    }
+                    else
+                    {
+                        <div class="two-column-layout">
+                            <div class="column">
+                                <label for="customerName">Customer Name:</label>
+                                <input type="text" id="customerName" @bind="_customersModel.CustomerName" />
+
+                                <label for="customerSurname">Customer Surname:</label>
+                                <input type="text" id="customerSurname" @bind="_customersModel.CustomerSurname" />
+
+                                <label for="homeAdress">Home Address:</label>
+                                <input type="text" id="homeAdress" @bind="_customersModel.HomeAdress" />
+
+                                <label for="country">Country:</label>
+                                <input type="text" id="country" @bind="_customersModel.Country" />
+
+                                <label for="nationality">Nationality:</label>
+                                <input type="text" id="nationality" @bind="_customersModel.Nationality" />
+
+                                <label for="eMail">EMail:</label>
+                                <input type="text" id="eMail" @bind="_customersModel.EMail" />
+                            </div>
+                            <div class="column">
+                                <label for="cityName">City Name:</label>
+                                <input type="text" id="cityName" @bind="_customersModel.CityName" />
+
+                                <label for="birthDate">Birth Date:</label>
+                                <InputDate id="birthDate" @bind-Value="_customersModel.BirthDate" />
+
+                                <label for="passportNumber">Passport Number:</label>
+                                <input type="text" id="passportNumber" @bind="_customersModel.PassportNumber" />
+
+                                <label for="idNumber">Id Number:</label>
+                                <input type="text" id="idNumber" @bind="_customersModel.IdNumber" />
+
+                                <label for="drivingLicenseNumber">Driving License Number:</label>
+                                <input type="text" id="drivingLicenseNumber" @bind="_customersModel.DrivingLicenseNumber" />
+
+                                <label for="mobilePhoneNumber">Mobile Phone Number:</label>
+                                <input type="text" id="mobilePhoneNumber" @bind="_customersModel.MobilePhoneNumber" />
+                            </div>
+                        </div>
+
+                        <button @onclick="SaveCustomer">Save</button>
+                    }
+                </div>
+                @if (_showError)
+                {
+                    <div id="errorMessage" class="error-message @GetErrorClass()">
+                        @(_errorMessage)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public EventCallback OnCustomerSaved { get; set; }
+    [Parameter] public required int CustomerId { get; set; }
+    private CustomersModel _customersModel = new();
+    private bool _showModal = false;
+    private bool _showError = false;
+    private bool _modalWillBeClosed = false;
+    private string _errorMessage = "";
+    private HttpStatusCode _errorCode = HttpStatusCode.OK;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (CustomerId != 0 && _modalWillBeClosed == false)
+        {
+            CustomersModel customersModel = await FetchCustomer(CustomerId);
+            await SetCustomer(customersModel);
+        }
+    }
+
+    public Task SetCustomer(CustomersModel customersModel)
+    {
+        _customersModel = customersModel;
+        _showModal = true;
+
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    public Task SetCustomerId(int customerId)
+    {
+        CustomerId = customerId;
+        _modalWillBeClosed = false;
+        return Task.CompletedTask;
+    }
+
+    private void CloseModal()
+    {
+        _customersModel = null;
+        _showModal = false;
+
+        StateHasChanged();
+    }
+
+    private async Task<CustomersModel> FetchCustomer(int customerId)
+    {
+        try
+        {
+            var response = await Http.GetAsync(Endpoints.GetCustomer(customerId));
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            // Deserialize the JSON response into a dynamic object
+            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
+
+            // Extract the UsersModel from the resultObject property of the jsonResponse
+            CustomersModel customersModel = jsonResponse.resultObject.ToObject<CustomersModel>();
+
+            return customersModel;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    private async Task SaveCustomer()
+    {
+        var jsonString = JsonSerializer.Serialize(_customersModel);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        try
+        {
+            HttpResponseMessage response;
+
+            if (_customersModel.CustomerId == 0)
+            {
+                response = await Http.PostAsync(Endpoints.CreateCustomer, content);
+            }
+            else
+            {
+                response = await Http.PatchAsync(Endpoints.SaveCustomer, content);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Call the parent's callback method to notify that the user is saved
+                _modalWillBeClosed = true;
+                await OnCustomerSaved.InvokeAsync();
+                CloseModal();
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                _errorCode = response.StatusCode;
+
+                var reponseJsonString = await response.Content.ReadAsStringAsync();
+
+                // Deserialize the JSON response into a dynamic object
+                dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(reponseJsonString);
+
+                // Extract the message from the resultObject property of the jsonResponse
+                string message = jsonResponse.message;
+                _errorMessage = message;
+                _showError = true;
+
+                StateHasChanged(); // Notify the component to re-render
+
+                // Hide the error message after 3 seconds
+                await Task.Delay(4000);
+                _showError = false;
+                StateHasChanged();
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                string message = "Internal Server Error: an error has occurred, please notify the system admin!";
+                _errorMessage = message;
+                _showError = true;
+
+                StateHasChanged(); // Notify the component to re-render
+
+                // Hide the error message after 3 seconds
+                await Task.Delay(4000);
+                _showError = false;
+                StateHasChanged();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private string GetErrorClass()
+    {
+        if (_errorCode == HttpStatusCode.BadRequest)
+        {
+            return "error-message bad-request";
+        }
+
+        if (_errorCode == HttpStatusCode.InternalServerError)
+        {
+            return "error-message internal-server-error";
+        }
+
+        return "error-message";
+    }
+}

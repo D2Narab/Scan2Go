@@ -2,14 +2,18 @@
 @using Scan2Go.UI.BaseClasses
 @inject StateContainer StateContainer
 
+<CustomerEdit @ref="_customerEdit" OnCustomerSaved="HandleEntitySaved" CustomerId=@_clickedCustomerId />
+
 <div>
     <h2>@CustomerListPassingObject.EntityName List</h2>
-    <DynamicBaseList PassingObject=@CustomerListPassingObject />
+    <DynamicBaseList PassingObject=@CustomerListPassingObject OnRowDoubleClick=@OpenCustomerEdit />
 </div>
 
 @code {
     [Parameter] public int SetHashCode { get; set; }
     public PassingObject CustomerListPassingObject { get; set; }
+    public int _clickedCustomerId;
+    private CustomerEdit _customerEdit;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -19,5 +23,17 @@
     protected override async Task OnInitializedAsync()
     {
 
+    }
+
+    private async Task OpenCustomerEdit(int customerId)
+    {
+        _clickedCustomerId = customerId;
+
+        await _customerEdit.SetCustomerId(_clickedCustomerId);
+    }
+
+    private async Task HandleEntitySaved()
+    {
+    
     }
 }

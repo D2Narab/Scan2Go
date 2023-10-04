@@ -18,7 +18,8 @@ public class CustomersController : BaseController
 		return this.ReturnOperationResult(operationResult);
 	}
 
-	[HttpGet]
+    [AllowAnonymous]
+    [HttpGet]
 	[Route("GetCustomers/{customersId:int}")]
 	public IActionResult GetCustomers(int customersId)
 	{
@@ -35,7 +36,8 @@ public class CustomersController : BaseController
 		return this.ReturnOperationResult(operationResult);
 	}
 
-	[HttpPost]
+    [AllowAnonymous]
+    [HttpPatch]
 	[Route("SaveCustomers")]
 	public IActionResult SaveCustomers(CustomersModel customersModel)
 	{

@@ -20,9 +20,9 @@ public class Endpoints : DataLayerEnumBase
 
     public static readonly Endpoints CreateCustomer = new Endpoints("Customers/CreateCustomer");
     public static readonly Func<int, Endpoints> DeleteCustomer = new Func<int, Endpoints>(param => new Endpoints($"Customers/DeleteCustomer/{param}"));
-    public static readonly Func<int, Endpoints> GetCustomer = new Func<int, Endpoints>(param => new Endpoints($"Customers/GetCustomer/{param}"));
+    public static readonly Func<int, Endpoints> GetCustomer = new Func<int, Endpoints>(param => new Endpoints($"Customers/GetCustomers/{param}"));
     public static readonly Endpoints GetCustomersList = new Endpoints("Customers/GetCustomersList");
-    public static readonly Endpoints SaveCustomer = new Endpoints("Customers/SaveCustomer");
+    public static readonly Endpoints SaveCustomer = new Endpoints("Customers/SaveCustomers");
 
     #endregion Customers
 

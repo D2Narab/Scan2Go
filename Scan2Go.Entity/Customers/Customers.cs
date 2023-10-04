@@ -108,11 +108,8 @@ public class Customers : EntityStateBase
             AddParam(Field.Country, DbType.String, Country);
         }
 
-        if (isStateCheck && _stateCustomers.CustomerId)
-        {
-            AddParam(Field.CustomerId, DbType.Int32, CustomerId);
-        }
-
+        AddParam(Field.CustomerId, DbType.Int32, CustomerId, ParameterDirection.Input, true);
+        
         if (isStateCheck && _stateCustomers.CustomerName)
         {
             AddParam(Field.CustomerName, DbType.String, CustomerName);
