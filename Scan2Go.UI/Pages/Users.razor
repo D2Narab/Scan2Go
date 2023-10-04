@@ -1,17 +1,15 @@
 ﻿@page "/Users"
-@using Scan2Go.Entity.Users
-@using System.Text.Json.Serialization
+
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Components
 @using Scan2Go.Enums
-
 @using Scan2Go.Mapper.Models.UserModels
-@using JsonSerializer = System.Text.Json.JsonSerializer
-@using Utility.Core;
+@using Scan2Go.UI.Pages.UserPages
+
 @inject HttpClient Http
 
 <!-- Import the EditUserPopup component -->
-<EditUserPopup @ref="editUserPopup" OnUserSaved="HandleUserSaved" />
+<EditUserPopup @ref="_editUserPopup" OnUserSaved="HandleUserSaved" />
 
 <style>
     .tick-icon {
@@ -173,7 +171,7 @@ else
 
     /**************************************************************************************************/
 
-    private EditUserPopup editUserPopup;
+    private EditUserPopup _editUserPopup;
 
     private async Task ShowEditUserPopup(int userId)
     {
@@ -182,7 +180,7 @@ else
         if (user != null)
         {
             // Set the _user field in the EditUserPopup component to display the user details
-            await editUserPopup.SetUser(user);
+            await _editUserPopup.SetUser(user);
         }
     }
 
@@ -259,7 +257,7 @@ else
         // Implement the logic to open the Add User popup here
         // You can use the same approach used for EditUserPopup
         // For example, set a flag or call a method to show the popup
-        await editUserPopup.SetUser(new UsersModel());
+        await _editUserPopup.SetUser(new UsersModel());
     }
 
 }
