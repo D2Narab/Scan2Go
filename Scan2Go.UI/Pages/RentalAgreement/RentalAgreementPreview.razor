@@ -5,8 +5,12 @@
 @using System.Reflection
 @using System.Text.RegularExpressions
 @inherits Microsoft.AspNetCore.Components.ComponentBase
+@inject IJSRuntime JSRuntime
+
 
 <h3>RentalAgreementPreview</h3>
+
+<button @onclick="GeneratePdf">Generate PDF</button>
 
 <div class="rental-agreement-display">
     <div class="left-column">
@@ -88,6 +92,22 @@
 
 </style>
 
+<script>
+    function generatePdf() {
+        const element = document.querySelector('.rental-agreement-display');
+        const opt = {
+            margin: 10,
+            filename: 'rental_agreement.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(opt).outputPdf();
+    }
+</script>
+
+
 @code {
     [Parameter] public int SetHashCode { get; set; }
     public RentalAgreement RentalAgreement { get; set; }
@@ -102,4 +122,12 @@
     // Convert "CustomerBirthDate" to "Customer Birth Date"
         return Regex.Replace(propertyName, "([a-z])([A-Z])", "$1 $2");
     }
+
+    private async Task GeneratePdf()
+    {
+        await JSRuntime.InvokeVoidAsync("generatePdf");
+    }
+
 }
+
+
