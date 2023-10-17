@@ -1,7 +1,13 @@
 ﻿@page "/fetchmail"
 @using Scan2Go.Entity.IdsAndDocuments
 @using Newtonsoft.Json
+@using Scan2Go.Entity.Cars
+@using Scan2Go.Entity.RentalAgreement
+@using Scan2Go.Entity.Rents
+@using Scan2Go.UI.BaseClasses
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject StateContainer StateContainer;
 
 <PageTitle>Reading mail from outlook and progressing attachments</PageTitle>
 
@@ -15,6 +21,13 @@
 }
 else
 {
+    <div class="button-container">
+        <div class="rental-agreement-button" @onclick="CreateRentalAgreement">
+            <span>Rental agreement preview</span>
+        </div>
+    </div>
+
+
     <div class="identity-cards">
         @foreach (var identityCard in IdentityCards)
         {
@@ -459,6 +472,24 @@ else
 }
 
 <style>
+    /* Style the container to position the buttons and manage their layout */
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px; /* Add margin to create separation between the buttons and the list */
+    }
+
+    /* Style the "Rental agreement" button */
+    .rental-agreement-button {
+        padding: 10px 20px; /* Adjust the padding to make the button wider */
+        background-color: #007BFF;
+        color: white;
+        font-size: 16px; /* Adjust the font size as needed */
+        cursor: pointer;
+        margin-left: auto; /* Push the button to the right */
+    }
+
     .error-messages {
         flex: 1;
         margin-left: 20px;
@@ -542,14 +573,13 @@ else
     }
 </style>
 
-
-
-
 @code {
     private IList<IdentityCard> IdentityCards = new List<IdentityCard>();
     private IList<Passport> Passports = new List<Passport>();
     private IList<DrivingLicense> DrivingLicenses = new List<DrivingLicense>();
     private IList<Visa> Visas = new List<Visa>();
+    private Rents rent = new Rents();
+    private Cars car = new Cars();
 
     protected override async Task OnInitializedAsync()
     {
@@ -564,11 +594,12 @@ else
                 var jsonResponseString = await response.Content.ReadAsStringAsync();
                 dynamic jsonResponseDynamic = JsonConvert.DeserializeObject<dynamic>(jsonResponseString);
 
-
                 IdentityCards = jsonResponseDynamic.resultObject.idDocuments.ToObject<List<IdentityCard>>();
                 Passports = jsonResponseDynamic.resultObject.passports.ToObject<List<Passport>>();
                 DrivingLicenses = jsonResponseDynamic.resultObject.drivingLicenses.ToObject<List<DrivingLicense>>();
                 Visas = jsonResponseDynamic.resultObject.visas.ToObject<List<Visa>>();
+                rent = jsonResponseDynamic.resultObject.rent.ToObject<Rents>();
+                car = jsonResponseDynamic.resultObject.car.ToObject<Cars>();
             }
             else
             {
@@ -580,5 +611,17 @@ else
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    private void CreateRentalAgreement()
+    {
+        Entity.RentalAgreement.RentalAgreement rentalAgreement = new Entity.RentalAgreement.RentalAgreement();
+
+        rentalAgreement.CustomerName = IdentityCards.FirstOrDefault().Name;
+        rentalAgreement.CustomerSurname = IdentityCards.FirstOrDefault().Surname;
+
+        StateContainer.AddRoutingObjectParameter(rentalAgreement);
+
+        NavigationManager.NavigateTo($"RentalAgreementPreview/{rentalAgreement.GetHashCode()}");
     }
 }

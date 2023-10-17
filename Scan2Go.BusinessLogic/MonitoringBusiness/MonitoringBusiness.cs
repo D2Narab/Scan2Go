@@ -5,6 +5,7 @@ using Scan2Go.Enums.Properties;
 using System.Collections.Generic;
 using System.Text;
 using Scan2Go.BusinessLogic.BaseClasses;
+using Scan2Go.BusinessLogic.CarsBusinessLogic;
 using Scan2Go.BusinessLogic.CustomersBusinessLogic;
 using Scan2Go.BusinessLogic.RentsBusinessLogic;
 using Utility.Bases;
@@ -98,6 +99,7 @@ public class MonitoringBusiness : BaseBusiness
 
         var rent = new RentsBusiness(this).GetRentByCustomerName(customerName);
         
+        
         /*TODO Move this to validation later*/
         if (rent is null)
         {
@@ -111,11 +113,15 @@ public class MonitoringBusiness : BaseBusiness
             return IDsAndDocumentsResults;
         }
 
+        var car = new CarsBusiness(this).GetCars(rent.CarId);
         var customer = new CustomersBusiness(this).GetCustomers(rent.CustomerId);
         
         MonitoringLogic.CheckAllDocumentsForValidation(IDsAndDocumentsResults, rent, customer);
 
         /*******************************************************************************************************************/
+
+        IDsAndDocumentsResults.Rent = rent;
+        IDsAndDocumentsResults.Car = car;
         
         return IDsAndDocumentsResults;
     }

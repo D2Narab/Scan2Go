@@ -1,0 +1,105 @@
+﻿@page "/RentalAgreementPreview/{SetHashCode:int}"
+@using Scan2Go.UI.BaseClasses
+@using Scan2Go.Entity.RentalAgreement
+@inject StateContainer StateContainer
+@using System.Reflection
+@using System.Text.RegularExpressions
+@inherits Microsoft.AspNetCore.Components.ComponentBase
+
+<h3>RentalAgreementPreview</h3>
+
+<div class="rental-agreement-display">
+    <div class="left-column">
+        @foreach (var property in typeof(RentalAgreement).GetProperties())
+        {
+            if (property.Name.StartsWith("Customer"))
+            {
+                <div class="property">
+                    <span class="property-label">@GetLabel(property.Name)</span>
+                    <span class="property-value">@property.GetValue(RentalAgreement)?.ToString()</span>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="right-column">
+        @foreach (var property in typeof(RentalAgreement).GetProperties())
+        {
+            if (property.Name.StartsWith("Car"))
+            {
+                <div class="property">
+                    <span class="property-label">@GetLabel(property.Name)</span>
+                    <span class="property-value">@property.GetValue(RentalAgreement)?.ToString()</span>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<style>
+/* Style the rental agreement display container */
+    .rental-agreement-display {
+        display: flex;
+        justify-content: space-between;
+        max-width: 800px; /* Set a maximum width */
+        margin: 0 auto; /* Center the grid on the page */
+    }
+
+    /* Style the left and right columns */
+    .left-column, .right-column {
+        flex: 1; /* Equal width for both columns */
+    }
+
+    /* Style property name and value pairs */
+    .property {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px; /* Adjust as needed for spacing */
+    }
+
+    /* Style the property name (label) */
+    .property-label {
+        font-weight: bold;
+        width: 200px; /* Adjust the width as needed */
+    }
+
+    /* Style the ":" separator */
+    .property-value::before {
+        content: ": "; /* Add the ":" separator */
+        margin-right: 10px; /* Adjust as needed for spacing */
+    }
+
+    /* Style property values */
+    .property-value {
+        font-size: 18px; /* Increase font size */
+        padding: 10px; /* Add more padding for a cool look */
+        background-color: #f0f0f0; /* Background color */
+        border-radius: 20px; /* Round the corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        flex: 1; /* Take remaining space */
+        transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+    }
+
+    /* Hover effect for property values */
+    .property-value:hover {
+        background-color: #007BFF; /* Change background color on hover */
+        color: white; /* Change text color on hover */
+    }
+
+</style>
+
+@code {
+    [Parameter] public int SetHashCode { get; set; }
+    public RentalAgreement RentalAgreement { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        RentalAgreement = StateContainer.GetRoutingObjectParameter<RentalAgreement>(SetHashCode);
+    }
+
+    private string GetLabel(string propertyName)
+    {
+    // Convert "CustomerBirthDate" to "Customer Birth Date"
+        return Regex.Replace(propertyName, "([a-z])([A-Z])", "$1 $2");
+    }
+}
