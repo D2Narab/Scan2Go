@@ -617,6 +617,19 @@ else
     {
         Entity.RentalAgreement.RentalAgreement rentalAgreement = new Entity.RentalAgreement.RentalAgreement();
 
+        rentalAgreement.CarDeliveryDate = DateTime.Now.ToString();
+        rentalAgreement.CarId = car.CarName;
+        rentalAgreement.CarInsuranceOption = rent.HasInsurance.ToString();
+        rentalAgreement.CarMake = car.DefCarBrands.NameValue;
+        rentalAgreement.CarModel = car.DefCarModels.NameValue;
+        rentalAgreement.CarTotalCharge = rent.TotalCharge.ToString();
+        rentalAgreement.CarTotalChargeCurrency = "$";
+        rentalAgreement.CarYear = car.CarYear.ToString();
+        rentalAgreement.CustomerBirthDate = IdentityCards.FirstOrDefault().DateOfBirth;
+        rentalAgreement.CustomerCountry = IdentityCards.FirstOrDefault().Nationality;
+        rentalAgreement.CustomerDrivingLicenseExpiryDate = DrivingLicenses.FirstOrDefault().DateOfExpiry.ToString();
+        rentalAgreement.CustomerPassportExpiryDate = Passports.FirstOrDefault().DateOfExpiry.ToString();
+        rentalAgreement.CustomerVisaExpiryDate = Visas.FirstOrDefault().DateOfExpiry.ToString();
         rentalAgreement.CustomerName = IdentityCards.FirstOrDefault().Name;
         rentalAgreement.CustomerSurname = IdentityCards.FirstOrDefault().Surname;
 
