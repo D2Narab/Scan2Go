@@ -10,7 +10,17 @@ namespace Scan2Go.Service.Controllers;
 [Route("[controller]")]
 public class RentsController : BaseController
 {
-	[HttpGet]
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("CreateRent")]
+    public IActionResult CreateRent(RentsModel rentsModel)
+    {
+        OperationResult operationResult = new RentsManager(this.CurrentUser).CreateRent(rentsModel);
+        return this.ReturnOperationResult(operationResult);
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
 	[Route("DeleteRents/{rentsId:int}")]
 	public IActionResult DeleteRents(int rentsId)
 	{
@@ -18,7 +28,8 @@ public class RentsController : BaseController
 		return this.ReturnOperationResult(operationResult);
 	}
 
-	[HttpGet]
+    [AllowAnonymous]
+    [HttpGet]
 	[Route("GetRents/{rentsId:int}")]
 	public IActionResult GetRents(int rentsId)
 	{
@@ -35,7 +46,8 @@ public class RentsController : BaseController
 		return this.ReturnOperationResult(operationResult);
 	}
 
-	[HttpPost]
+    [AllowAnonymous]
+    [HttpPost]
 	[Route("SaveRents")]
 	public IActionResult SaveRents(RentsModel rentsModel)
 	{

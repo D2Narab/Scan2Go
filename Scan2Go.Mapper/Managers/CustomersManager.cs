@@ -6,57 +6,70 @@ using Scan2Go.Mapper.Models.CustomersModels;
 using Utility.Bases;
 using Utility.Bases.EntityBases;
 using Utility.Core;
+using Utility.Extensions;
 
 namespace Scan2Go.Mapper.CustomersMappings;
 
 public class CustomersManager : BaseManager
 {
-	public CustomersManager(IUser user) : base(user)
-	{
-	}
+    public CustomersManager(IUser user) : base(user)
+    {
+    }
 
-	public OperationResult DeleteCustomers(int customersId)
-	{
-		OperationResult operationResult = new OperationResult((int)Modules.Customers, (int)Operations.DeleteCustomers);
+    public OperationResult CreateCustomer(CustomersModel customersModel)
+    {
+        Customers customers = Mapper.Map<CustomersModel, Customers>(customersModel);
 
-		 new CustomersBusiness(operationResult, this.user).DeleteCustomers(customersId);
+        OperationResult operationResult = new OperationResult(Modules.Customers.AsInt(), Operations.CreateCustomer.AsInt());
 
-		return operationResult;
-	}
+        new CustomersBusiness(operationResult, this.user).SaveCustomers(customers);
+        customersModel.CustomerId = customers.CustomerId;
 
-	public OperationResult GetCustomers(int customersId)
-	{
-		OperationResult operationResult = new OperationResult();
+        return operationResult;
+    }
 
-		Customers customers  = new CustomersBusiness(operationResult, this.user).GetCustomers(customersId);
+    public OperationResult DeleteCustomers(int customersId)
+    {
+        OperationResult operationResult = new OperationResult((int)Modules.Customers, (int)Operations.DeleteCustomers);
 
-		CustomersModel customersModel = Mapper.Map<Customers,CustomersModel>(customers);
+        new CustomersBusiness(operationResult, this.user).DeleteCustomers(customersId);
 
-		operationResult.ResultObject = customersModel;
-		return operationResult;
-	}
+        return operationResult;
+    }
 
-	public OperationResult GetCustomersForList(CustomersSearchCriteriaModel customersSearchCriteriaModel)
-	{
-		OperationResult operationResult = new OperationResult();
+    public OperationResult GetCustomers(int customersId)
+    {
+        OperationResult operationResult = new OperationResult();
 
-		CustomersSearchCriteria customersSearchCriteria = Mapper.Map<CustomersSearchCriteriaModel, CustomersSearchCriteria>(customersSearchCriteriaModel);
+        Customers customers = new CustomersBusiness(operationResult, this.user).GetCustomers(customersId);
 
-		ListSourceBase customersListItems = new CustomersBusiness(operationResult, this.user).GetCustomersForList(customersSearchCriteria);
+        CustomersModel customersModel = Mapper.Map<Customers, CustomersModel>(customers);
 
-		operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<CustomersListItemModel>>(customersListItems);
-		return operationResult;
-	}
+        operationResult.ResultObject = customersModel;
+        return operationResult;
+    }
 
-	public OperationResult SaveCustomers(CustomersModel customersModel)
-	{
-		var customers = Mapper.Map<CustomersModel,Customers>(customersModel);
+    public OperationResult GetCustomersForList(CustomersSearchCriteriaModel customersSearchCriteriaModel)
+    {
+        OperationResult operationResult = new OperationResult();
 
-		OperationResult operationResult = new OperationResult((int)Modules.Customers, (int)Operations.SaveCustomers);
+        CustomersSearchCriteria customersSearchCriteria = Mapper.Map<CustomersSearchCriteriaModel, CustomersSearchCriteria>(customersSearchCriteriaModel);
 
-		new CustomersBusiness(operationResult, this.user).SaveCustomers(customers);
+        ListSourceBase customersListItems = new CustomersBusiness(operationResult, this.user).GetCustomersForList(customersSearchCriteria);
 
-		operationResult.ResultObject = customers;
-		return operationResult;
-	}
+        operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<CustomersListItemModel>>(customersListItems);
+        return operationResult;
+    }
+
+    public OperationResult SaveCustomers(CustomersModel customersModel)
+    {
+        var customers = Mapper.Map<CustomersModel, Customers>(customersModel);
+
+        OperationResult operationResult = new OperationResult((int)Modules.Customers, (int)Operations.SaveCustomers);
+
+        new CustomersBusiness(operationResult, this.user).SaveCustomers(customers);
+
+        operationResult.ResultObject = customers;
+        return operationResult;
+    }
 }

@@ -6,57 +6,69 @@ using Scan2Go.Mapper.Models.CarsModels;
 using Utility.Bases;
 using Utility.Bases.EntityBases;
 using Utility.Core;
+using Utility.Extensions;
 
 namespace Scan2Go.Mapper.CarsMappings;
 
 public class CarsManager : BaseManager
 {
-	public CarsManager(IUser user) : base(user)
-	{
-	}
+    public CarsManager(IUser user) : base(user)
+    {
+    }
 
-	public OperationResult DeleteCars(int carsId)
-	{
-		OperationResult operationResult = new OperationResult((int)Modules.Cars, (int)Operations.DeleteCars);
+    public OperationResult CreateCar(CarsModel carsModel)
+    {
+        Cars cars = Mapper.Map<CarsModel, Cars>(carsModel);
 
-		 new CarsBusiness(operationResult, this.user).DeleteCars(carsId);
+        OperationResult operationResult = new OperationResult(Modules.Cars.AsInt(), Operations.CreateCars.AsInt());
 
-		return operationResult;
-	}
+        new CarsBusiness(operationResult, this.user).SaveCars(cars);
+        carsModel.CarId = cars.CarId;
 
-	public OperationResult GetCars(int carsId)
-	{
-		OperationResult operationResult = new OperationResult();
+        return operationResult;
+    }
 
-		Cars cars  = new CarsBusiness(operationResult, this.user).GetCars(carsId);
+    public OperationResult DeleteCars(int carsId)
+    {
+        OperationResult operationResult = new OperationResult((int)Modules.Cars, (int)Operations.DeleteCars);
 
-		CarsModel carsModel = Mapper.Map<Cars,CarsModel>(cars);
+        new CarsBusiness(operationResult, this.user).DeleteCars(carsId);
 
-		operationResult.ResultObject = carsModel;
-		return operationResult;
-	}
+        return operationResult;
+    }
 
-	public OperationResult GetCarsForList(CarsSearchCriteriaModel carsSearchCriteriaModel)
-	{
-		OperationResult operationResult = new OperationResult();
+    public OperationResult GetCars(int carsId)
+    {
+        OperationResult operationResult = new OperationResult();
 
-		CarsSearchCriteria carsSearchCriteria = Mapper.Map<CarsSearchCriteriaModel, CarsSearchCriteria>(carsSearchCriteriaModel);
+        Cars cars = new CarsBusiness(operationResult, this.user).GetCars(carsId);
 
-		ListSourceBase carsListItems = new CarsBusiness(operationResult, this.user).GetCarsForList(carsSearchCriteria);
+        CarsModel carsModel = Mapper.Map<Cars, CarsModel>(cars);
 
-		operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<CarsListItemModel>>(carsListItems);
-		return operationResult;
-	}
+        operationResult.ResultObject = carsModel;
+        return operationResult;
+    }
 
-	public OperationResult SaveCars(CarsModel carsModel)
-	{
-		var cars = Mapper.Map<CarsModel,Cars>(carsModel);
+    public OperationResult GetCarsForList(CarsSearchCriteriaModel carsSearchCriteriaModel)
+    {
+        OperationResult operationResult = new OperationResult();
 
-		OperationResult operationResult = new OperationResult((int)Modules.Cars, (int)Operations.SaveCars);
+        CarsSearchCriteria carsSearchCriteria = Mapper.Map<CarsSearchCriteriaModel, CarsSearchCriteria>(carsSearchCriteriaModel);
 
-		new CarsBusiness(operationResult, this.user).SaveCars(cars);
+        ListSourceBase carsListItems = new CarsBusiness(operationResult, this.user).GetCarsForList(carsSearchCriteria);
 
-		operationResult.ResultObject = cars;
-		return operationResult;
-	}
+        operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<CarsListItemModel>>(carsListItems);
+        return operationResult;
+    }
+
+    public OperationResult SaveCars(CarsModel carsModel)
+    {
+        var cars = Mapper.Map<CarsModel, Cars>(carsModel);
+
+        OperationResult operationResult = new OperationResult((int)Modules.Cars, (int)Operations.SaveCars);
+
+        new CarsBusiness(operationResult, this.user).SaveCars(cars);
+        operationResult.ResultObject = cars;
+        return operationResult;
+    }
 }

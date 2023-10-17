@@ -6,57 +6,69 @@ using Scan2Go.Mapper.Models.RentsModels;
 using Utility.Bases;
 using Utility.Bases.EntityBases;
 using Utility.Core;
+using Utility.Extensions;
 
 namespace Scan2Go.Mapper.RentsMappings;
 
 public class RentsManager : BaseManager
 {
-	public RentsManager(IUser user) : base(user)
-	{
-	}
+    public RentsManager(IUser user) : base(user)
+    {
+    }
 
-	public OperationResult DeleteRents(int rentsId)
-	{
-		OperationResult operationResult = new OperationResult((int)Modules.Rents, (int)Operations.DeleteRents);
+    public OperationResult CreateRent(RentsModel rentsModel)
+    {
+        Rents rent = Mapper.Map<RentsModel, Rents>(rentsModel);
 
-		 new RentsBusiness(operationResult, this.user).DeleteRents(rentsId);
+        OperationResult operationResult = new OperationResult(Modules.Rents.AsInt(), Operations.CreateRent.AsInt());
 
-		return operationResult;
-	}
+        new RentsBusiness(operationResult, this.user).SaveRents(rent);
+        rentsModel.RentId = rent.CarId;
 
-	public OperationResult GetRents(int rentsId)
-	{
-		OperationResult operationResult = new OperationResult();
+        return operationResult;
+    }
 
-		Rents rents  = new RentsBusiness(operationResult, this.user).GetRents(rentsId);
+    public OperationResult DeleteRents(int rentsId)
+    {
+        OperationResult operationResult = new OperationResult((int)Modules.Rents, (int)Operations.DeleteRents);
 
-		RentsModel rentsModel = Mapper.Map<Rents,RentsModel>(rents);
+        new RentsBusiness(operationResult, this.user).DeleteRents(rentsId);
 
-		operationResult.ResultObject = rentsModel;
-		return operationResult;
-	}
+        return operationResult;
+    }
 
-	public OperationResult GetRentsForList(RentsSearchCriteriaModel rentsSearchCriteriaModel)
-	{
-		OperationResult operationResult = new OperationResult();
+    public OperationResult GetRents(int rentsId)
+    {
+        OperationResult operationResult = new OperationResult();
 
-		RentsSearchCriteria rentsSearchCriteria = Mapper.Map<RentsSearchCriteriaModel, RentsSearchCriteria>(rentsSearchCriteriaModel);
+        Rents rents = new RentsBusiness(operationResult, this.user).GetRents(rentsId);
 
-		ListSourceBase rentsListItems = new RentsBusiness(operationResult, this.user).GetRentsForList(rentsSearchCriteria);
+        RentsModel rentsModel = Mapper.Map<Rents, RentsModel>(rents);
 
-		operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<RentsListItemModel>>(rentsListItems);
-		return operationResult;
-	}
+        operationResult.ResultObject = rentsModel;
+        return operationResult;
+    }
 
-	public OperationResult SaveRents(RentsModel rentsModel)
-	{
-		var rents = Mapper.Map<RentsModel,Rents>(rentsModel);
+    public OperationResult GetRentsForList(RentsSearchCriteriaModel rentsSearchCriteriaModel)
+    {
+        OperationResult operationResult = new OperationResult();
 
-		OperationResult operationResult = new OperationResult((int)Modules.Rents, (int)Operations.SaveRents);
+        RentsSearchCriteria rentsSearchCriteria = Mapper.Map<RentsSearchCriteriaModel, RentsSearchCriteria>(rentsSearchCriteriaModel);
 
-		new RentsBusiness(operationResult, this.user).SaveRents(rents);
+        ListSourceBase rentsListItems = new RentsBusiness(operationResult, this.user).GetRentsForList(rentsSearchCriteria);
 
-		operationResult.ResultObject = rents;
-		return operationResult;
-	}
+        operationResult.ResultObject = Mapper.Map<ListSourceBase, ListSourceModel<RentsListItemModel>>(rentsListItems);
+        return operationResult;
+    }
+
+    public OperationResult SaveRents(RentsModel rentsModel)
+    {
+        var rents = Mapper.Map<RentsModel, Rents>(rentsModel);
+
+        OperationResult operationResult = new OperationResult((int)Modules.Rents, (int)Operations.SaveRents);
+
+        new RentsBusiness(operationResult, this.user).SaveRents(rents);
+        operationResult.ResultObject = rents;
+        return operationResult;
+    }
 }
