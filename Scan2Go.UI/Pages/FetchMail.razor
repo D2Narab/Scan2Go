@@ -632,7 +632,7 @@ else
         rentalAgreement.CustomerVisaExpiryDate = Visas.FirstOrDefault().DateOfExpiry.ToString();
         rentalAgreement.CustomerName = IdentityCards.FirstOrDefault().Name;
         rentalAgreement.CustomerSurname = IdentityCards.FirstOrDefault().Surname;
-
+        rentalAgreement.CustomerDrivingLicenseNumber = DrivingLicenses.FirstOrDefault().DocumentNumber.ToString();
         StateContainer.AddRoutingObjectParameter(rentalAgreement);
 
         NavigationManager.NavigateTo($"RentalAgreementPreview/{rentalAgreement.GetHashCode()}");
