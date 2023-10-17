@@ -26,38 +26,9 @@
         background-color: #f2f2f2; /* You can use any color here */
     }
 
-    /* Custom style for the container of the Add User button */
-    .add-user-button-container {
-        position: relative;
-    }
-
-    /* Custom style for the Add User button */
-    .add-user-button {
-        background-color: #007bff; /* You can use any color you like */
-        color: #fff;
-        width: 40px;
-        height: 40px;
-        border: none;
-        border-radius: 50%;
-        font-size: 20px;
-        cursor: pointer;
-        position: absolute;
-        margin: 30px;
-        right: 0;
-        transform: translateY(-50%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
 </style>
 
 <PageTitle>@_apiResponse.ResultObject.RecordInfo</PageTitle>
-
-<button class="add-user-button" @onclick="HandleAddUserClick">
-    +
-</button>
-
 
 <p>Total Records : @_apiResponse.ResultObject.TotalRecordCount.ToString()</p>
 
@@ -240,15 +211,5 @@ else
         {
             Console.WriteLine(e);
         }
-    }
-
-    /**************************************************************************************************/
-
-    private async Task HandleAddUserClick()
-    {
-        // Implement the logic to open the Add User popup here
-        // You can use the same approach used for EditUserPopup
-        // For example, set a flag or call a method to show the popup
-        //await editUserPopup.SetUser(new UsersModel());
     }
 }
