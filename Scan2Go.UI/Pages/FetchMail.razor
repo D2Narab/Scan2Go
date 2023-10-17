@@ -633,6 +633,12 @@ else
         rentalAgreement.CustomerName = IdentityCards.FirstOrDefault().Name;
         rentalAgreement.CustomerSurname = IdentityCards.FirstOrDefault().Surname;
         rentalAgreement.CustomerDrivingLicenseNumber = DrivingLicenses.FirstOrDefault().DocumentNumber.ToString();
+        rentalAgreement.CustomerDrivingLicenseCountry = DrivingLicenses.FirstOrDefault().IssuingStateName;
+        rentalAgreement.CustomerNationality = IdentityCards.FirstOrDefault().Nationality;
+        rentalAgreement.CustomerPassportIssuedCountry = Passports.FirstOrDefault().IssuingStateName;
+        rentalAgreement.CarPlate = "06 EAZ 139";
+
+
         StateContainer.AddRoutingObjectParameter(rentalAgreement);
 
         NavigationManager.NavigateTo($"RentalAgreementPreview/{rentalAgreement.GetHashCode()}");
