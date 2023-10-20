@@ -162,11 +162,11 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if (UserId != 0 && _modalWillBeClosed == false)
-        {
-            UsersModel usersModel = await FetchUser(UserId);
-            await SetUser(usersModel);
-        }
+        // if (UserId != 0 && _modalWillBeClosed == false)
+        // {
+        //     UsersModel usersModel = await FetchUser(UserId);
+        //     await SetUser(usersModel);
+        // }
     }
 
     public Task SetUser(UsersModel usersModel)
@@ -178,18 +178,24 @@
         return Task.CompletedTask;
     }
 
-    public Task SetUserId(int userId)
+    public async Task SetUserId(int userId)
     {
-        UserId = userId;
-        _modalWillBeClosed = false;
-        return Task.CompletedTask;
+        // UserId = userId;
+        // _modalWillBeClosed = false;
+
+        // StateHasChanged();
+        // return Task.CompletedTask;
+
+
+        UsersModel usersModel = await FetchUser(userId);
+        await SetUser(usersModel);
+
     }
 
     private void CloseModal()
     {
-        _usersModel = null; 
+        _usersModel = null;
         _showModal = false;
-
         StateHasChanged();
     }
 
@@ -218,7 +224,6 @@
 
     private async Task SaveUser()
     {
-        // Call the API to save the user details
         var jsonString = JsonSerializer.Serialize(_usersModel);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
@@ -237,7 +242,6 @@
 
             if (response.IsSuccessStatusCode)
             {
-                // Call the parent's callback method to notify that the user is saved
                 _modalWillBeClosed = true;
                 await OnUserSaved.InvokeAsync();
                 CloseModal();
@@ -246,19 +250,17 @@
             {
                 _errorCode = response.StatusCode;
 
-                var reponseJsonString = await response.Content.ReadAsStringAsync();
+                var responseJsonString = await response.Content.ReadAsStringAsync();
 
-                // Deserialize the JSON response into a dynamic object
-                dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(reponseJsonString);
+                dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(responseJsonString);
 
-                // Extract the message from the resultObject property of the jsonResponse
                 string message = jsonResponse.message;
                 _errorMessage = message;
                 _showError = true;
 
-                StateHasChanged(); // Notify the component to re-render
+                StateHasChanged(); 
 
-                // Hide the error message after 3 seconds
+                // Hide the error message after 4 seconds
                 await Task.Delay(4000);
                 _showError = false;
                 StateHasChanged();
@@ -269,9 +271,9 @@
                 _errorMessage = message;
                 _showError = true;
 
-                StateHasChanged(); // Notify the component to re-render
+                StateHasChanged();
 
-                // Hide the error message after 3 seconds
+                // Hide the error message after 4 seconds
                 await Task.Delay(4000);
                 _showError = false;
                 StateHasChanged();
