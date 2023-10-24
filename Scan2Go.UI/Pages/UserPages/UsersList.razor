@@ -1,85 +1,9 @@
 ﻿@page "/UsersList/{SetHashCode:int}"
 @using Scan2Go.UI.BaseClasses
-@using Scan2Go.Mapper.Models.UserModels
 @inject StateContainer StateContainer
+
+@inherits BaseListComponent
 
 <EditUserPopup @ref="editUserPopup" OnUserSaved="HandleEntitySaved" UserId=@_clickedUserId />
 
-<div>
-    <div class="header-container">
-        <h2>@userListPassingObject.EntityName List</h2>
-
-        <div class="add-user-button" @onclick="HandleAddUserClick">
-            <span class="plus-sign">+</span>
-        </div>
-    </div>
-    
-    <DynamicBaseList PassingObject=@userListPassingObject OnRowDoubleClick=@OpenUserEditPopup />
-</div>
-
-<style>
-    /* Style the header container */
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px; /* Add margin to create separation between the header and the list */
-    }
-
-    /* Style the add user button */
-    .add-user-button {
-        width: 40px;
-        height: 40px;
-        background-color: #007BFF;
-        border-radius: 50%; /* Makes it circular */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-    }
-
-    /* Style the plus sign */
-    .plus-sign {
-        line-height: 1;
-    }
-
-</style>
-
-@code {
-    [Parameter] public int SetHashCode { get; set; }
-    public PassingObject userListPassingObject { get; set; }
-    public int _clickedUserId;
-    private EditUserPopup editUserPopup;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        userListPassingObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-
-    }
-
-    private async Task OpenUserEditPopup(int userId)
-    {
-        _clickedUserId = userId;
-        await editUserPopup.SetUserId(_clickedUserId);
-    }
-
-    // Callback method to handle user saved event
-    private async Task HandleEntitySaved()
-    {
-        // Reload the users list when the user is successfully saved
-        // await editUserPopup.SetUserId(0);
-        // StateHasChanged();
-    }
-
-
-    private async Task HandleAddUserClick()
-    {
-        await editUserPopup.SetUser(new UsersModel());
-    }
-}
+@{base.BuildRenderTree(__builder);}

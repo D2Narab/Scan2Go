@@ -1,0 +1,43 @@
+﻿<div>
+    <div class="header-container">
+        <h2>@PageTitle</h2>
+
+        <div class="add-entity-button" @onclick="HandleAddEntityClick">
+            <span class="plus-sign">+</span>
+        </div>
+    </div>
+
+
+    <DynamicBaseList PassingObject=@EntityListPassingObject OnRowDoubleClick=@OpenEntityEditPopup />
+</div>
+
+<style>
+    /* Shared CSS styles */
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    /* Add-user-button styles */
+    .add-entity-button {
+        width: 40px;
+        height: 40px;
+        background-color: #007BFF;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* plus-sign styles */
+    .plus-sign {
+        line-height: 1;
+    }
+</style>
+
+
