@@ -65,8 +65,7 @@ public class Rents: EntityStateBase
 	public double TotalCharge { get => _totalCharge; set { _totalCharge = value; } }
 
 	#endregion Properties of Rents
-
-
+	
 	#region AUTO methods
 
 	public override int PrimaryKeyValue { get => RentId; set => RentId=value; }
@@ -121,7 +120,9 @@ public class Rents: EntityStateBase
 
 	#region OtherProperties
 
-	#endregion OtherProperties
+    public List<RentNoteItem> RentNotes = new();
+
+    #endregion OtherProperties
 }
 
 #region State

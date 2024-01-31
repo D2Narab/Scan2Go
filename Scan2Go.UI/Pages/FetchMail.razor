@@ -21,12 +21,33 @@
 }
 else
 {
-    <div class="button-container">
-        <div class="rental-agreement-button" @onclick="CreateRentalAgreement">
-            <span>Rental agreement preview</span>
+    <div class="container">
+        <div class="label-container">
+            @if (rent.RentNotes.Any())
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Supplied Documents:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var note in rent.RentNotes)
+                        {
+                            <tr>
+                                <td style="color: @GetTextColor(note.MandatorySuppliedStatus)">@note.RentNote</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="button-container">
+            <div class="rental-agreement-button" @onclick="CreateRentalAgreement">
+                <span>Rental agreement preview</span>
+            </div>
         </div>
     </div>
-
 
     <div class="identity-cards">
         @foreach (var identityCard in IdentityCards)
@@ -472,6 +493,19 @@ else
 }
 
 <style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 0; /* Remove any left padding */
+        margin-left: 0; /* Remove any left margin */
+    }
+
+    .label-container {
+        /* Your label styling */
+        margin-right: auto; /* Pushes the label to the far left */
+    }
+
     /* Style the container to position the buttons and manage their layout */
     .button-container {
         display: flex;
@@ -642,5 +676,20 @@ else
         StateContainer.AddRoutingObjectParameter(rentalAgreement);
 
         NavigationManager.NavigateTo($"RentalAgreementPreview/{rentalAgreement.GetHashCode()}");
+    }
+
+    string GetTextColor(int status)
+    {
+        switch (status)
+        {
+            case 1:
+                return "#008000"; // Green
+            case 2:
+                return "#FF0000"; // Red
+            case 3:
+                return "#FFA500"; // Orange
+            default:
+                return "black"; // Default text color
+        }
     }
 }

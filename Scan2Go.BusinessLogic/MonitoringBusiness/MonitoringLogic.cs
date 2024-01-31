@@ -334,5 +334,132 @@ public class MonitoringLogic
                 visa.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
             }
         }
+
+        if (idsAndDocumentsResults.IdDocuments.Any())
+        {
+            rent.RentNotes.Add(new RentNoteItem
+            {
+                RentNote = $"Identity Card ({idsAndDocumentsResults.IdDocuments.Count}) (Mandatory)!",
+                MandatorySuppliedStatus = 1
+            });
+
+            if (idsAndDocumentsResults.DrivingLicenses.Any())
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Driving Licenses ({idsAndDocumentsResults.DrivingLicenses.Count}) (Mandatory)!",
+                    MandatorySuppliedStatus = 1
+                });
+            }
+            else
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Driving Licenses ({idsAndDocumentsResults.DrivingLicenses.Count}) (Mandatory)!",
+                    MandatorySuppliedStatus = 2
+                });
+            }
+
+            if (idsAndDocumentsResults.Passports.Any())
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Passport ({idsAndDocumentsResults.Passports.Count}) (Non Mandatory).",
+                    MandatorySuppliedStatus = 1
+                });
+            }
+            else
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Passport ({idsAndDocumentsResults.Passports.Count}) (Non Mandatory).",
+                    MandatorySuppliedStatus = 3
+                });
+            }
+
+            if (idsAndDocumentsResults.Visas.Any())
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Visa ({idsAndDocumentsResults.Visas.Count}) (Non Mandatory).",
+                    MandatorySuppliedStatus = 1
+                });
+            }
+            else
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Visa ({idsAndDocumentsResults.Visas.Count}) (Non Mandatory).",
+                    MandatorySuppliedStatus = 3
+                });
+            }
+        }
+        else if (idsAndDocumentsResults.IdDocuments.Any() == false && idsAndDocumentsResults.Passports.Any())
+        {
+            rent.RentNotes.Add(new RentNoteItem
+            {
+                RentNote = $"Passport ({idsAndDocumentsResults.Passports.Count}) Mandatory!",
+                MandatorySuppliedStatus = 1
+            });
+
+            if (idsAndDocumentsResults.DrivingLicenses.Any())
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Driving Licenses ({idsAndDocumentsResults.DrivingLicenses.Count}) (Mandatory)!",
+                    MandatorySuppliedStatus = 1
+                });
+            }
+            else
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Driving Licenses ({idsAndDocumentsResults.DrivingLicenses.Count}) (Mandatory)!",
+                    MandatorySuppliedStatus = 2
+                });
+            }
+
+            if (idsAndDocumentsResults.Visas.Any())
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Visa ({idsAndDocumentsResults.Visas.Count}) Mandatory!",
+                    MandatorySuppliedStatus = 1
+                });
+            }
+            else
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Visa ({idsAndDocumentsResults.Visas.Count}) Mandatory!",
+                    MandatorySuppliedStatus = 2
+                });
+            }
+
+            if (idsAndDocumentsResults.IdDocuments.Any())
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Identity Card ({idsAndDocumentsResults.IdDocuments.Count}) (Non Mandatory).",
+                    MandatorySuppliedStatus = 1
+                });
+            }
+            else
+            {
+                rent.RentNotes.Add(new RentNoteItem
+                {
+                    RentNote = $"Identity Card ({idsAndDocumentsResults.IdDocuments.Count}) (Non Mandatory).",
+                    MandatorySuppliedStatus = 3
+                });
+            }
+        }
+        else
+        {
+            rent.RentNotes.Add(new RentNoteItem
+            {
+                RentNote = "No identity card or passport was supplied!",
+                MandatorySuppliedStatus = 2
+            });
+        }
     }
 }
