@@ -76,6 +76,7 @@ public class MonitoringLogic
                         return identityCard;
                     }
                 case "Passport":
+                case "Passport Special":
                     {
                         var passport = CreatePassport(container, documentCategory);
 
@@ -203,6 +204,12 @@ public class MonitoringLogic
                     regulaAttributes.SecondaryFieldName);
             }
 
+            if (propertyName.Equals("DateOfBirth") && extractedValue is null)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    "FieldName", "Date of Birth", "Buf_Length", "11", "Buf_Text");
+            }
+
             if (propertyName.Equals("DateOfBirth") && extractedValue is not null && extractedValue.Contains("?"))
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
@@ -213,6 +220,12 @@ public class MonitoringLogic
                     extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
                         "fieldName", "Date of Birth", "status", "2", "value");
                 }
+            }
+
+            if (propertyName.Equals("DateOfIssue") && extractedValue is null )
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    "FieldName", "Date of Issue", "Buf_Length", "11", "Buf_Text");
             }
 
             if (propertyName.Equals("PersonalNumber") && extractedValue is not null && extractedValue.ContainsArabicNumbers())
