@@ -26,4 +26,18 @@ public class RentsSql
 
         return sqlSelectFactory;
     }
+
+    public static SqlSelectFactory GetRentByPassportNumber()
+    {
+        SqlSelectFactory sqlSelectFactory = new SqlSelectFactory();
+
+        sqlSelectFactory.SelectQuery.Append("SELECT * ");
+        sqlSelectFactory.FromQuery.AppendLine($"FROM {TableName.Rents.InternalValue} ");
+        sqlSelectFactory.FromQuery.AppendLine($"INNER JOIN {TableName.Customers.InternalValue} ON {TableName.Customers.InternalValue}.{Customers.Field.CustomerId} = ");
+        sqlSelectFactory.FromQuery.AppendLine($"{TableName.Rents.InternalValue}.{Customers.Field.CustomerId} ");
+        sqlSelectFactory.WhereQuery.AppendLine($"WHERE {TableName.Customers.InternalValue}.{Customers.Field.PassportNumber}");
+        sqlSelectFactory.WhereQuery.AppendLine("= @PassportNumber");
+
+        return sqlSelectFactory;
+    }
 }

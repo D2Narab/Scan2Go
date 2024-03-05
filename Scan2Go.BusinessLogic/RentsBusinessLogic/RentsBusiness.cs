@@ -43,6 +43,11 @@ public class RentsBusiness : BaseBusiness
         return RentsFacade.GetRentByCustomerName(customerName);
     }
 
+    public Rents? GetRentByPassportNumber(string? documentNumber)
+    {
+        return RentsFacade.GetRentByPassportNumber(documentNumber);
+    }
+
     public Rents GetRents(int id)
     {
         return RentsFacade.GetRents(id);

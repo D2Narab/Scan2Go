@@ -84,4 +84,19 @@ public class RentsDAO : Scan2GoDataLayerBase
 
         return this.ExecuteSQLDataRow(sqlSelectFactory);
     }
+
+    public DataRow GetRentByPassportNumber(string? documentNumber)
+    {
+        SqlSelectFactory sqlSelectFactory = RentsSql.GetRentByPassportNumber();
+
+        sqlSelectFactory.AddParam(new DatabaseParameter
+        {
+            FieldName = "@PassportNumber",
+            DbType = DbType.String,
+            ParameterDirection = ParameterDirection.Input,
+            FieldValue = documentNumber
+        });
+
+        return this.ExecuteSQLDataRow(sqlSelectFactory);
+    }
 }

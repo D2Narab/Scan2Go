@@ -98,10 +98,15 @@ public class MonitoringBusiness : BaseBusiness
         }
 
         var rent = new RentsBusiness(this).GetRentByCustomerName(customerName);
-        
-        
+
+
+        if (rent is null && IDsAndDocumentsResults.Passports.Any())
+        {
+            rent = new RentsBusiness(this).GetRentByPassportNumber(IDsAndDocumentsResults.Passports.FirstOrDefault()?.DocumentNumber);
+        }
+
         /*TODO Move this to validation later*/
-        if (rent is null)
+            if (rent is null)
         {
             //this.AddDetailResult(new OperationResult { State = false, MessageStringKey = nameof(MessageStrings.NoRentWasFoundWithTheFullName) });
 

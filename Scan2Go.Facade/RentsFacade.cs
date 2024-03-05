@@ -110,4 +110,12 @@ public class RentsFacade : FacadeBase
 
         return rents;
     }
+
+    public Rents? GetRentByPassportNumber(string? documentNumber)
+    {
+        DataRow drRents = new RentsDAO().GetRentByPassportNumber(documentNumber);
+        Rents rents = FillRents(drRents);
+
+        return rents;
+    }
 }

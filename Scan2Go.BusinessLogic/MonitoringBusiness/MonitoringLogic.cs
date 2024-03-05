@@ -228,6 +228,12 @@ public class MonitoringLogic
                     "FieldName", "Date of Issue", "Buf_Length", "11", "Buf_Text");
             }
 
+            if (propertyName.Equals("DateOfExpiry") && extractedValue is null)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    "FieldName", "Date of Expiry", "Buf_Length", "11", "Buf_Text");
+            }
+
             if (propertyName.Equals("PersonalNumber") && extractedValue is not null && extractedValue.ContainsArabicNumbers())
             {
                 string personalNumberInArabic = new string(extractedValue);
