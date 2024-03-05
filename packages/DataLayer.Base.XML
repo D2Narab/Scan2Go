@@ -19,6 +19,7 @@
             </summary>
             <param name="definitionBase"></param>
             <param name="languageEnum"></param>
+            <param name="hasLanguage"></param>
             <returns></returns>
         </member>
         <member name="P:DataLayer.Base.SqlGenerator.CustomSelectTableFields.TableName">

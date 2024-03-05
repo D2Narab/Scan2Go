@@ -70,6 +70,7 @@ public class MonitoringLogic
             switch (documentCategory)
             {
                 case "Identity Card":
+                case "Resident Identity Card":
                     {
                         var identityCard = CreateIdentityCard(container, documentCategory);
 
@@ -204,6 +205,12 @@ public class MonitoringLogic
                     regulaAttributes.SecondaryFieldName);
             }
 
+            if (propertyName.Equals("PersonalNumber") && extractedValue is null)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    "fieldName", "Identity Card Number", "value");
+            }
+
             if (propertyName.Equals("DateOfBirth") && extractedValue is null)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
@@ -222,6 +229,13 @@ public class MonitoringLogic
                 }
             }
 
+            if (propertyName.Equals("DateOfBirth") && extractedValue is not null && 
+                (extractedValue.Contains("-") == false || extractedValue.Contains("/") == false))
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    "FieldName", "Date of Birth", "Buf_Length", "11", "Buf_Text");
+            }
+
             if (propertyName.Equals("DateOfIssue") && extractedValue is null )
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
@@ -229,6 +243,13 @@ public class MonitoringLogic
             }
 
             if (propertyName.Equals("DateOfExpiry") && extractedValue is null)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    "FieldName", "Date of Expiry", "Buf_Length", "11", "Buf_Text");
+            }
+
+            if (propertyName.Equals("DateOfExpiry") && extractedValue is not null &&
+                (extractedValue.Contains("-") == false || extractedValue.Contains("/") == false))
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
                     "FieldName", "Date of Expiry", "Buf_Length", "11", "Buf_Text");
@@ -279,6 +300,11 @@ public class MonitoringLogic
             {
                 /*TODO Get translated message later.*/
                 identityCard.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
+            }
+
+            if (identityCard.IsExpired)
+            {
+                identityCard.ErrorMessages.Add("Identity Card is expired, the rent cannot be processed!");
             }
         }
 
