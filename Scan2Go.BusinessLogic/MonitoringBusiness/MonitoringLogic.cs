@@ -211,10 +211,18 @@ public class MonitoringLogic
                     "fieldName", "Identity Card Number", "value");
             }
 
+            #region Date Of Birth
+
             if (propertyName.Equals("DateOfBirth") && extractedValue is null)
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
                     "FieldName", "Date of Birth", "Buf_Length", "11", "Buf_Text");
+            }
+
+            if (propertyName.Equals("DateOfBirth") && extractedValue is null)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    "fieldName", "Date of Birth", "value");
             }
 
             if (propertyName.Equals("DateOfBirth") && extractedValue is not null && extractedValue.Contains("?"))
@@ -229,12 +237,14 @@ public class MonitoringLogic
                 }
             }
 
-            if (propertyName.Equals("DateOfBirth") && extractedValue is not null && 
-                (extractedValue.Contains("-") == false || extractedValue.Contains("/") == false))
+            if (propertyName.Equals("DateOfBirth") && extractedValue is not null &&
+                (extractedValue.Contains("-") == false && extractedValue.Contains("/") == false))
             {
                 extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
                     "FieldName", "Date of Birth", "Buf_Length", "11", "Buf_Text");
-            }
+            } 
+
+            #endregion
 
             if (propertyName.Equals("DateOfIssue") && extractedValue is null )
             {
@@ -272,6 +282,18 @@ public class MonitoringLogic
                         extractedValue = extractedValue + "\n" + personalNumberInArabic;
                     }
                 }
+            }
+
+            if (propertyName.Equals("Nationality") && extractedValue is not null && extractedValue.ContainsArabicLetters())
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherFields(container,
+                    "FieldName", "Nationality", "Buf_Length", "7", "Buf_Text");
+            }
+
+            if (propertyName.Equals("Authority") && extractedValue is null)
+            {
+                extractedValue = PrimitiveExtensions.GetFieldValueInTheSameLevelOfAnotherField(container,
+                    "fieldName", "Place of Issue", "value");
             }
 
             property.SetValue(iDsAndDocuments, extractedValue);
