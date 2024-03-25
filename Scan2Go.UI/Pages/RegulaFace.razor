@@ -1,0 +1,18 @@
+﻿@page "/regulaface"
+@inject IJSRuntime JsRuntime
+
+<PageTitle>Regula liveliness and face detection</PageTitle>
+
+<h1>Regula liveliness and face detection</h1>
+
+<face-liveness></face-liveness>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("setupFaceLivenessListener");
+        }
+    }
+}
