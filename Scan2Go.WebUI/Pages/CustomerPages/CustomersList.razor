@@ -1,0 +1,82 @@
+﻿@page "/CustomersList/{SetHashCode:int}"
+@using Scan2Go.WebUI.BaseClasses
+@using Scan2Go.Mapper.Models.CustomersModels
+@inject StateContainer StateContainer
+
+<CustomerEdit @ref="_customerEdit" OnCustomerSaved="HandleEntitySaved" CustomerId=@_clickedCustomerId />
+
+<div>
+    <div class="header-container">
+        <h2>@CustomerListPassingObject.EntityName List</h2>
+
+        <div class="add-user-button" @onclick="HandleAddUserClick">
+            <span class="plus-sign">+</span>
+        </div>
+    </div>
+    
+    <DynamicBaseList PassingObject=@CustomerListPassingObject OnRowDoubleClick=@OpenCustomerEdit/>
+</div>
+
+<style>
+    /* Style the header container */
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px; /* Add margin to create separation between the header and the list */
+    }
+
+    /* Style the add user button */
+    .add-user-button {
+        width: 40px;
+        height: 40px;
+        background-color: #007BFF;
+        border-radius: 50%; /* Makes it circular */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* Style the plus sign */
+    .plus-sign {
+        line-height: 1;
+    }
+
+</style>
+
+@code {
+    [Parameter] public int SetHashCode { get; set; }
+    public PassingObject CustomerListPassingObject { get; set; }
+    public int _clickedCustomerId;
+    private CustomerEdit _customerEdit;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        CustomerListPassingObject = StateContainer.GetRoutingObjectParameter<PassingObject>(SetHashCode);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async Task OpenCustomerEdit(int customerId)
+    {
+        _clickedCustomerId = customerId;
+
+        await _customerEdit.SetCustomerId(_clickedCustomerId);
+    }
+
+    private async Task HandleEntitySaved()
+    {
+    
+    }
+
+    private async Task HandleAddUserClick()
+    {
+        await _customerEdit.SetCustomer(new CustomersModel());
+    }
+}

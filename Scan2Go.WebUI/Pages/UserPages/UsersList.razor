@@ -1,0 +1,9 @@
+﻿@page "/UsersList/{SetHashCode:int}"
+@using Scan2Go.WebUI.BaseClasses
+@inject StateContainer StateContainer
+
+@inherits Scan2Go.WebUI.Pages.BasePages.BaseListComponent
+
+<EditUserPopup @ref="editUserPopup" OnUserSaved="HandleEntitySaved" UserId=@_clickedUserId />
+
+@{base.BuildRenderTree(__builder);}

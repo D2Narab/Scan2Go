@@ -1,0 +1,216 @@
+﻿@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
+@using Scan2Go.Enums
+@using Scan2Go.Mapper.Models.UserModels
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@using System.Text.Json
+@using Scan2Go.WebUI.BaseClasses
+@using System.Text;
+@using Utility.Enum.GeneralEnums
+@using Utility.Extensions
+
+@inject HttpClient Http
+@inject StateContainer StateContainer
+@inject NavigationManager navigationManager
+
+<style>
+    .tick-icon {
+        color: green;
+    }
+
+    .x-icon {
+        color: red;
+    }
+
+    /* New style for even rows */
+    .even-row {
+        background-color: #f2f2f2; /* You can use any color here */
+    }
+
+</style>
+
+<PageTitle>@_apiResponse.ResultObject.RecordInfo</PageTitle>
+
+<p>Total Records : @_apiResponse.ResultObject.TotalRecordCount.ToString()</p>
+
+@if (_apiResponse.ResultObject.ListItemBases == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_apiResponse.ResultObject.ListItemBases.Any() == false)
+{
+    <p><em>No records has been found!</em></p>
+}
+else if (_apiResponse.ResultObject.ListCaptionBases.Any() == false)
+{
+    <p><em>No list captions has been found!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var listItemCaption in _apiResponse.ResultObject.ListCaptionBases.Where(p => p.IsVisible))
+                {
+                    <th>@listItemCaption.ColumnCaption</th>
+                }
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (JsonElement entity in _apiResponse.ResultObject.ListItemBases)
+            {
+                var id = entity.GetPropertyAsInt("id");
+
+                <tr data-entityId="@id" class="@GetRowCssClass(entity)" @ondblclick="@(() => SendClickedRowIdToBack(id))">
+                    @foreach (var listItemCaption in _apiResponse.ResultObject.ListCaptionBases.Where(p => p.IsVisible))
+                    {
+                        switch (listItemCaption.ListRenderType)
+                        {
+                            case ListRenderTypes.Default:
+                                <td>@entity.GetPropertyAsString(listItemCaption.CorrespondingField)</td>
+                                break;
+                            case ListRenderTypes.Tick:
+                                {
+                                    <td>
+                                        @if (entity.GetPropertyAsBoolean(listItemCaption.CorrespondingField))
+                                        {
+                                            <span class="tick-icon">&#10004;</span>
+                                            @:<!-- Tick icon (✓) -->
+                                        }
+                                        else
+                                        {
+                                            <span class="x-icon">&#10008;</span>
+                                            @:<!-- X icon (✘) -->
+                                        }
+                                    </td>
+                                    break;
+                                }
+                            default:
+                                <td>@entity.GetPropertyAsString(listItemCaption.CorrespondingField)</td>
+                                break;
+                        }
+                    }
+
+                    <td>
+                        <button @onclick="@(() => ConfirmDeleteUser(id))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Add the ConfirmDialog component -->
+<ConfirmDialog IsVisible="showDeleteConfirmation"
+               Title="Confirm Delete"
+               Message="Are you sure you want to delete this user?"
+               OnConfirmationChanged="DeleteUserConfirmed" />
+
+@code {
+
+    [Parameter] public required PassingObject PassingObject { get; set; }
+    [Parameter] public EventCallback<int> OnRowDoubleClick { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadEntityList();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private ApiResponse? _apiResponse = new();
+
+    private async Task LoadEntityList()
+    {
+        try
+        {
+            var requestBody = new
+            {
+                orderByColumn = $"{PassingObject.EntityName}Id",
+                range = 50,
+                sortType = "ASC",
+                startFrom = 0
+            };
+
+            var jsonRequest = JsonSerializer.Serialize(requestBody);
+
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            var response = await Http.PostAsync(PassingObject.Endpoint, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                _apiResponse = JsonSerializer.Deserialize<ApiResponse>(jsonResponse);
+            }
+            else
+            {
+                Console.WriteLine("Failed to load list: ");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private string GetRowCssClass(dynamic entity)
+    {
+        return _apiResponse.ResultObject.ListItemBases.IndexOf(entity) % 2 == 0 ? "even-row" : "";
+    }
+
+    private async Task SendClickedRowIdToBack(int userId)
+    {
+        await OnRowDoubleClick.InvokeAsync(userId);
+    }
+
+    /**************************************************************************************************/
+    private bool showDeleteConfirmation;
+    private int userIdToDelete;
+
+    private async Task ConfirmDeleteUser(int userId)
+    {
+        userIdToDelete = userId;
+        showDeleteConfirmation = true;
+    }
+
+    private async Task DeleteUserConfirmed(bool confirmed)
+    {
+        if (confirmed)
+        {
+            await DeleteUser(userIdToDelete);
+        }
+
+        showDeleteConfirmation = false;
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync(Endpoints.DeleteUser(userId));
+
+            // Check if the delete operation was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Reload the users list after successful deletion
+                await LoadEntityList();
+            }
+            else
+            {
+                // Handle error scenario if necessary
+                // For example, display an error message to the user
+                Console.WriteLine("Failed to delete user.");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+}
