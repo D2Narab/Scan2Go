@@ -20,6 +20,17 @@
         }
     },
 
+    stopCamera: function () {
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+            if (this.videoElement) {
+                this.videoElement.srcObject = null; // Disconnect the stream from the video element
+            }
+            this.stream = null; // Clear the stream reference
+            this.videoElement = null; // Clear the video element reference
+        }
+    },
+
     captureImage: function () {
         return new Promise((resolve, reject) => {
             if (!this.videoElement) {

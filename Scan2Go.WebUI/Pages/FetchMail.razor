@@ -12,19 +12,6 @@
 
 <PageTitle>Reading mail from outlook and progressing attachments</PageTitle>
 
-<br />
-<br />
-<h1>Blazor Webcam</h1>
-<video id="videoElement" autoplay></video>
-<button class="btn btn-primary mb-3" @onclick="CaptureFrame">Capture Frame</button>
-<br />
-<br />
-<div>
-    @if (!string.IsNullOrEmpty(base64Image))
-    {
-        <img src="@base64Image" alt="Captured image" />
-    }
-</div>
 <h1>Data of scanned documents</h1>
 
 <p>This component demonstrates fetching mail data from the outlook and show progress data from Regula API responses.</p>
@@ -168,6 +155,34 @@ else
                     else
                     {
                         <td><strong class="success-message">All verifications passed,no errors where found</strong></td>
+                        <tr>
+                            <button class="btn btn-primary mb-3" @onclick="OpenCamera">Face Match</button>
+                        </tr>
+
+                        @if (isCameraOpen)
+                        {
+                            <tr>
+                                <video id="videoElement" autoplay></video>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="btn btn-primary mb-3" @onclick="CaptureFrame">Capture Frame</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary mb-3" @onclick="CloseCamera">Close Camera</button>
+                                </td>
+                            </tr>
+                        }
+                        @if (string.IsNullOrEmpty(base64Image) == false && isCameraOpen == false)
+                        {
+                            <tr>
+                                <img src="@base64Image" alt="Captured image" />
+                            </tr>
+                            <tr>
+                                <td><strong class="success-message">Response from Regula: Face match ok!</strong></td>
+                            </tr>
+                        }
+
                     }
                 </div>
             </div>
@@ -628,24 +643,55 @@ else
     private IList<Visa> Visas = new List<Visa>();
     private Rents rent = new Rents();
     private Cars car = new Cars();
+    private bool isCameraOpen = false;
+    private string base64Image;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         await Jsr.InvokeVoidAsync("cameraInterop.startCamera", "videoElement");
+    //     }
+    // }
+
+    private async Task OpenCamera()
     {
-        if (firstRender)
+        try
         {
             await Jsr.InvokeVoidAsync("cameraInterop.startCamera", "videoElement");
+            isCameraOpen = true;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error opening camera: {ex.Message}");
+        }
+
     }
 
-    private string base64Image;
+    private async Task CloseCamera()
+    {
+        try
+        {
+            await Jsr.InvokeVoidAsync("cameraInterop.stopCamera", "videoElement");
+            isCameraOpen = false;
+            base64Image = string.Empty;
+            //StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error closing camera: {ex.Message}");
+        }
+    }
 
     private async Task CaptureFrame()
     {
         try
         {
             base64Image = await Jsr.InvokeAsync<string>("cameraInterop.captureImage");
-            // The image data is now stored in base64Image and will be displayed by the img element
-            StateHasChanged(); // Ensure the UI updates to display the new image
+            isCameraOpen = false;
+            StateHasChanged(); 
+
+
         }
         catch (Exception ex)
         {
