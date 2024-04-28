@@ -135,7 +135,7 @@ public class MonitoringBusiness : BaseBusiness
     /// This will be moved to a separate class later.
     /// </summary>
     /// <returns></returns>
-    private async Task<dynamic> CallRegulaApiAndGetResponse(string base64String)
+    public async Task<dynamic> CallRegulaApiAndGetResponse(string base64String)
     {
         var listElements = new List<object>();
 

@@ -10,6 +10,8 @@ using Scan2Go.Mapper.Models.TranslationModels;
 using Scan2Go.Mapper.Models.UserModels;
 using Utility.Bases;
 using Utility.Bases.EntityBases;
+using Scan2Go.Entity.IdsAndDocuments;
+using Scan2Go.Mapper.Models.DocumentsModels;
 
 namespace Scan2Go.Mapper.BaseClasses;
 
@@ -68,7 +70,10 @@ public class BaseManager
                 cfg.CreateMap<RentsModel, Rents>();
                 cfg.CreateMap<RentsSearchCriteria, RentsSearchCriteriaModel>();
                 cfg.CreateMap<RentsSearchCriteriaModel, RentsSearchCriteria>();
-              });
+
+                cfg.CreateMap<IDsAndDocumentsResults, IDsAndDocumentsResultsAppModel>();
+                cfg.CreateMap<IdentityCard, IdentityCardAppModel>();
+            });
 
             return config.CreateMapper();
         }

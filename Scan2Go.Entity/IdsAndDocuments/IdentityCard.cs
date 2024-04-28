@@ -20,5 +20,10 @@ namespace Scan2Go.Entity.IdsAndDocuments
 
         [RegulaAttributes(new[] { "fieldName", "Nationality", "value" }, DynamicJSonExtractionType.MainFieldNameWithValueAndSecondFieldName)]
         public string Nationality { get; set; }
+        
+        /// <summary>
+        /// For App for now
+        /// </summary>
+        public Guid TransactionId { get; set; }
     }
 }
