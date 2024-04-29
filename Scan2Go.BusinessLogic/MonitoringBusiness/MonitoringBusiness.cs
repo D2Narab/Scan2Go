@@ -106,7 +106,7 @@ public class MonitoringBusiness : BaseBusiness
         }
 
         /*TODO Move this to validation later*/
-            if (rent is null)
+        if (rent is null)
         {
             //this.AddDetailResult(new OperationResult { State = false, MessageStringKey = nameof(MessageStrings.NoRentWasFoundWithTheFullName) });
 
@@ -120,14 +120,14 @@ public class MonitoringBusiness : BaseBusiness
 
         var car = new CarsBusiness(this).GetCars(rent.CarId);
         var customer = new CustomersBusiness(this).GetCustomers(rent.CustomerId);
-        
+
         MonitoringLogic.CheckAllDocumentsForValidation(IDsAndDocumentsResults, rent, customer);
 
         /*******************************************************************************************************************/
 
         IDsAndDocumentsResults.Rent = rent;
         IDsAndDocumentsResults.Car = car;
-        
+
         return IDsAndDocumentsResults;
     }
 
@@ -194,6 +194,77 @@ public class MonitoringBusiness : BaseBusiness
         }
 
         return responseData;
+    }
+
+    public async Task<string> CallRegulaFaceDetectionApiAndGetResponse(string originalImageBase64String, string newImageBase64String)
+    {
+        // Create the request object with the appropriate structure
+        var request = new
+        {
+            outputImageParams = new
+            {
+                crop = new
+                {
+                    type = 1,
+                    size = new[] { 106, 134 }
+                }
+            },
+            images = new[]
+            {
+                new
+                {
+                    data = originalImageBase64String,
+                    index = 0,
+                    detectAll = true,
+                    type = 3
+                },
+                new
+                {
+                    data = newImageBase64String,
+                    index = 1,
+                    detectAll = true,
+                    type = 3
+                }
+            }
+        };
+
+        // Serialize the request object to JSON
+        string jsonRequest = Newtonsoft.Json.JsonConvert.SerializeObject(request);
+
+        // Define the API endpoint URL
+        string apiUrl = "http://NASER-LNV:41101/api/match";
+
+        using (var httpClient = new HttpClient())
+        {
+            // Create a StringContent with the JSON data
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            // Send the POST request
+            HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
+
+            // Check if the request was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Read the response content as a string
+                string responseContent = await response.Content.ReadAsStringAsync();
+
+                // Parse the JSON response
+                var jsonObject = Newtonsoft.Json.Linq.JObject.Parse(responseContent);
+
+                // Extract the 'results' part
+                var similarity = jsonObject["results"]?.First?["similarity"];
+
+                // Return only the 'similarity'  object
+                return similarity.ToString();
+            }
+            else
+            {
+                Console.WriteLine($"Face Detection API Request failed with status code: {response.StatusCode}");
+                return string.Empty; // Or appropriate error handling
+            }
+        }
+
+        //return jsonResponse;
     }
 
     private async Task<MailReadingResults> ReadMail()

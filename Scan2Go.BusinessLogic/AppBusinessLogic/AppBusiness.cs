@@ -5,6 +5,7 @@ using Utility.Bases;
 using Utility.Core;
 using System;
 using System.Runtime.Caching;
+using Scan2Go.Enums.Properties;
 
 namespace Scan2Go.BusinessLogic.AppBusinessLogic
 {
@@ -64,6 +65,33 @@ namespace Scan2Go.BusinessLogic.AppBusinessLogic
             /***************************************************************************************************/
 
             return IDsAndDocumentsResults;
+        }
+
+        public async Task<bool> CheckFaceMatching(byte[]? documentData, string transactionId)
+        {
+            string documentDataAsString = Convert.ToBase64String(documentData);
+            string existingImage = CacheHelper.GetFromCache(transactionId) as string;
+
+            if (string.IsNullOrEmpty(existingImage))
+            {
+                this.AddDetailResult(new OperationResult { State = false, MessageStringKey = "No Image was found, please restart the operation!" });
+                return false;
+            }
+
+            string responseSimilarity = await new MonitoringBusiness.MonitoringBusiness(this)
+                .CallRegulaFaceDetectionApiAndGetResponse(existingImage, documentDataAsString);
+
+            if (double.TryParse(responseSimilarity, out double similarityValue))
+            {
+                if (similarityValue > 0.979999999)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
         }
     }
 

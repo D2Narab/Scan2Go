@@ -27,5 +27,15 @@ namespace Scan2Go.Mapper.Managers
             operationResult.ResultObject = iDsAndDocumentsResultsAppModel;
             return operationResult;
         }
+
+        public async Task<OperationResult> CheckFaceMatching(byte[]? documentData, string transactionId)
+        {
+            OperationResult operationResult = new OperationResult();
+
+            bool faceCheckResponse = await new AppBusiness(operationResult, this.user).CheckFaceMatching(documentData, transactionId);
+            
+            operationResult.ResultObject = faceCheckResponse;
+            return operationResult;
+        }
     }
 }
