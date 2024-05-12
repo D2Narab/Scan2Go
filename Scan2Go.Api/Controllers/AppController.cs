@@ -11,7 +11,7 @@ using Utility.Extensions;
 
 namespace Scan2Go.Api.Controllers
 {
-   [Route("[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AppController : BaseController
     {
@@ -21,6 +21,17 @@ namespace Scan2Go.Api.Controllers
         public AppController(ILogger<AppController> logger)
         {
             _logger = logger;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("CheckConnection")]
+        public IActionResult CheckConnection()
+        {
+            OperationResult operationResult = new OperationResult();
+            operationResult.ResultObject = true;
+
+            return Ok(operationResult);
         }
 
         [AllowAnonymous]
@@ -42,7 +53,7 @@ namespace Scan2Go.Api.Controllers
             }
 
             //var sentTransactionId = transactionId;
-            
+
             var httpRequest = HttpContext.Request;
             OperationResult operationResult = new OperationResult();
 
@@ -108,7 +119,7 @@ namespace Scan2Go.Api.Controllers
             //TODO lets make a control that only one file could be sent.
 
             byte[] documentData = null;
-            
+
             foreach (IFormFile file in httpRequest.Form.Files)
             {
                 _logger.LogInformation("Entered foreach");
@@ -119,7 +130,7 @@ namespace Scan2Go.Api.Controllers
                     _logger.LogInformation("Broke out of foreach since posted file Length is 0 ");
                     continue;
                 }
-                
+
                 using (BinaryReader reader = new BinaryReader(postedFile.OpenReadStream()))
                 {
                     documentData = reader.ReadBytes(postedFile.Length.AsInt());
@@ -130,10 +141,130 @@ namespace Scan2Go.Api.Controllers
 
             operationResult = await new AppManager(this.CurrentUser).UploadIdDocument(documentData);
 
-            var jsonString =JsonConvert.SerializeObject(operationResult.ResultObject);
+            var jsonString = JsonConvert.SerializeObject(operationResult.ResultObject);
             _logger.LogInformation($"Returning response as: {jsonString}");
 
             return this.ReturnOperationResult(operationResult);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("UploadProofDocument")]
+        public async Task<IActionResult> UploadProofDocument()
+        {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            string logMessge = $"UploadProofDocument was called at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()} ";
+            logMessge += $"From IP {ipAddress}";
+
+            _logger.LogInformation(logMessge);
+
+            var httpRequest = HttpContext.Request;
+            OperationResult operationResult = new OperationResult();
+
+            if (httpRequest.Form.Files.Count <= 0)
+            {
+                operationResult.Message = "No files were found!";
+                operationResult.State = false;
+                return StatusCode(HttpStatusCode.ExpectationFailed.AsInt(), operationResult);
+            }
+
+            //TODO lets make a control that only one file could be sent.
+
+            byte[] documentData = null;
+            bool breakOperation = false;
+
+            foreach (IFormFile file in httpRequest.Form.Files)
+            {
+                _logger.LogInformation("Entered foreach");
+                var postedFile = file;
+
+                if (postedFile.Length == 0)
+                {
+                    _logger.LogInformation("Broke out of foreach since posted file Length is 0 ");
+                    breakOperation = true;
+                    break;
+                }
+
+                using (BinaryReader reader = new BinaryReader(postedFile.OpenReadStream()))
+                {
+                    documentData = reader.ReadBytes(postedFile.Length.AsInt());
+                }
+
+                _logger.LogInformation($"Byte[] size is: {documentData.Length.ToString()}");
+
+
+            }
+
+            if (breakOperation == false)
+            {
+                operationResult.ResultObject = true;
+            }
+            else
+            {
+                operationResult.ResultObject = false;
+            }
+
+            return Ok(operationResult);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("UploadSignature")]
+        public async Task<IActionResult> UploadSignature()
+        {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            string logMessge = $"UploadSignature was called at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()} ";
+            logMessge += $"From IP {ipAddress}";
+
+            _logger.LogInformation(logMessge);
+
+            var httpRequest = HttpContext.Request;
+            OperationResult operationResult = new OperationResult();
+
+            if (httpRequest.Form.Files.Count <= 0)
+            {
+                operationResult.Message = "No files were found!";
+                operationResult.State = false;
+                return StatusCode(HttpStatusCode.ExpectationFailed.AsInt(), operationResult);
+            }
+
+            //TODO lets make a control that only one file could be sent.
+
+            byte[] documentData = null;
+            bool breakOperation = false;
+
+            foreach (IFormFile file in httpRequest.Form.Files)
+            {
+                _logger.LogInformation("Entered foreach");
+                var postedFile = file;
+
+                if (postedFile.Length == 0)
+                {
+                    _logger.LogInformation("Broke out of foreach since posted file Length is 0 ");
+                    breakOperation = true;
+                    break;
+                }
+
+                using (BinaryReader reader = new BinaryReader(postedFile.OpenReadStream()))
+                {
+                    documentData = reader.ReadBytes(postedFile.Length.AsInt());
+                }
+
+                _logger.LogInformation($"Byte[] size is: {documentData.Length.ToString()}");
+
+
+            }
+
+            if (breakOperation == false)
+            {
+                operationResult.ResultObject = true;
+            }
+            else
+            {
+                operationResult.ResultObject = false;
+            }
+
+            return Ok(operationResult);
         }
     }
 }
