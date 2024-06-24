@@ -689,7 +689,7 @@ else
         {
             base64Image = await Jsr.InvokeAsync<string>("cameraInterop.captureImage");
             isCameraOpen = false;
-            StateHasChanged(); 
+            StateHasChanged();
 
 
         }
@@ -746,8 +746,25 @@ else
         rentalAgreement.CustomerBirthDate = IdentityCards.FirstOrDefault().DateOfBirth;
         rentalAgreement.CustomerCountry = IdentityCards.FirstOrDefault().Nationality;
         rentalAgreement.CustomerDrivingLicenseExpiryDate = DrivingLicenses.FirstOrDefault().DateOfExpiry.ToString();
-        rentalAgreement.CustomerPassportExpiryDate = Passports.FirstOrDefault().DateOfExpiry.ToString();
-        rentalAgreement.CustomerVisaExpiryDate = Visas.FirstOrDefault().DateOfExpiry.ToString();
+
+        if (Passports.FirstOrDefault().DateOfExpiry is null)
+        {
+            rentalAgreement.CustomerPassportExpiryDate = "21.06.2031";
+        }
+        else
+        {
+            rentalAgreement.CustomerPassportExpiryDate = Convert.ToString(Passports.FirstOrDefault().DateOfExpiry);
+        }
+
+        if (Visas.FirstOrDefault().DateOfExpiry is null)
+        {
+            rentalAgreement.CustomerVisaExpiryDate = "21.06.2031";
+        }
+        else
+        {
+            rentalAgreement.CustomerVisaExpiryDate = Visas.FirstOrDefault().DateOfExpiry.ToString();
+        }
+        
         rentalAgreement.CustomerName = IdentityCards.FirstOrDefault().Name;
         rentalAgreement.CustomerSurname = IdentityCards.FirstOrDefault().Surname;
         rentalAgreement.CustomerDrivingLicenseNumber = DrivingLicenses.FirstOrDefault().DocumentNumber.ToString();

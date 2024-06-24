@@ -10,7 +10,7 @@
 
 <h3>RentalAgreementPreview</h3>
 
-<button @onclick="GeneratePdf">Generate PDF</button>
+<button @onclick="GeneratePdf">Generate PDF and send to E-Sign</button>
 
 <div class="rental-agreement-display">
     <div class="left-column">
@@ -125,7 +125,7 @@
 
     private async Task GeneratePdf()
     {
-        await JSRuntime.InvokeVoidAsync("generatePdf");
+        //await JSRuntime.InvokeVoidAsync("generatePdf");
     }
 
 }

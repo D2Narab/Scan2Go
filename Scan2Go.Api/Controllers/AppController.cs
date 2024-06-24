@@ -109,6 +109,27 @@ namespace Scan2Go.Api.Controllers
             var httpRequest = HttpContext.Request;
             OperationResult operationResult = new OperationResult();
 
+            if (httpRequest is null)
+            {
+                _logger.LogInformation("httpRequest is null! ");
+
+                return StatusCode(HttpStatusCode.ExpectationFailed.AsInt(), operationResult);
+            }
+
+            if (httpRequest.Form is null)
+            {
+                _logger.LogInformation("httpRequest.Form is null! ");
+
+                return StatusCode(HttpStatusCode.ExpectationFailed.AsInt(), operationResult);
+            }
+
+            if (httpRequest.Form.Files is null)
+            {
+                _logger.LogInformation("httpRequest.Form.Files is null! ");
+
+                return StatusCode(HttpStatusCode.ExpectationFailed.AsInt(), operationResult);
+            }
+
             if (httpRequest.Form.Files.Count <= 0)
             {
                 operationResult.Message = "No files were found!";
@@ -168,8 +189,7 @@ namespace Scan2Go.Api.Controllers
                 return StatusCode(HttpStatusCode.ExpectationFailed.AsInt(), operationResult);
             }
 
-            //TODO lets make a control that only one file could be sent.
-
+            
             byte[] documentData = null;
             bool breakOperation = false;
 

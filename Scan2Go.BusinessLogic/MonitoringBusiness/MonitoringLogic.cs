@@ -347,7 +347,8 @@ public class MonitoringLogic
             if (passport.IsValidDocument == false)
             {
                 /*TODO Get translated message later.*/
-                passport.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
+                //TODO we need to recheck this with regula, all passports are returning not valid.
+                //passport.ErrorMessages.Add("Document is not valid or corrupted, please scan again!");
             }
         }
 
