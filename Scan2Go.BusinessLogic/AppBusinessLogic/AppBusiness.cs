@@ -55,12 +55,12 @@ namespace Scan2Go.BusinessLogic.AppBusinessLogic
                 identityCard.TransactionId = Guid.NewGuid();
 
                 string key = identityCard.TransactionId.ToString();
-                string data = identityCard.PortraitImage;
+                //string data = identityCard.PortraitImage;
                 DateTimeOffset expiration = DateTimeOffset.Now.AddMinutes(10);  // Cache for 30 minutes
 
-                CacheHelper.SaveToCache(key, data, expiration);
+                CacheHelper.SaveToCache(key, identityCard, expiration);
 
-                string testing = CacheHelper.GetFromCache(key) as string;
+                //string testing = CacheHelper.GetFromCache(key) as string;
             }
             /***************************************************************************************************/
 
@@ -70,7 +70,15 @@ namespace Scan2Go.BusinessLogic.AppBusinessLogic
         public async Task<bool> CheckFaceMatching(byte[]? documentData, string transactionId)
         {
             string documentDataAsString = Convert.ToBase64String(documentData);
-            string existingImage = CacheHelper.GetFromCache(transactionId) as string;
+            var identityCard = CacheHelper.GetFromCache(transactionId) as IdentityCard;
+
+            if (identityCard == null)
+            {
+                this.AddDetailResult(new OperationResult { State = false, MessageStringKey = "No identity card info was found, please restart the operation!" });
+                return false;
+            }
+
+            string existingImage = identityCard.PortraitImage;
 
             if (string.IsNullOrEmpty(existingImage))
             {
@@ -83,7 +91,7 @@ namespace Scan2Go.BusinessLogic.AppBusinessLogic
 
             if (double.TryParse(responseSimilarity, out double similarityValue))
             {
-                if (similarityValue > 0.979999999)
+                if (similarityValue > 0.90000000000)
                 {
                     return true;
                 }
@@ -93,8 +101,21 @@ namespace Scan2Go.BusinessLogic.AppBusinessLogic
 
             return false;
         }
-    }
 
+        public IdentityCard GetIdentityCardFromCache(string transactionId)
+        {
+            var identityCard = CacheHelper.GetFromCache(transactionId) as IdentityCard;
+
+            if (identityCard == null)
+            {
+                this.AddDetailResult(new OperationResult { State = false, MessageStringKey = "No identity card info was found, please restart the operation!" });
+                return null;
+            }
+
+            return identityCard;
+        }
+    }
+    
     
     /// <summary>
     /// TODO Move this to framework later or use the framework one

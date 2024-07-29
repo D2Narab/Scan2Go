@@ -1,8 +1,6 @@
 ﻿using Scan2Go.BusinessLogic.AppBusinessLogic;
-using Scan2Go.Entity.Cars;
 using Scan2Go.Entity.IdsAndDocuments;
 using Scan2Go.Mapper.BaseClasses;
-using Scan2Go.Mapper.Models.CarsModels;
 using Scan2Go.Mapper.Models.DocumentsModels;
 using Utility.Bases;
 using Utility.Core;
@@ -21,7 +19,7 @@ namespace Scan2Go.Mapper.Managers
 
             IDsAndDocumentsResults idsAndDocumentsResults = await new AppBusiness(operationResult, this.user).ExtractDataFromDocument(documentData);
 
-            IDsAndDocumentsResultsAppModel iDsAndDocumentsResultsAppModel 
+            IDsAndDocumentsResultsAppModel iDsAndDocumentsResultsAppModel
                 = Mapper.Map<IDsAndDocumentsResults, IDsAndDocumentsResultsAppModel>(idsAndDocumentsResults);
 
             operationResult.ResultObject = iDsAndDocumentsResultsAppModel;
@@ -33,9 +31,16 @@ namespace Scan2Go.Mapper.Managers
             OperationResult operationResult = new OperationResult();
 
             bool faceCheckResponse = await new AppBusiness(operationResult, this.user).CheckFaceMatching(documentData, transactionId);
-            
+
             operationResult.ResultObject = faceCheckResponse;
             return operationResult;
+        }
+
+        public IdentityCard GetIdentityCard(string transactionId)
+        {
+            OperationResult operationResult = new OperationResult();
+
+            return new AppBusiness(operationResult, this.user).GetIdentityCardFromCache(transactionId);
         }
     }
 }

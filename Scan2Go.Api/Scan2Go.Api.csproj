@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="office">
+      <HintPath>C:\Windows\assembly\GAC_MSIL\office\15.0.0.0__71e9bce111e9429c\OFFICE.DLL</HintPath>
+    </Reference>
     <Reference Include="Utility">
       <HintPath>..\packages\Utility.dll</HintPath>
     </Reference>
